@@ -1,0 +1,276 @@
+/**
+ * Circle Feature Styles
+ * Custom CSS for animations and responsive design
+ */
+
+/* Fade-in animation for member cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation for grid items */
+.memberCard {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.memberCard:nth-child(1) { animation-delay: 0.1s; }
+.memberCard:nth-child(2) { animation-delay: 0.2s; }
+.memberCard:nth-child(3) { animation-delay: 0.3s; }
+.memberCard:nth-child(4) { animation-delay: 0.4s; }
+.memberCard:nth-child(5) { animation-delay: 0.5s; }
+.memberCard:nth-child(6) { animation-delay: 0.6s; }
+.memberCard:nth-child(7) { animation-delay: 0.7s; }
+.memberCard:nth-child(8) { animation-delay: 0.8s; }
+
+/* Hover effects for member cards */
+.memberCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Action button hover effects */
+.memberCard .action-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.memberCard .action-button:hover {
+  transform: scale(1.05);
+}
+
+/* Current user highlight animation */
+.currentUserCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.currentUserCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--primary), 0.1),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Responsive grid adjustments */
+.circleGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+@media (max-width: 640px) {
+  .circleGrid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .circleGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+}
+
+/* Class selector animations */
+.classCard {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.classCard:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Loading skeleton animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.skeleton {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Header animations */
+.circleHeader {
+  animation: slideInDown 0.6s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Badge animations */
+.roleBadge {
+  transition: all 0.2s ease-in-out;
+}
+
+.roleBadge:hover {
+  transform: scale(1.05);
+}
+
+/* Online status indicator */
+.onlineIndicator {
+  position: relative;
+}
+
+.onlineIndicator::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+/* Focus styles for accessibility */
+.memberCard:focus-within {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+.classCard:focus-within {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .memberCard {
+    border: 2px solid;
+  }
+  
+  .currentUserCard {
+    border-color: hsl(var(--primary));
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .memberCard,
+  .classCard,
+  .circleHeader {
+    animation: none;
+    transition: none;
+  }
+  
+  .memberCard:hover,
+  .classCard:hover {
+    transform: none;
+  }
+  
+  .currentUserCard::before {
+    animation: none;
+  }
+  
+  .onlineIndicator::after {
+    animation: none;
+  }
+}
+
+/* Member card improvements */
+.memberCard {
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+}
+
+.memberCard:hover {
+  border-color: hsl(var(--primary) / 0.3);
+}
+
+/* Action buttons styling */
+.memberCard button {
+  transition: all 0.2s ease-in-out;
+}
+
+.memberCard button:hover {
+  transform: translateY(-1px);
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .memberCard:hover {
+    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.1);
+  }
+
+  .classCard:hover {
+    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Print styles */
+@media print {
+  .memberCard,
+  .classCard {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .circleGrid {
+    display: block;
+  }
+  
+  .memberCard {
+    margin-bottom: 1rem;
+    page-break-inside: avoid;
+  }
+}

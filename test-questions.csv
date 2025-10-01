@@ -1,0 +1,6 @@
+title,questionType,difficulty,subjectId,text,option1,option1Correct,option1Feedback,option2,option2Correct,option2Feedback,option3,option3Correct,option3Feedback,option4,option4Correct,option4Feedback,explanation,hint
+What is 2+2?,MULTIPLE_CHOICE,EASY,Mathematics,What is 2+2?,4,true,Correct!,3,false,Try again,5,false,Not quite,2,false,No way,Basic arithmetic,Think about counting
+What is 3+3?,MULTIPLE_CHOICE,MEDIUM,Mathematics,What is 3+3?,6,true,Excellent!,5,false,Close but not right,7,false,Too high,4,false,Too low,Addition practice,Count carefully
+What is the capital of France?,MULTIPLE_CHOICE,EASY,English,What is the capital of France?,Paris,true,Correct! Paris is the capital of France,London,false,London is the capital of UK,Berlin,false,Berlin is the capital of Germany,Madrid,false,Madrid is the capital of Spain,Geography knowledge,Think of the Eiffel Tower
+Is water H2O?,TRUE_FALSE,EASY,Science,Is water H2O?,true,,Water is indeed H2O,,,,,,,,,Basic chemistry,Think about water molecules
+What is 5+5?,NUMERIC,EASY,Mathematics,What is 5+5?,10,0.1,Simple addition,,,,,,,,,Basic arithmetic,Count on your fingers

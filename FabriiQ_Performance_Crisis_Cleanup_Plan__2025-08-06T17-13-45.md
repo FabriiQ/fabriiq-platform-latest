@@ -1,0 +1,37 @@
+[ ] NAME:Current Task List DESCRIPTION:Root task for conversation __NEW_AGENT__
+-[ ] NAME:FabriiQ Performance Crisis - Phase-wise Cleanup & Optimization DESCRIPTION:Comprehensive cleanup and optimization of FabriiQ platform to resolve architectural overflow, redundancies, and performance bottlenecks identified in the analysis
+--[x] NAME:Phase 1: Critical Authentication & Database Cleanup DESCRIPTION:Immediate fixes for authentication chaos, database query multiplication, and connection pool issues
+---[x] NAME:1.1: Consolidate Authentication Systems DESCRIPTION:Remove competing auth systems (Supabase Auth, custom JWT) and standardize on NextAuth.js with proper caching
+---[x] NAME:1.2: Implement Database Query Optimization DESCRIPTION:Add missing indexes, implement query result caching, and fix N+1 query problems
+---[x] NAME:1.3: Fix Database Connection Pool Issues DESCRIPTION:Consolidate database roles, implement proper connection pooling, and fix connection thrashing
+---[x] NAME:1.4: Disable Admin Tools in Production DESCRIPTION:Separate admin operations from user operations and disable database introspection in production
+---[x] NAME:1.5: Implement Static Data Caching DESCRIPTION:Cache timezone data, database metadata, and other static reference data at application startup
+--[x] NAME:Phase 2: Dependency & Component Consolidation DESCRIPTION:Remove redundant dependencies, consolidate duplicate components, and optimize bundle size
+---[x] NAME:2.1: Remove Redundant Dependencies DESCRIPTION:Eliminate duplicate UI libraries, state management systems, and authentication packages
+---[x] NAME:2.2: Consolidate Login Components DESCRIPTION:Merge 4 different login components into single optimized component
+---[x] NAME:2.3: Consolidate Dashboard Components DESCRIPTION:Merge duplicate dashboard components for same roles and extract shared logic
+---[x] NAME:2.4: Consolidate Activity Editors DESCRIPTION:Extract shared logic from 14 activity editors and create unified base components
+---[x] NAME:2.5: Optimize Bundle Size DESCRIPTION:Implement tree-shaking, code splitting, and replace heavy libraries with lighter alternatives
+--[x] NAME:Phase 3: File Structure & Build System Cleanup DESCRIPTION:Organize file structure, remove redundant files, and optimize build configuration
+---[x] NAME:3.1: Clean Up Root Directory DESCRIPTION:Remove 50+ documentation files from root, organize into proper docs structure
+---[x] NAME:3.2: Consolidate Build Scripts DESCRIPTION:Merge 45+ npm scripts into essential production and development scripts
+---[x] NAME:3.3: Fix Next.js Configuration Conflicts DESCRIPTION:Resolve conflicts between next.config.js and next.config.mjs, standardize configuration
+---[ ] NAME:3.4: Remove Redundant Migration Scripts DESCRIPTION:Clean up 20+ database migration and seeding scripts, keep only essential ones
+---[ ] NAME:3.5: Organize Component Structure DESCRIPTION:Restructure component directories to eliminate inconsistent organization patterns
+--[/] NAME:Phase 4: Database Schema & Security Optimization DESCRIPTION:Implement RLS policies, optimize database schema, and fix security vulnerabilities
+---[x] NAME:4.1: Implement Row Level Security (RLS) DESCRIPTION:Add RLS policies to 97+ database tables that currently lack security
+---[x] NAME:4.2: Add Database Indexes DESCRIPTION:Create indexes for frequently queried columns to improve query performance
+---[x] NAME:4.3: Standardize Database Schema DESCRIPTION:Fix inconsistent data types, add missing foreign key constraints, and normalize schema
+---[x] NAME:4.4: Optimize Middleware Performance DESCRIPTION:Implement smart routing to bypass middleware for static assets and cache validation results
+---[x] NAME:4.5: Implement Memory Management DESCRIPTION:Add connection pooling limits, cache expiration policies, and memory monitoring
+--[ ] NAME:Phase 5: Production Configuration & Monitoring DESCRIPTION:Implement production-ready configurations, monitoring, and performance optimization
+---[ ] NAME:5.1: Implement Production Environment Configuration DESCRIPTION:Create separate dev/prod configs with proper resource limits and performance settings
+---[ ] NAME:5.2: Add Performance Monitoring DESCRIPTION:Implement query logging, performance metrics, and automated alerts for slow operations
+---[ ] NAME:5.3: Implement API Layer Optimization DESCRIPTION:Replace PostgREST runtime discovery with pre-compiled API and implement proper caching
+---[ ] NAME:5.4: Add Automated Testing & Validation DESCRIPTION:Create comprehensive test suite to validate performance improvements and prevent regressions
+---[ ] NAME:5.5: Document Architecture & Deployment DESCRIPTION:Create production deployment guide and architecture documentation for maintenance
+-[x] NAME:Phase 5: Advanced Performance & Production Readiness DESCRIPTION:Final phase to implement advanced optimizations and ensure production readiness
+--[x] NAME:5.1: Implement Advanced Caching Strategy DESCRIPTION:Redis integration, query result caching, and CDN optimization
+--[x] NAME:5.3: Optimize API Response Times DESCRIPTION:API route optimization, response compression, and pagination
+--[x] NAME:5.4: Implement Production Security Hardening DESCRIPTION:Rate limiting, CORS optimization, and security headers
+--[x] NAME:5.5: Add Automated Performance Testing DESCRIPTION:Load testing, performance benchmarks, and CI/CD integration

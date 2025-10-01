@@ -1,0 +1,70 @@
+'use client';
+
+import { toast } from 'sonner';
+import { Artifact } from '../../components/create-artifact';
+import { ImageEditor } from '../../components/image-editor';
+import { CopyIcon, RedoIcon, UndoIcon } from '../../components/icons';
+
+export const imageArtifact = new Artifact({
+  kind: 'image',
+  description: 'Useful for educational image generation and visual aids',
+  onStreamPart: ({ streamPart, setArtifact }) => {
+    if (streamPart.type === 'data-imageDelta') {
+      setArtifact((draftArtifact) => ({
+        ...draftArtifact,
+        content: streamPart.data,
+        isVisible: true,
+        status: 'streaming',
+      }));
+    }
+  },
+  content: ImageEditor,
+  actions: [
+    {
+      icon: <UndoIcon size={18} />,
+      description: 'Previous version',
+      onClick: ({ handleVersionChange }) => {
+        handleVersionChange('prev');
+      },
+      isDisabled: ({ currentVersionIndex }) => {
+        return currentVersionIndex === 0;
+      },
+    },
+    {
+      icon: <RedoIcon size={18} />,
+      description: 'Next version',
+      onClick: ({ handleVersionChange }) => {
+        handleVersionChange('next');
+      },
+      isDisabled: ({ isCurrentVersion }) => {
+        return isCurrentVersion;
+      },
+    },
+    {
+      icon: <CopyIcon size={18} />,
+      description: 'Copy image to clipboard',
+      onClick: ({ content }) => {
+        const img = new Image();
+        img.src = `data:image/png;base64,${content}`;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0);
+          canvas.toBlob((blob) => {
+            if (blob) {
+              navigator.clipboard.write([
+                new ClipboardItem({ 'image/png': blob }),
+              ]);
+            }
+          }, 'image/png');
+        };
+
+        toast.success('Educational image copied to clipboard!');
+      },
+    },
+  ],
+  toolbar: [],
+});

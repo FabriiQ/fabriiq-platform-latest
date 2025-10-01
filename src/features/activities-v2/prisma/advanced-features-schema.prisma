@@ -1,0 +1,343 @@
+// Advanced Features Schema for Activities V2
+// Add these models to the main prisma/schema.prisma file
+
+// Spaced Repetition System
+model SpacedRepetitionCard {
+  id                    String              @id @default(cuid())
+  questionId            String
+  studentId             String
+  subjectId             String
+  
+  // SM-2 Algorithm parameters
+  easeFactor            Float               @default(2.5)
+  interval              Int                 @default(1)
+  repetitions           Int                 @default(0)
+  
+  // Scheduling
+  nextReviewDate        DateTime
+  lastReviewDate        DateTime?
+  
+  // Performance tracking
+  totalReviews          Int                 @default(0)
+  correctReviews        Int                 @default(0)
+  averageResponseTime   Float               @default(0)
+  
+  // Learning state
+  learningState         SpacedRepetitionState @default(NEW)
+  lapseCount            Int                 @default(0)
+  
+  // Metadata
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  
+  // Relations
+  question              Question            @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  student               Student             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject               Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  
+  @@unique([studentId, questionId])
+  @@index([studentId, nextReviewDate])
+  @@index([subjectId, nextReviewDate])
+}
+
+enum SpacedRepetitionState {
+  NEW
+  LEARNING
+  REVIEW
+  RELEARNING
+  GRADUATED
+}
+
+// CAT/IRT System
+model CATSession {
+  id                    String              @id @default(cuid())
+  activityId            String
+  studentId             String
+  
+  // Current ability estimate
+  currentTheta          Float               @default(0.0)
+  standardError         Float               @default(1.0)
+  confidence            Float               @default(0.5)
+  
+  // Session state
+  questionsAsked        String[]            // Array of question IDs
+  isComplete            Boolean             @default(false)
+  terminationReason     String?
+  
+  // Metadata
+  startedAt             DateTime            @default(now())
+  completedAt           DateTime?
+  updatedAt             DateTime            @updatedAt
+  
+  // Relations
+  activity              Activity            @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  student               Student             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  responses             CATResponse[]
+  
+  @@unique([activityId, studentId])
+  @@index([studentId, isComplete])
+}
+
+model CATResponse {
+  id                    String              @id @default(cuid())
+  sessionId             String
+  questionId            String
+  
+  // Response data
+  isCorrect             Boolean
+  responseTime          Int                 // milliseconds
+  
+  // IRT parameters at time of response
+  discrimination        Float
+  difficulty            Float
+  guessing              Float?
+  
+  // Ability estimates
+  abilityBefore         Float
+  abilityAfter          Float
+  informationGain       Float
+  
+  // Metadata
+  respondedAt           DateTime            @default(now())
+  
+  // Relations
+  session               CATSession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question              Question            @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  @@index([sessionId, respondedAt])
+}
+
+// Paper-based Testing
+model PaperTest {
+  id                    String              @id @default(cuid())
+  activityId            String
+  version               Int                 @default(1)
+  
+  // Configuration
+  configuration         Json                // PaperTestConfiguration
+  
+  // Generated files
+  testPaperPdf          String?
+  answerSheetPdf        String?
+  answerKeyPdf          String?
+  
+  // Question order (for tracking shuffled versions)
+  questionOrder         String[]
+  
+  // Metadata
+  generatedAt           DateTime            @default(now())
+  generatedById         String
+  
+  // Relations
+  activity              Activity            @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  generatedBy           User                @relation(fields: [generatedById], references: [id])
+  submissions           PaperTestSubmission[]
+  gradingSessions       ManualGradingSession[]
+  
+  @@index([activityId, version])
+}
+
+model ManualGradingSession {
+  id                    String              @id @default(cuid())
+  activityId            String
+  paperTestId           String
+  teacherId             String
+  
+  // Progress tracking
+  totalSubmissions      Int                 @default(0)
+  gradedSubmissions     Int                 @default(0)
+  
+  // Metadata
+  startedAt             DateTime            @default(now())
+  completedAt           DateTime?
+  
+  // Relations
+  activity              Activity            @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  paperTest             PaperTest           @relation(fields: [paperTestId], references: [id], onDelete: Cascade)
+  teacher               User                @relation(fields: [teacherId], references: [id])
+  submissions           PaperTestSubmission[]
+  
+  @@index([teacherId, completedAt])
+}
+
+model PaperTestSubmission {
+  id                    String              @id @default(cuid())
+  studentId             String
+  paperTestId           String
+  gradingSessionId      String?
+  
+  // Answers (stored as JSON)
+  answers               Json                // Array of PaperTestAnswer
+  
+  // Grading status
+  isGraded              Boolean             @default(false)
+  totalScore            Float?
+  maxScore              Float
+  percentage            Float?
+  
+  // Manual grading data
+  gradedById            String?
+  gradedAt              DateTime?
+  feedback              String?
+  
+  // Scan data (for OMR/OCR integration)
+  scanData              Json?
+  
+  // Metadata
+  submittedAt           DateTime            @default(now())
+  
+  // Relations
+  student               Student             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  paperTest             PaperTest           @relation(fields: [paperTestId], references: [id], onDelete: Cascade)
+  gradingSession        ManualGradingSession? @relation(fields: [gradingSessionId], references: [id])
+  gradedBy              User?               @relation(fields: [gradedById], references: [id])
+  
+  @@unique([studentId, paperTestId])
+  @@index([paperTestId, isGraded])
+  @@index([gradedById, gradedAt])
+}
+
+// Enhanced Question Usage Events for IRT calibration
+model QuestionUsageEvent {
+  id                    String              @id @default(cuid())
+  questionId            String
+  activityId            String
+  studentId             String
+  classId               String
+  subjectId             String
+  
+  // Response data
+  isCorrect             Boolean
+  responseTime          Int                 // milliseconds
+  attemptNumber         Int                 @default(1)
+  
+  // Context
+  assessmentMode        String              // 'standard', 'cat', 'spaced_repetition'
+  questionOrder         Int
+  totalQuestions        Int
+  
+  // Student perception (optional)
+  difficultyPerceived   Int?                // 1-5 scale
+  confidenceLevel       Int?                // 1-5 scale
+  
+  // Session data
+  startedAt             DateTime
+  completedAt           DateTime            @default(now())
+  deviceType            String?
+  browserInfo           String?
+  sessionDuration       Int?                // milliseconds
+  previousQuestions     String[]            // Array of question IDs
+  
+  // Relations
+  question              Question            @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  activity              Activity            @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  student               Student             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  class                 Class               @relation(fields: [classId], references: [id], onDelete: Cascade)
+  subject               Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  
+  @@index([questionId, isCorrect])
+  @@index([studentId, completedAt])
+  @@index([activityId, assessmentMode])
+  @@index([subjectId, completedAt])
+}
+
+// Learning Analytics for Advanced Features
+model LearningAnalytics {
+  id                    String              @id @default(cuid())
+  studentId             String
+  subjectId             String
+  
+  // Spaced Repetition Analytics
+  srTotalCards          Int                 @default(0)
+  srActiveCards         Int                 @default(0)
+  srRetentionRate       Float               @default(0)
+  srAverageEaseFactor   Float               @default(2.5)
+  srStreakDays          Int                 @default(0)
+  
+  // CAT Analytics
+  catEstimatedAbility   Float               @default(0)
+  catStandardError      Float               @default(1.0)
+  catTotalSessions      Int                 @default(0)
+  catAverageQuestions   Float               @default(0)
+  
+  // Paper Test Analytics
+  paperTestsCompleted   Int                 @default(0)
+  paperTestAvgScore     Float               @default(0)
+  
+  // General Learning Metrics
+  totalStudyTime        Int                 @default(0) // minutes
+  questionsAnswered     Int                 @default(0)
+  correctAnswers        Int                 @default(0)
+  learningVelocity      Float               @default(0) // questions per hour
+  
+  // Bloom's Taxonomy Progress
+  rememberMastery       Float               @default(0) // 0-1 scale
+  understandMastery     Float               @default(0)
+  applyMastery          Float               @default(0)
+  analyzeMastery        Float               @default(0)
+  evaluateMastery       Float               @default(0)
+  createMastery         Float               @default(0)
+  
+  // Metadata
+  lastUpdated           DateTime            @updatedAt
+  calculatedAt          DateTime            @default(now())
+  
+  // Relations
+  student               Student             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject               Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  
+  @@unique([studentId, subjectId])
+  @@index([subjectId, lastUpdated])
+}
+
+// Add these fields to existing Question model
+// (These would be added to the existing Question model in the main schema)
+/*
+model Question {
+  // ... existing fields ...
+  
+  // IRT Parameters (cached)
+  irtDiscrimination     Float?
+  irtDifficulty         Float?
+  irtGuessing           Float?
+  irtCalibrated         Boolean             @default(false)
+  irtLastCalibrated     DateTime?
+  
+  // Usage statistics
+  totalUsages           Int                 @default(0)
+  correctUsages         Int                 @default(0)
+  averageResponseTime   Float               @default(0)
+  
+  // Relations for advanced features
+  spacedRepetitionCards SpacedRepetitionCard[]
+  catResponses          CATResponse[]
+  usageEvents           QuestionUsageEvent[]
+}
+*/
+
+// Add these fields to existing Student model
+/*
+model Student {
+  // ... existing fields ...
+  
+  // Relations for advanced features
+  spacedRepetitionCards SpacedRepetitionCard[]
+  catSessions           CATSession[]
+  paperTestSubmissions  PaperTestSubmission[]
+  usageEvents           QuestionUsageEvent[]
+  learningAnalytics     LearningAnalytics[]
+}
+*/
+
+// Add these fields to existing Activity model
+/*
+model Activity {
+  // ... existing fields ...
+  
+  // Relations for advanced features
+  catSessions           CATSession[]
+  paperTests            PaperTest[]
+  gradingSessions       ManualGradingSession[]
+  usageEvents           QuestionUsageEvent[]
+}
+*/

@@ -1,0 +1,174 @@
+// Student Assistant Schema Updates
+// These models should be added to the main prisma/schema.prisma file
+
+// Student Assistant Conversation Model
+model StudentAssistantConversation {
+  id          String       @id @default(cuid())
+  studentId   String
+  title       String?
+  summary     String?
+  classId     String?
+  subjectId   String?
+  topicId     String?
+  mode        String?      // learning mode (homework, concept, study, etc.)
+  context     Json?        // selected context (class, subject, topic)
+  metadata    Json?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  status      SystemStatus @default(ACTIVE)
+
+  // Relations
+  messages    StudentAssistantMessage[]
+
+  @@index([studentId])
+  @@index([classId])
+  @@index([subjectId])
+  @@index([createdAt])
+  @@index([updatedAt])
+  @@map("student_assistant_conversations")
+}
+
+model StudentAssistantMessage {
+  id             String       @id @default(cuid())
+  conversationId String
+  role           String       // 'user' | 'assistant' | 'system'
+  content        String       @db.Text
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+  status         SystemStatus @default(ACTIVE)
+
+  // Relations
+  conversation   StudentAssistantConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@index([createdAt])
+  @@map("student_assistant_messages")
+}
+
+// Student Assistant Interaction Model (for analytics)
+model StudentAssistantInteraction {
+  id          String       @id @default(cuid())
+  studentId   String
+  message     String       @db.Text
+  response    String       @db.Text
+  classId     String?
+  subjectId   String?
+  topicId     String?
+  mode        String?      // learning mode
+  context     Json?        // full context at time of interaction
+  metadata    Json?
+  timestamp   DateTime     @default(now())
+  status      SystemStatus @default(ACTIVE)
+  
+  @@index([studentId])
+  @@index([classId])
+  @@index([subjectId])
+  @@index([timestamp])
+  @@map("student_assistant_interactions")
+}
+
+// Student Assistant Search Model
+model StudentAssistantSearch {
+  id           String       @id @default(cuid())
+  studentId    String
+  query        String
+  filters      Json?
+  resultsCount Int
+  classId      String?
+  subjectId    String?
+  mode         String?
+  timestamp    DateTime     @default(now())
+  status       SystemStatus @default(ACTIVE)
+  
+  @@index([studentId])
+  @@index([classId])
+  @@index([timestamp])
+  @@map("student_assistant_searches")
+}
+
+// Student Preference Model (for learning preferences)
+model StudentPreference {
+  id            String       @id @default(cuid())
+  studentId     String
+  category      String       // 'learning_style', 'companion_settings', 'notification_preferences'
+  key           String
+  value         Json
+  metadata      Json?
+  timestamp     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  status        SystemStatus @default(ACTIVE)
+  
+  @@unique([studentId, category, key])
+  @@index([studentId])
+  @@index([category])
+  @@map("student_preferences")
+}
+
+// Student Learning Goal Model (for tracking learning objectives)
+model StudentLearningGoal {
+  id            String       @id @default(cuid())
+  studentId     String
+  title         String
+  description   String?
+  classId       String?
+  subjectId     String?
+  topicId       String?
+  targetDate    DateTime?
+  priority      String       @default("MEDIUM") // HIGH, MEDIUM, LOW
+  status        String       @default("ACTIVE") // ACTIVE, COMPLETED, PAUSED, CANCELLED
+  progress      Float        @default(0.0)      // 0.0 to 1.0
+  metadata      Json?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  
+  @@index([studentId])
+  @@index([classId])
+  @@index([subjectId])
+  @@index([status])
+  @@map("student_learning_goals")
+}
+
+// Student Confusion Area Model (for tracking areas of difficulty)
+model StudentConfusionArea {
+  id            String       @id @default(cuid())
+  studentId     String
+  topic         String
+  description   String?
+  classId       String?
+  subjectId     String?
+  topicId       String?
+  severity      String       @default("MEDIUM") // HIGH, MEDIUM, LOW
+  status        String       @default("ACTIVE") // ACTIVE, RESOLVED, IGNORED
+  firstReported DateTime     @default(now())
+  lastReported  DateTime     @default(now())
+  resolutionNotes String?
+  metadata      Json?
+  
+  @@index([studentId])
+  @@index([classId])
+  @@index([subjectId])
+  @@index([status])
+  @@map("student_confusion_areas")
+}
+
+// Student Discussed Concept Model (for tracking learning progress)
+model StudentDiscussedConcept {
+  id            String       @id @default(cuid())
+  studentId     String
+  concept       String
+  description   String?
+  classId       String?
+  subjectId     String?
+  topicId       String?
+  understanding String       @default("PARTIAL") // POOR, PARTIAL, GOOD, EXCELLENT
+  discussedAt   DateTime     @default(now())
+  lastReviewed  DateTime?
+  reviewCount   Int          @default(1)
+  metadata      Json?
+  
+  @@index([studentId])
+  @@index([classId])
+  @@index([subjectId])
+  @@index([understanding])
+  @@map("student_discussed_concepts")
+}

@@ -1,0 +1,4 @@
+studentEmail,studentFirstName,studentLastName,campusCode,className,startDate,status
+test1@example.com,John,Doe,MAIN,Introduction to Programming,2024-01-15,ACTIVE
+test2@example.com,Jane,Smith,MAIN,Introduction to Programming,2024-01-15,ACTIVE
+test3@example.com,Bob,Johnson,MAIN,Introduction to Programming,2024-01-15,ACTIVE

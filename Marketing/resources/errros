@@ -1,0 +1,768 @@
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+257                 className="pl-10"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+258               />
+    ~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:262:13 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+262             <select
+                ~~~~~~~
+263               value={selectedType}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+265               className="px-3 py-2 border border-input bg-background rounded-md text-sm min-w-[120px]"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+266             >
+    ~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:267:15 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+267               <option value="all">All Types</option>
+                  ~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:268:15 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+268               <option value="FILE">Documents</option>
+                  ~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:269:15 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+269               <option value="VIDEO">Videos</option>
+                  ~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:270:15 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+270               <option value="LINK">Links</option>
+                  ~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:277:7 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+277       <Tabs value={activeTab} onValueChange={setActiveTab}>
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:278:9 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+278         <TabsList>
+            ~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:279:11 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+279           <TabsTrigger value="all">All Resources</TabsTrigger>
+              ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:280:11 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+280           <TabsTrigger value="shared">Shared with Students</TabsTrigger>
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:281:11 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+281           <TabsTrigger value="private">Private</TabsTrigger>
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:284:9 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+284         <TabsContent value={activeTab} className="space-y-4">
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:287:13 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+287             <div className="space-y-4">
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:289:17 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+289                 <Card key={i} className="animate-pulse">
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:290:19 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+290                   <div className="p-6 space-y-4">
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:291:21 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+291                     <div className="flex items-center space-x-2">
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:292:23 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+292                       <div className="h-4 w-4 bg-gray-200 rounded"></div>
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:293:23 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+293                       <div className="h-5 w-5 bg-gray-200 rounded"></div>
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:294:23 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+294                       <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:301:13 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+301             <Card>
+                ~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:302:15 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+302               <CardContent className="pt-6">
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:303:17 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+303                 <div className="text-center py-12">
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:304:19 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+304                   <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:305:19 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+305                   <h3 className="text-lg font-semibold mb-2">No resources found</h3>
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:306:19 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+306                   <p className="text-muted-foreground mb-4">
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:311:19 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+311                   <Button onClick={() => setShowUploadModal(true)}>
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:312:21 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+312                     <Plus className="h-4 w-4 mr-2" />
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:319:13 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+319             <div className="space-y-4">
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:322:17 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+322                 <Card key={subject.id} className="overflow-hidden">
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:323:19 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+323                   <CardHeader
+                      ~~~~~~~~~~~
+324                     className="cursor-pointer hover:bg-gray-50 transition-colors"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+325                     onClick={() => toggleFolder(subject.id)}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+326                   >
+    ~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:327:21 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+327                     <div className="flex items-center justify-between">
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:328:23 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+328                       <div className="flex items-center space-x-2">
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:330:27 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+330                           <ChevronDown className="h-4 w-4" />
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:332:27 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+332                           <ChevronRight className="h-4 w-4" />
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:334:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+334                         <FolderOpen className="h-5 w-5 text-green-600" />
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:335:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+335                         <CardTitle className="text-lg">{subject.name}</CardTitle>
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:336:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+336                         <Badge variant="outline">{subject.code}</Badge>
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:337:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+337                         <Badge variant="secondary" className="text-xs">
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:341:23 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+341                       <Button
+                          ~~~~~~~
+342                         size="sm"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+348                         }}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+349                       >
+    ~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:350:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+350                         <Plus className="h-3 w-3 mr-1" />
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:357:21 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+357                     <CardContent className="pl-8 space-y-2">
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:359:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+359                         <div
+                            ~~~~
+360                           key={resource.id}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+361                           className="flex items-center space-x-2 p-3 hover:bg-gray-50 rounded transition-colors group"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+362                         >
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:363:27 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+363                           <div
+                              ~~~~
+364                             className="flex items-center space-x-2 flex-1 cursor-pointer"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+365                             onClick={() => handleResourceClick(resource)}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+366                           >
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:368:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+368                             <span className="text-sm flex-1">{resource.title}</span>
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:369:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+369                             <Badge variant="outline" className="text-xs">
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:372:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+372                             <Badge
+                                ~~~~~~
+373                               variant={resource.access === 'PRIVATE' ? 'secondary' : 'default'}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+374                               className="text-xs"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+375                             >
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:379:27 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+379                           <div className="opacity-0 group-hover:opacity-100 transition-opacity flex space-x-1">
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:380:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+380                             <Button size="sm" variant="ghost">
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:381:31 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+381                               <Edit className="h-3 w-3" />
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:383:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+383                             <Button size="sm" variant="ghost">
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:384:31 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+384                               <Trash2 className="h-3 w-3" />
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:390:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+390                         <div className="text-sm text-gray-500 p-3">
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:401:17 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+401                 <Card className="overflow-hidden">
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:402:19 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+402                   <CardHeader
+                      ~~~~~~~~~~~
+403                     className="cursor-pointer hover:bg-gray-50 transition-colors"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+404                     onClick={() => toggleFolder('personal')}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+405                   >
+    ~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:406:21 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+406                     <div className="flex items-center justify-between">
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:407:23 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+407                       <div className="flex items-center space-x-2">
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:409:27 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+409                           <ChevronDown className="h-4 w-4" />
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:411:27 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+411                           <ChevronRight className="h-4 w-4" />
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:413:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+413                         <FolderOpen className="h-5 w-5 text-purple-600" />
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:414:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+414                         <CardTitle className="text-lg">Personal Resources</CardTitle>
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:415:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+415                         <Badge variant="secondary">
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:419:23 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+419                       <Button
+                          ~~~~~~~
+420                         size="sm"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+426                         }}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+427                       >
+    ~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:428:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+428                         <Plus className="h-3 w-3 mr-1" />
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:435:21 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+435                     <CardContent className="pl-8 space-y-2">
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:437:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+437                         <div
+                            ~~~~
+438                           key={resource.id}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+439                           className="flex items-center space-x-2 p-3 hover:bg-gray-50 rounded transition-colors group"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+440                         >
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:441:27 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+441                           <div
+                              ~~~~
+442                             className="flex items-center space-x-2 flex-1 cursor-pointer"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+443                             onClick={() => handleResourceClick(resource)}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+444                           >
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:446:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+446                             <span className="text-sm flex-1">{resource.title}</span>
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:447:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+447                             <Badge variant="outline" className="text-xs">
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:450:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+450                             <Badge
+                                ~~~~~~
+451                               variant={resource.access === 'PRIVATE' ? 'secondary' : 'default'}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+452                               className="text-xs"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+453                             >
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:457:27 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+457                           <div className="opacity-0 group-hover:opacity-100 transition-opacity flex space-x-1">
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:458:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+458                             <Button size="sm" variant="ghost">
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:459:31 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+459                               <Edit className="h-3 w-3" />
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:461:29 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+461                             <Button size="sm" variant="ghost">
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:462:31 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+462                               <Trash2 className="h-3 w-3" />
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:468:25 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+468                         <div className="text-sm text-gray-500 p-3">
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:483:9 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+483         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:484:11 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+484           <Card className="w-full max-w-md">
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:485:13 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+485             <CardHeader>
+                ~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:486:15 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+486               <CardTitle>Add Resource</CardTitle>
+                  ~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:487:15 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+487               <p className="text-sm text-muted-foreground">
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:494:13 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+494             <CardContent className="space-y-4">
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:496:17 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+496                 <div>
+                    ~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:497:19 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+497                   <label className="text-sm font-medium">Subject (Optional)</label>
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:498:19 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+498                   <select
+                      ~~~~~~~
+499                     value={selectedSubjectForResource}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+501                     className="w-full mt-1 px-3 py-2 border border-input bg-background rounded-md text-sm"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+502                   >
+    ~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:503:21 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+503                     <option value="">Personal Resource</option>
+                        ~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:505:23 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+505                       <option key={subject.id} value={subject.id}>
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:512:15 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+512               <p className="text-muted-foreground text-sm">
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:515:15 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+515               <div className="flex space-x-2">
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:516:17 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+516                 <Button
+                    ~~~~~~~
+517                   variant="outline"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+521                   }}
+    ~~~~~~~~~~~~~~~~~~~~
+522                 >
+    ~~~~~~~~~~~~~~~~~
+
+src/app/teacher/classes/[classId]/resources/page.tsx:525:17 - error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+
+525                 <Button
+                    ~~~~~~~
+526                   onClick={() => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+...
+529                   }}
+    ~~~~~~~~~~~~~~~~~~~~
+530                 >
+    ~~~~~~~~~~~~~~~~~
+
+src/features/compliance/AuditLogService.ts:7:24 - error TS2307: Cannot find module '@/server/api/utils/logger' or its corresponding type declarations.
+
+7 import { logger } from '@/server/api/utils/logger';
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/features/compliance/FERPAComplianceEngine.ts:6:24 - error TS2307: Cannot find module '@/server/api/utils/logger' or its corresponding type declarations.
+
+6 import { logger } from '@/server/api/utils/logger';
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/features/compliance/FERPAComplianceEngine.ts:132:24 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+132     for (const word of words) {
+                           ~~~~~
+
+src/features/compliance/FERPAComplianceEngine.ts:144:24 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+144     for (const word of words) {
+                           ~~~~~
+
+src/features/messaging/core/RuleBasedClassifier.ts:7:24 - error TS2307: Cannot find module '@/server/api/utils/logger' or its corresponding type 
+declarations.
+
+7 import { logger } from '@/server/api/utils/logger';
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/features/messaging/core/RuleBasedClassifier.ts:190:40 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+190       const intersection = new Set([...words].filter(word => keywords.has(word)));
+                                           ~~~~~
+
+src/features/messaging/core/RuleBasedClassifier.ts:209:24 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+209     for (const word of words) {
+                           ~~~~~
+
+src/features/messaging/core/RuleBasedClassifier.ts:219:24 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+219     for (const word of words) {
+                           ~~~~~
+
+src/features/messaging/core/RuleBasedClassifier.ts:229:24 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+229     for (const word of words) {
+                           ~~~~~
+
+src/features/messaging/core/RuleBasedClassifier.ts:253:24 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+253     for (const word of words) {
+                           ~~~~~
+
+src/features/rewards/types.ts:9:18 - error TS2430: Interface 'RewardSystemPrismaClient' incorrectly extends interface 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+  Types of property 'studentAchievement' are incompatible.
+    Type '{ findFirst: (args: any) => Promise<any>; findUnique: (args: any) => Promise<any>; findMany: (args: any) => Promise<any[]>; create: (args: any) => Promise<any>; update: (args: any) => Promise<...>; }' is missing the following properties from type 'StudentAchievementDelegate<DefaultArgs>': findUniqueOrThrow, findFirstOrThrow, createMany, createManyAndReturn, and 8 more.
+
+9 export interface RewardSystemPrismaClient extends PrismaClient {
+                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/server/api/cache/advanced-procedure-cache.ts:13:24 - error TS2307: Cannot find module '@/server/api/utils/logger' or its corresponding type declarations.
+
+13 import { logger } from '@/server/api/utils/logger';
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/server/api/cache/advanced-procedure-cache.ts:148:25 - error TS2802: Type 'Generator<string, void, unknown>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+148       for (const key of cache.keys()) {
+                            ~~~~~~~~~~~~
+
+src/server/api/cache/advanced-procedure-cache.ts:157:27 - error TS2802: Type 'Generator<string, void, unknown>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+157         for (const key of cache.keys()) {
+                              ~~~~~~~~~~~~
+
+src/server/api/context.ts:3:15 - error TS2305: Module '"./trpc"' has no exported member 'CustomSession'.
+
+3 import type { CustomSession } from './trpc';
+                ~~~~~~~~~~~~~
+
+src/server/api/middleware/authorization.ts:73:39 - error TS2339: Property 'userType' does not exist on type '{ name?: string; email?: string; image?: string; }'.
+
+73     const userType = ctx.session.user.userType as UserType;
+                                         ~~~~~~~~
+
+src/server/api/middleware/authorization.ts:103:39 - error TS2339: Property 'userType' does not exist on type '{ name?: string; email?: string; image?: string; }'.
+
+103     const userType = ctx.session.user.userType as UserType;
+                                          ~~~~~~~~
+
+src/server/api/middleware/authorization.ts:136:39 - error TS2339: Property 'userType' does not exist on type '{ name?: string; email?: string; image?: string; }'.
+
+136     const userType = ctx.session.user.userType as UserType;
+                                          ~~~~~~~~
+
+src/server/api/middleware/authorization.ts:171:39 - error TS2339: Property 'userType' does not exist on type '{ name?: string; email?: string; image?: string; }'.
+
+171     const userType = ctx.session.user.userType as UserType;
+                                          ~~~~~~~~
+
+src/server/api/middleware/authorization.ts:206:39 - error TS2339: Property 'userType' does not exist on type '{ name?: string; email?: string; image?: string; }'.
+
+206     const userType = ctx.session.user.userType as UserType;
+                                          ~~~~~~~~
+
+src/server/api/middleware/authorization.ts:235:38 - error TS2339: Property 'id' does not exist on type '{ name?: string; email?: string; image?: 
+string; }'.
+
+235     const userId = ctx.session.user?.id;
+                                         ~~
+
+src/server/api/middleware/authorization.ts:244:27 - error TS2339: Property 'userType' does not exist on type '{ name?: string; email?: string; image?: string; }'.
+
+244     if (ctx.session.user?.userType === 'SYSTEM_ADMIN') {
+                              ~~~~~~~~
+
+src/server/api/middleware/authorization.ts:291:38 - error TS2339: Property 'id' does not exist on type '{ name?: string; email?: string; image?: 
+string; }'.
+
+291     const userId = ctx.session.user?.id;
+                                         ~~
+
+src/server/api/middleware/authorization.ts:300:27 - error TS2339: Property 'userType' does not exist on type '{ name?: string; email?: string; image?: string; }'.
+
+300     if (ctx.session.user?.userType === 'SYSTEM_ADMIN') {
+                              ~~~~~~~~
+
+src/server/api/middleware/authorization.ts:345:38 - error TS2339: Property 'id' does not exist on type '{ name?: string; email?: string; image?: 
+string; }'.
+
+345     const userId = ctx.session.user?.id;
+                                         ~~
+
+src/server/api/middleware/authorization.ts:354:27 - error TS2339: Property 'userType' does not exist on type '{ name?: string; email?: string; image?: string; }'.
+
+354     if (ctx.session.user?.userType === 'SYSTEM_ADMIN') {
+                              ~~~~~~~~
+
+src/server/api/middleware/performance.middleware.ts:7:24 - error TS2307: Cannot find module '@/server/api/utils/logger' or its corresponding type declarations.
+
+7 import { logger } from '@/server/api/utils/logger';
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/server/api/routers/resource.ts:140:42 - error TS2345: Argument of type '{ type?: ResourceType; skip?: number; take?: number; courseId?: string; studentId?: string; searchTerm?: string; }' is not assignable to parameter of type '{ studentId: string; courseId?: string; searchTerm?: string; type?: ResourceType; skip?: number; take?: number; }'.
+  Property 'studentId' is optional in type '{ type?: ResourceType; skip?: number; take?: number; courseId?: string; studentId?: string; searchTerm?: string; }' but required in type '{ studentId: string; courseId?: string; searchTerm?: string; type?: ResourceType; skip?: number; take?: number; }'.
+
+140       return service.getStudentResources(input);
+                                             ~~~~~
+
+src/server/api/routers/resource.ts:176:48 - error TS2339: Property 'id' does not exist on type '{ name?: string; email?: string; image?: string; 
+}'.
+
+176       const userId = input || ctx.session.user.id;
+[{
+	"resource": "/d:/Learning Q2/working backup 28 aug/src/app/student/class/[id]/resources/page.tsx",
+	"owner": "typescript",
+	"code": "2305",
+	"severity": 8,
+	"message": "Module '\"lucide-react\"' has no exported member 'FolderOpen'.",
+	"source": "ts",
+	"startLineNumber": 15,
+	"startColumn": 3,
+	"endLineNumber": 15,
+	"endColumn": 13,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Learning Q2/working backup 28 aug/src/app/student/class/[id]/resources/page.tsx",
+	"owner": "typescript",
+	"code": "2305",
+	"severity": 8,
+	"message": "Module '\"lucide-react\"' has no exported member 'ExternalLink'.",
+	"source": "ts",
+	"startLineNumber": 16,
+	"startColumn": 3,
+	"endLineNumber": 16,
+	"endColumn": 15,
+	"origin": "extHost1"
+}]
+[{
+	"resource": "/d:/Learning Q2/working backup 28 aug/src/server/api/routers/resource.ts",
+	"owner": "typescript",
+	"code": "2345",
+	"severity": 8,
+	"message": "Argument of type '{}' is not assignable to parameter of type 'string'.",
+	"source": "ts",
+	"startLineNumber": 113,
+	"startColumn": 44,
+	"endLineNumber": 113,
+	"endColumn": 51,
+	"origin": "extHost1"
+}]
+[{
+	"resource": "/d:/Learning Q2/working backup 28 aug/src/app/teacher/classes/[classId]/resources/page.tsx",
+	"owner": "typescript",
+	"code": "2305",
+	"severity": 8,
+	"message": "Module '\"lucide-react\"' has no exported member 'Share'.",
+	"source": "ts",
+	"startLineNumber": 24,
+	"startColumn": 3,
+	"endLineNumber": 24,
+	"endColumn": 8,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Learning Q2/working backup 28 aug/src/app/teacher/classes/[classId]/resources/page.tsx",
+	"owner": "typescript",
+	"code": "2305",
+	"severity": 8,
+	"message": "Module '\"lucide-react\"' has no exported member 'FolderOpen'.",
+	"source": "ts",
+	"startLineNumber": 27,
+	"startColumn": 3,
+	"endLineNumber": 27,
+	"endColumn": 13,
+	"origin": "extHost1"
+},{
+	"resource": "/d:/Learning Q2/working backup 28 aug/src/app/teacher/classes/[classId]/resources/page.tsx",
+	"owner": "typescript",
+	"code": "2305",
+	"severity": 8,
+	"message": "Module '\"lucide-react\"' has no exported member 'ExternalLink'.",
+	"source": "ts",
+	"startLineNumber": 28,
+	"startColumn": 3,
+	"endLineNumber": 28,
+	"endColumn": 15,
+	"origin": "extHost1"
+}]

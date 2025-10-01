@@ -1,0 +1,145 @@
+{
+  "timestamp": "2025-09-07T14:43:32.152Z",
+  "nodeVersion": "v20.17.0",
+  "platform": "win32",
+  "arch": "x64",
+  "metrics": [
+    {
+      "testName": "Basic Functionality",
+      "questionsGenerated": 100,
+      "timeElapsed": 4519,
+      "questionsPerSecond": 22.12878955521133,
+      "memoryUsage": {
+        "before": {
+          "rss": 76435456,
+          "heapTotal": 18153472,
+          "heapUsed": 8333208,
+          "external": 7071540,
+          "arrayBuffers": 60323
+        },
+        "after": {
+          "rss": 97411072,
+          "heapTotal": 18415616,
+          "heapUsed": 8807232,
+          "external": 6996110,
+          "arrayBuffers": 16915
+        },
+        "peak": {
+          "rss": 97406976,
+          "heapTotal": 18415616,
+          "heapUsed": 8803280,
+          "external": 7039718,
+          "arrayBuffers": 16915
+        }
+      },
+      "databaseOperations": {
+        "insertTime": 0,
+        "queryTime": 0
+      }
+    },
+    {
+      "testName": "Batch Processing",
+      "questionsGenerated": 1000,
+      "timeElapsed": 937,
+      "questionsPerSecond": 1067.2358591248665,
+      "memoryUsage": {
+        "before": {
+          "rss": 97562624,
+          "heapTotal": 18415616,
+          "heapUsed": 8615096,
+          "external": 6996110,
+          "arrayBuffers": 16915
+        },
+        "after": {
+          "rss": 99799040,
+          "heapTotal": 28114944,
+          "heapUsed": 10004200,
+          "external": 6996110,
+          "arrayBuffers": 16915
+        },
+        "peak": {
+          "rss": 99786752,
+          "heapTotal": 28114944,
+          "heapUsed": 9989296,
+          "external": 6996110,
+          "arrayBuffers": 16915
+        }
+      },
+      "databaseOperations": {
+        "insertTime": 0,
+        "queryTime": 0
+      }
+    },
+    {
+      "testName": "Database Seeding",
+      "questionsGenerated": 500,
+      "timeElapsed": 3913,
+      "questionsPerSecond": 127.77919754663941,
+      "memoryUsage": {
+        "before": {
+          "rss": 98828288,
+          "heapTotal": 27328512,
+          "heapUsed": 8676280,
+          "external": 6996110,
+          "arrayBuffers": 16915
+        },
+        "after": {
+          "rss": 92151808,
+          "heapTotal": 27590656,
+          "heapUsed": 9571672,
+          "external": 6996110,
+          "arrayBuffers": 16907
+        },
+        "peak": {
+          "rss": 92151808,
+          "heapTotal": 27590656,
+          "heapUsed": 9568440,
+          "external": 6996110,
+          "arrayBuffers": 16907
+        }
+      },
+      "databaseOperations": {
+        "insertTime": 3008,
+        "queryTime": 904
+      }
+    },
+    {
+      "testName": "Memory Stress Test",
+      "questionsGenerated": 5000,
+      "timeElapsed": 1097,
+      "questionsPerSecond": 4557.88514129444,
+      "memoryUsage": {
+        "before": {
+          "rss": 92160000,
+          "heapTotal": 27590656,
+          "heapUsed": 8890584,
+          "external": 6996110,
+          "arrayBuffers": 16907
+        },
+        "after": {
+          "rss": 105205760,
+          "heapTotal": 50135040,
+          "heapUsed": 15224704,
+          "external": 6996110,
+          "arrayBuffers": 16907
+        },
+        "peak": {
+          "rss": 92160000,
+          "heapTotal": 27590656,
+          "heapUsed": 8890584,
+          "external": 6996110,
+          "arrayBuffers": 16907
+        }
+      },
+      "databaseOperations": {
+        "insertTime": 0,
+        "queryTime": 0
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 6600,
+    "totalTime": 10466,
+    "averageRate": 630.613414867189
+  }
+}

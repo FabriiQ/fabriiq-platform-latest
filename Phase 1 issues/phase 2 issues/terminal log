@@ -1,0 +1,944 @@
+Initializing Socket.IO server...
+Socket.IO server created successfully
+Basic socket namespaces initialized successfully
+Socket.IO namespaces and event handlers set up successfully
+Setting up graceful shutdown handlers...
+All event handlers set up. Server initialization complete.
+Ready on http://localhost:3000
+Socket.IO server running on path: /api/socket/social-wall
+Starting server initialization...
+Initial memory usage: 60MB (monitoring disabled)
+Server startup completed successfully
+Exiting server listen callback...
+○ Compiling /login ...
+✓ Compiled /login in 67.7s
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+[WARN] [AUTH] Warning: DEBUG_ENABLED
+[DEBUG] [LOGIN] Search parameters {
+"searchParams": {}
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] [LOGIN] Search parameters {
+"searchParams": {}
+}
+[NavigationHandler] Institution context not available - using default behavior
+[NavigationHandler] Institution context not available - using default behavior
+GET /login 200 in 52384ms
+○ Compiling /api/auth/[...nextauth] ...
+✓ Compiled /api/auth/[...nextauth] in 3.1s
+○ Compiling /favicon.ico ...
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[WARN] [AUTH] Warning: DEBUG_ENABLED
+GET /api/auth/session 200 in 6580ms
+GET /favicon.ico 200 in 8074ms
+✓ Compiled /favicon.ico in 19.7s
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[INFO] [STATIC-CACHE] Preloading static data...
+[DEBUG] [STATIC-CACHE] Cached timezone data {
+"count": 14
+}
+[DEBUG] [STATIC-CACHE] Cached user types {
+"count": 8
+}
+[DEBUG] [STATIC-CACHE] Cached activity types {
+"count": 14
+}
+[DEBUG] [STATIC-CACHE] Cached system status {
+"count": 4
+}
+[INFO] [STATIC-CACHE] Static data preloaded successfully {
+"cacheSize": 4
+}
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[WARN] No session found in tRPC handler {
+"url": "http://localhost:3000/api/trpc/systemConfig.getBranding,settings.getFeeSettings?batch=1&input=%7B%220%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D,%221%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D%7D",
+"method": "GET",
+"headers": {
+"accept": "/",
+"accept-encoding": "gzip, deflate, br, zstd",
+"accept-language": "en-US,en;q=0.9",
+"connection": "keep-alive",
+"content-type": "application/json, application/json",
+"host": "localhost:3000",
+"referer": "http://localhost:3000/login",
+"sec-ch-ua": ""Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"",
+"sec-ch-ua-mobile": "?0",
+"sec-ch-ua-platform": ""Windows"",
+"sec-fetch-dest": "empty",
+"sec-fetch-mode": "cors",
+"sec-fetch-site": "same-origin",
+"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+"x-forwarded-for": "::1",
+"x-forwarded-host": "localhost:3000",
+"x-forwarded-port": "3000",
+"x-forwarded-proto": "http",
+"x-trpc-source": "react"
+}
+}
+[WARN] No session provided to createTRPCContext {
+"hasReq": true,
+"hasRes": true,
+"url": "http://localhost:3000/api/trpc/systemConfig.getBranding,settings.getFeeSettings?batch=1&input=%7B%220%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D,%221%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D%7D"
+}
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000",
+"baseUrl": "http://localhost:3000"
+}
+GET /api/auth/providers 200 in 566ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000",
+"baseUrl": "http://localhost:3000"
+}
+GET /api/auth/csrf 200 in 512ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] [AUTH] Using role-specific URL directly {
+"url": "/teacher/dashboard"
+}
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+Background jobs disabled - server initialization skipped
+[DEBUG] [AUTH] User authenticated successfully {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"username": "robert_brown",
+"userType": "TEACHER"
+}
+[DEBUG] [AUTH] JWT token created {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] [AUTH] User signed in {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+POST /api/auth/callback/credentials 200 in 2580ms
+○ Compiling /teacher/dashboard ...
+✓ Compiled /teacher/dashboard in 39.3s
+[NavigationHandler] Institution context not available - using default behavior
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /api/trpc/systemConfig.getBranding,settings.getFeeSettings?batch=1&input=%7B%220%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D,%221%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D%7D 200 in 117739ms
+GET /teacher/dashboard 200 in 41334ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /favicon.ico 200 in 2329ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[WARN] Slow procedure execution (cached) {
+"cacheKey": "branding:config",
+"executionTime": "1708.92ms"
+}
+[DEBUG] Cache miss - result cached {
+"cacheKey": "branding:config",
+"category": "SYSTEM_CONFIG"
+}
+[ERROR] Slow procedure execution {
+"path": "systemConfig.getBranding",
+"executionTime": "1777.95ms",
+"threshold": "1000ms"
+}
+GET /api/trpc/systemConfig.getBranding,settings.getFeeSettings?batch=1&input=%7B%220%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D,%221%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D%7D 200 in 4151ms
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[NavigationHandler] Institution context not available - using default behavior
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /teacher/dashboard 200 in 878ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /api/auth/session 200 in 1185ms
+GET /favicon.ico 200 in 1351ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Cache hit {
+"cacheKey": "branding:config",
+"category": "SYSTEM_CONFIG"
+}
+GET /api/trpc/systemConfig.getBranding,settings.getFeeSettings?batch=1&input=%7B%220%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D,%221%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D%7D 200 in 1588ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Cache miss - result cached {
+"cacheKey": "notifications:cmesxncqr0022uxvpycn4zzla:20:false",
+"category": "USER_DATA"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+Getting teacher classes for ID: cmesxncqr0022uxvpycn4zzla
+Getting teacher metrics for: {
+teacherId: 'cmesxncqr0022uxvpycn4zzla',
+courseId: undefined,
+programId: undefined,
+timeframe: 'term',
+metricType: 'overallRating'
+}
+[WARN] Procedure execution approaching threshold {
+"path": "messaging.getUnreadCount",
+"executionTime": "689.86ms",
+"threshold": "500ms"
+}
+GET /api/trpc/messaging.getUnreadCount,notification.getUserNotifications?batch=1&input=%7B%220%22:%7B%22json%22:%7B%7D%7D,%221%22:%7B%22json%22:%7B%22limit%22:20,%22includeRead%22:false%7D%7D%7D 200 in 2274ms
+Found teacher profile: cmesxncu40024uxvpwqajofz8
+○ Compiling /teacher/classes ...
+Found 1 total assignments for teacher cmesxncu40024uxvpwqajofz8
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Fetching specific teacher: cmesxncqr0022uxvpycn4zzla
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+Teacher not found for ID: cmesxncqr0022uxvpycn4zzla
+Error fetching teacher metrics: Error [TRPCError]: Teacher not found
+at <unknown> (D:\Learning Q3\Teacher Assistant Completed 5 Sep - Copy.next\server\chunks\src_server_api_routers_5d3a2d69..js:32813:31)
+at async Object.getCachedQuery (D:\Learning Q3\Teacher Assistant Completed 5 Sep - Copy.next\server\chunks[root-of-the-server]__f7b45409..js:6001:24)
+at async (D:\Learning Q3\Teacher Assistant Completed 5 Sep - Copy.next\server\chunks\src_server_api_routers_5d3a2d69..js:32748:20)
+at async (D:\Learning Q3\Teacher Assistant Completed 5 Sep - Copy.next\server\chunks\src_server_api_6230ad6f..js:1042:20)
+at async (D:\Learning Q3\Teacher Assistant Completed 5 Sep - Copy.next\server\chunks\src_server_api_6230ad6f._.js:997:16) {
+code: 'NOT_FOUND'
+}
+Returning empty metrics due to unknown error
+[ERROR] Slow procedure execution {
+"path": "teacherAnalytics.getTeacherMetrics",
+"executionTime": "2081.34ms",
+"threshold": "1000ms"
+}
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Found 1 active assignments for teacher cmesxncu40024uxvpwqajofz8
+Returning 1 classes for teacher cmesxncu40024uxvpwqajofz8
+[ERROR] Slow procedure execution {
+"path": "teacher.getTeacherClasses",
+"executionTime": "4673.76ms",
+"threshold": "1000ms"
+}
+GET /api/trpc/teacherAnalytics.getTeacherMetrics,teacher.getTeacherClasses?batch=1&input=%7B%220%22:%7B%22json%22:%7B%22teacherId%22:%22cmesxncqr0022uxvpycn4zzla%22%7D%7D,%221%22:%7B%22json%22:%7B%22teacherId%22:%22cmesxncqr0022uxvpycn4zzla%22%7D%7D%7D 200 in 6632ms
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[INFO] [STATIC-CACHE] Preloading static data...
+[DEBUG] [STATIC-CACHE] Cached timezone data {
+"count": 14
+}
+[DEBUG] [STATIC-CACHE] Cached user types {
+"count": 8
+}
+[DEBUG] [STATIC-CACHE] Cached activity types {
+"count": 14
+}
+[DEBUG] [STATIC-CACHE] Cached system status {
+"count": 4
+}
+[INFO] [STATIC-CACHE] Static data preloaded successfully {
+"cacheSize": 4
+}
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[ERROR] Slow procedure execution {
+"path": "teacherLeaderboard.getTeacherLeaderboard",
+"executionTime": "2518.89ms",
+"threshold": "1000ms"
+}
+GET /api/trpc/teacherLeaderboard.getTeacherLeaderboard?batch=1&input=%7B%220%22:%7B%22json%22:%7B%22campusId%22:%22%22,%22timeframe%22:%22term%22,%22limit%22:5,%22sortBy%22:%22points%22%7D%7D%7D 200 in 5482ms
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+✓ Compiled /teacher/classes in 31.1s
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /teacher/classes 200 in 9909ms
+GET /teacher/classes 200 in 32667ms
+GET /favicon.ico?favicon.45db1c09.ico 200 in 488ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+Getting teacher classes for ID: cmesxncu40024uxvpwqajofz8
+GET /favicon.ico 200 in 834ms
+Found teacher profile: cmesxncu40024uxvpwqajofz8
+Found 1 total assignments for teacher cmesxncu40024uxvpwqajofz8
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Found 1 active assignments for teacher cmesxncu40024uxvpwqajofz8
+Returning 1 classes for teacher cmesxncu40024uxvpwqajofz8
+[ERROR] Slow procedure execution {
+"path": "teacher.getTeacherClasses",
+"executionTime": "2946.45ms",
+"threshold": "1000ms"
+}
+GET /api/trpc/teacher.getTeacherClasses?batch=1&input=%7B%220%22:%7B%22json%22:%7B%22teacherId%22:%22cmesxncu40024uxvpwqajofz8%22%7D%7D%7D 200 in 3773ms
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[INFO] [STATIC-CACHE] Preloading static data...
+[DEBUG] [STATIC-CACHE] Cached timezone data {
+"count": 14
+}
+[DEBUG] [STATIC-CACHE] Cached user types {
+"count": 8
+}
+[DEBUG] [STATIC-CACHE] Cached activity types {
+"count": 14
+}
+[DEBUG] [STATIC-CACHE] Cached system status {
+"count": 4
+}
+[INFO] [STATIC-CACHE] Static data preloaded successfully {
+"cacheSize": 4
+}
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /api/auth/session 200 in 2420ms
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[WARN] Procedure execution approaching threshold {
+"path": "messaging.getUnreadCount",
+"executionTime": "743.94ms",
+"threshold": "500ms"
+}
+GET /api/trpc/messaging.getUnreadCount?batch=1&input=%7B%220%22:%7B%22json%22:%7B%7D%7D%7D 200 in 3364ms
+○ Compiling /teacher/classes/[classId] ...
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+✓ Compiled /teacher/classes/[classId] in 29.9s
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /teacher/classes/cmesxnvle006wuxvpxic2pp41 200 in 51517ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Class stats cache miss, computing {
+"classId": "cmesxnvle006wuxvpxic2pp41",
+"cacheKey": "class-stats:cmesxnvle006wuxvpxic2pp41:2025-08-06-2025-09-05"
+}
+[DEBUG] Attendance records cache miss, computing {
+"classId": "cmesxnvle006wuxvpxic2pp41",
+"cacheKey": "records:cmesxnvle006wuxvpxic2pp41:all:2025-08-29-2025-09-05"
+}
+GET /favicon.ico 200 in 645ms
+[DEBUG] Initialized rewards cache with max size: 5000
+[DEBUG] Initialized rewards cache with max size: 5000
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+[DEBUG] Cache set: leaderboard:class:cmesxnvle006wuxvpxic2pp41:weekly:3:0, expires in 900000ms
+[ERROR] Slow procedure execution {
+"path": "rewards.getClassRewardsData",
+"executionTime": "2229.29ms",
+"threshold": "1000ms"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[ERROR] Slow procedure execution {
+"path": "attendance.getClassStats",
+"executionTime": "2982.15ms",
+"threshold": "1000ms"
+}
+[WARN] Slow procedure execution (cached) {
+"cacheKey": "recent-activities:cmesxnvle006wuxvpxic2pp41:5",
+"executionTime": "3124.20ms"
+}
+[DEBUG] Cache miss - result cached {
+"cacheKey": "recent-activities:cmesxnvle006wuxvpxic2pp41:5",
+"category": "CLASS_DATA"
+}
+[ERROR] Slow procedure execution {
+"path": "teacher.getRecentClassActivities",
+"executionTime": "3138.14ms",
+"threshold": "1000ms"
+}
+[ERROR] Slow procedure execution {
+"path": "attendance.getRecords",
+"executionTime": "3415.18ms",
+"threshold": "1000ms"
+}
+[WARN] Slow procedure execution (cached) {
+"cacheKey": "class:cmesxnvle006wuxvpxic2pp41",
+"executionTime": "4576.63ms"
+}
+[DEBUG] Cache miss - result cached {
+"cacheKey": "class:cmesxnvle006wuxvpxic2pp41",
+"category": "CLASS_DATA"
+}
+[ERROR] Slow procedure execution {
+"path": "teacher.getClassById",
+"executionTime": "4583.32ms",
+"threshold": "1000ms"
+}
+[WARN] Slow procedure execution (cached) {
+"cacheKey": "upcoming-assessments:cmesxnvle006wuxvpxic2pp41:5",
+"executionTime": "4872.45ms"
+}
+[DEBUG] Cache miss - result cached {
+"cacheKey": "upcoming-assessments:cmesxnvle006wuxvpxic2pp41:5",
+"category": "CLASS_DATA"
+}
+[ERROR] Slow procedure execution {
+"path": "teacher.getUpcomingClassAssessments",
+"executionTime": "4891.38ms",
+"threshold": "1000ms"
+}
+[WARN] Slow procedure execution (cached) {
+"cacheKey": "class-metrics:cmesxnvle006wuxvpxic2pp41",
+"executionTime": "5651.09ms"
+}
+[DEBUG] Cache miss - result cached {
+"cacheKey": "class-metrics:cmesxnvle006wuxvpxic2pp41",
+"category": "ANALYTICS"
+}
+[ERROR] Slow procedure execution {
+"path": "teacher.getClassMetrics",
+"executionTime": "5660.62ms",
+"threshold": "1000ms"
+}
+GET /api/trpc/teacher.getClassById,teacher.getClassMetrics,teacher.getRecentClassActivities,teacher.getUpcomingClassAssessments,attendance.getClassStats,attendance.getRecords,rewards.getClassRewardsData?batch=1&input=%7B%220%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22%7D%7D,%221%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22%7D%7D,%222%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22,%22limit%22:5%7D%7D,%223%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22,%22limit%22:5%7D%7D,%224%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22,%22startDate%22:%222025-08-06T15:17:59.079Z%22,%22endDate%22:%222025-09-05T15:17:59.079Z%22%7D,%22meta%22:%7B%22values%22:%7B%22startDate%22:%5B%22Date%22%5D,%22endDate%22:%5B%22Date%22%5D%7D%7D%7D,%225%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22,%22startDate%22:%222025-08-29T15:17:59.079Z%22,%22endDate%22:%222025-09-05T15:17:59.079Z%22%7D,%22meta%22:%7B%22values%22:%7B%22startDate%22:%5B%22Date%22%5D,%22endDate%22:%5B%22Date%22%5D%7D%7D%7D,%226%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22,%22includeStudents%22:false,%22includeLeaderboard%22:true,%22leaderboardLimit%22:3%7D%7D%7D 200 in 6832ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /api/auth/session 200 in 599ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[WARN] Procedure execution approaching threshold {
+"path": "messaging.getUnreadCount",
+"executionTime": "862.33ms",
+"threshold": "500ms"
+}
+GET /api/trpc/messaging.getUnreadCount?batch=1&input=%7B%220%22:%7B%22json%22:%7B%7D%7D%7D 200 in 1635ms
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+Background jobs disabled - server initialization skipped
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+○ Compiling /teacher/classes/[classId]/activities ...
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+✓ Compiled /teacher/classes/[classId]/activities in 20.6s
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+GET /teacher/classes/cmesxnvle006wuxvpxic2pp41/activities 200 in 25452ms
+GET /favicon.ico 200 in 1277ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Cache hit {
+"cacheKey": "class:cmesxnvle006wuxvpxic2pp41",
+"category": "CLASS_DATA"
+}
+GET /api/trpc/messaging.getUnreadCount,class.listActivities?batch=1&input=%7B%220%22:%7B%22json%22:%7B%7D%7D,%221%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22,%22take%22:50%7D%7D%7D 200 in 1873ms
+GET /favicon.ico?favicon.45db1c09.ico 200 in 2025ms
+GET /favicon.ico 200 in 1403ms
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+✓ Compiled in 7.6s
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /api/auth/session 200 in 1031ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+GET /api/trpc/messaging.getUnreadCount?batch=1&input=%7B%220%22:%7B%22json%22:%7B%7D%7D%7D 200 in 1484ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Cache hit {
+"cacheKey": "class:cmesxnvle006wuxvpxic2pp41",
+"category": "CLASS_DATA"
+}
+GET /api/trpc/class.listActivities?batch=1&input=%7B%220%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22,%22take%22:50%7D%7D%7D 200 in 797ms
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+○ Compiling /teacher/classes/[classId]/activities/create ...
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[NavigationHandler] Institution context not available - using default behavior
+GET /api/trpc/messaging.getUnreadCount?batch=1&input=%7B%220%22:%7B%22json%22:%7B%7D%7D%7D 200 in 2374ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+Registered activity type: manual-grading
+Registered activity type: essay
+Essay activity type registered with AI grading capabilities
+GET /teacher/classes/cmesxnvle006wuxvpxic2pp41/activities 200 in 5083ms
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+✓ Compiled /teacher/classes/[classId]/activities/create in 30.1s
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+[NavigationHandler] Institution context not available - using default behavior
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /teacher/classes/cmesxnvle006wuxvpxic2pp41/activities/create 200 in 28295ms
+GET /favicon.ico 200 in 583ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Cache hit {
+"cacheKey": "branding:config",
+"category": "SYSTEM_CONFIG"
+}
+[DEBUG] Cache hit {
+"cacheKey": "class:cmesxnvle006wuxvpxic2pp41",
+"category": "CLASS_DATA"
+}
+[DEBUG] Cache miss - result cached {
+"cacheKey": "notifications:cmesxncqr0022uxvpycn4zzla:20:false",
+"category": "USER_DATA"
+}
+GET /api/trpc/systemConfig.getBranding,messaging.getUnreadCount,notification.getUserNotifications,class.listActivities,settings.getFeeSettings?batch=1&input=%7B%220%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D,%221%22:%7B%22json%22:%7B%7D%7D,%222%22:%7B%22json%22:%7B%22limit%22:20,%22includeRead%22:false%7D%7D,%223%22:%7B%22json%22:%7B%22classId%22:%22cmesxnvle006wuxvpxic2pp41%22,%22take%22:50%7D%7D,%224%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D%7D 200 in 962ms
+GET /favicon.ico 200 in 605ms
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Added handler for exit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
+[DEBUG] Session found in tRPC handler {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Session provided to createTRPCContext {
+"userId": "cmesxncqr0022uxvpycn4zzla",
+"userType": "TEACHER"
+}
+[DEBUG] Cache hit {
+"cacheKey": "branding:config",
+"category": "SYSTEM_CONFIG"
+}
+[DEBUG] Cache hit {
+"cacheKey": "notifications:cmesxncqr0022uxvpycn4zzla:20:false",
+"category": "USER_DATA"
+}
+GET /api/trpc/systemConfig.getBranding,messaging.getUnreadCount,notification.getUserNotifications,settings.getFeeSettings?batch=1&input=%7B%220%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D,%221%22:%7B%22json%22:%7B%7D%7D,%222%22:%7B%22json%22:%7B%22limit%22:20,%22includeRead%22:false%7D%7D,%223%22:%7B%22json%22:null,%22meta%22:%7B%22values%22:%5B%22undefined%22%5D%7D%7D%7D 200 in 855ms
+[DEBUG] [AUTH] Redirect callback {
+"url": "http://localhost:3000/teacher/dashboard",
+"baseUrl": "http://localhost:3000"
+}
+GET /api/auth/session 200 in 845ms
+[DEBUG] Database URL configured with connection pooling {
+"connectionLimit": "10",
+"poolTimeout": "10",
+"connectTimeout": "60",
+"maxIdleTime": null,
+"statementTimeout": "60000"
+}
+Background jobs disabled - server initialization skipped
+[DEBUG] Added handler for beforeExit event
+[DEBUG] Added handler for SIGINT event
+[DEBUG] Added handler for SIGTERM event
