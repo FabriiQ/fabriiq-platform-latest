@@ -10,13 +10,9 @@ const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  devIndicators: {
-        buildActivity: false, // Disables the build activity indicator
-      
-      },
   // ESLint configuration
   eslint: {
-    ignoreDuringBuilds: process.env.SKIP_LINT === 'true',
+    ignoreDuringBuilds: true,
     dirs: ['src', 'app'],
   },
   

@@ -591,7 +591,6 @@ export function BackgroundJobsManager() {
                 </div>
               </div>
             )}
-            </div>
           </CardContent>
         </Card>
       )}

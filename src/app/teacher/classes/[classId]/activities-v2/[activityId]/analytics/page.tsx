@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
-import { getServerAuthSession } from '@/server/auth';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth';
 import { api } from '@/trpc/server';
 import { ActivityV2AnalyticsPage } from './activity-v2-analytics-page';
 
@@ -14,7 +15,7 @@ export default async function ActivityV2AnalyticsPageRoute({ params }: PageProps
   const { classId, activityId } = params;
   
   // Get user session
-  const session = await getServerAuthSession();
+  const session = await getServerSession(authOptions);
   if (!session?.user) {
     return redirect('/auth/signin');
   }

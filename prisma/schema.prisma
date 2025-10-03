@@ -164,23 +164,23 @@ model User {
   holidays                   Holiday[]                   @relation("HolidayUsers")
 
   // Relations for advanced features
-  generatedPaperTests        PaperTest[]
-  gradedPaperSubmissions     PaperTestSubmission[]
-  gradingSessions            ManualGradingSession[]
-  
+  generatedPaperTests    PaperTest[]
+  gradedPaperSubmissions PaperTestSubmission[]
+  gradingSessions        ManualGradingSession[]
+
   // Breach Detection & Incident Response Relations
-  affectedByIncidents        SecurityIncident[]          @relation("AffectedUser")
-  assignedIncidents          SecurityIncident[]          @relation("AssignedIncidents")
-  investigatedIncidents      SecurityIncident[]          @relation("InvestigatedIncidents")
-  resolvedIncidents          SecurityIncident[]          @relation("ResolvedIncidents")
-  userAnomalies              SecurityAnomaly[]           @relation("UserAnomalies")
-  reviewedAnomalies          SecurityAnomaly[]           @relation("ReviewedAnomalies")
-  
+  affectedByIncidents   SecurityIncident[] @relation("AffectedUser")
+  assignedIncidents     SecurityIncident[] @relation("AssignedIncidents")
+  investigatedIncidents SecurityIncident[] @relation("InvestigatedIncidents")
+  resolvedIncidents     SecurityIncident[] @relation("ResolvedIncidents")
+  userAnomalies         SecurityAnomaly[]  @relation("UserAnomalies")
+  reviewedAnomalies     SecurityAnomaly[]  @relation("ReviewedAnomalies")
+
   // Policy Versioning Relations
-  createdPolicyVersions      PolicyVersion[]             @relation("CreatedPolicies")
-  approvedPolicyVersions     PolicyVersion[]             @relation("ApprovedPolicies")
-  policyAcceptances          PolicyAcceptance[]          @relation("PolicyAcceptances")
-  parentalConsentsGiven      PolicyAcceptance[]          @relation("ParentalConsents")
+  createdPolicyVersions  PolicyVersion[]    @relation("CreatedPolicies")
+  approvedPolicyVersions PolicyVersion[]    @relation("ApprovedPolicies")
+  policyAcceptances      PolicyAcceptance[] @relation("PolicyAcceptances")
+  parentalConsentsGiven  PolicyAcceptance[] @relation("ParentalConsents")
 
   @@index([institutionId, email])
   @@index([institutionId, username])
@@ -422,9 +422,9 @@ model Subject {
   worksheets                Worksheet[]
 
   // Relations for advanced features
-  spacedRepetitionCards     SpacedRepetitionCard[]
-  usageEvents               QuestionUsageEvent[]
-  learningAnalytics         LearningAnalytics[]
+  spacedRepetitionCards SpacedRepetitionCard[]
+  usageEvents           QuestionUsageEvent[]
+  learningAnalytics     LearningAnalytics[]
 
   @@index([code])
   @@index([courseId])
@@ -569,10 +569,10 @@ model Class {
   timetables                Timetable[]
   academicEvents            AcademicCalendarEvent[]     @relation("AcademicCalendarEventToClass")
   holidays                  Holiday[]                   @relation("ClassToHoliday")
-  conversations             Conversation[]              // Class-related conversations
+  conversations             Conversation[] // Class-related conversations
 
   // Relations for advanced features
-  usageEvents               QuestionUsageEvent[]
+  usageEvents QuestionUsageEvent[]
 
   @@index([courseCampusId, termId])
   @@index([status, termId])
@@ -779,11 +779,11 @@ model Activity {
   socialTags           SocialActivityTag[]
 
   // Relations for advanced features
-  catSessions           CATSession[]
-  paperTests            PaperTest[]
-  gradingSessions       ManualGradingSession[]
-  usageEvents           QuestionUsageEvent[]
-  advancedSessions      AdvancedAssessmentSession[]
+  catSessions      CATSession[]
+  paperTests       PaperTest[]
+  gradingSessions  ManualGradingSession[]
+  usageEvents      QuestionUsageEvent[]
+  advancedSessions AdvancedAssessmentSession[]
 
   @@index([status, classId])
   @@index([subjectId, purpose])
@@ -982,19 +982,19 @@ model TeacherAttendance {
 }
 
 model TeacherAssistantConversation {
-  id          String       @id @default(cuid())
-  teacherId   String
-  title       String?
-  summary     String?
-  classId     String?
-  courseId    String?
-  metadata    Json?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  status      SystemStatus @default(ACTIVE)
+  id        String       @id @default(cuid())
+  teacherId String
+  title     String?
+  summary   String?
+  classId   String?
+  courseId  String?
+  metadata  Json?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  status    SystemStatus @default(ACTIVE)
 
   // Relations
-  messages    TeacherAssistantMessage[]
+  messages TeacherAssistantMessage[]
 
   @@index([teacherId])
   @@index([classId])
@@ -1006,14 +1006,14 @@ model TeacherAssistantConversation {
 model TeacherAssistantMessage {
   id             String       @id @default(cuid())
   conversationId String
-  role           String       // 'user' | 'assistant' | 'system'
+  role           String // 'user' | 'assistant' | 'system'
   content        String       @db.Text
   metadata       Json?
   createdAt      DateTime     @default(now())
   status         SystemStatus @default(ACTIVE)
 
   // Relations
-  conversation   TeacherAssistantConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversation TeacherAssistantConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@index([conversationId])
   @@index([createdAt])
@@ -1071,22 +1071,22 @@ model TeacherPreference {
 
 // Student Assistant Models
 model StudentAssistantConversation {
-  id          String       @id @default(cuid())
-  studentId   String
-  title       String?
-  summary     String?
-  classId     String?
-  subjectId   String?
-  topicId     String?
-  mode        String?      // learning mode (homework, concept, study, etc.)
-  context     Json?        // selected context (class, subject, topic)
-  metadata    Json?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  status      SystemStatus @default(ACTIVE)
+  id        String       @id @default(cuid())
+  studentId String
+  title     String?
+  summary   String?
+  classId   String?
+  subjectId String?
+  topicId   String?
+  mode      String? // learning mode (homework, concept, study, etc.)
+  context   Json? // selected context (class, subject, topic)
+  metadata  Json?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  status    SystemStatus @default(ACTIVE)
 
   // Relations
-  messages    StudentAssistantMessage[]
+  messages StudentAssistantMessage[]
 
   @@index([studentId])
   @@index([classId])
@@ -1099,14 +1099,14 @@ model StudentAssistantConversation {
 model StudentAssistantMessage {
   id             String       @id @default(cuid())
   conversationId String
-  role           String       // 'user' | 'assistant' | 'system'
+  role           String // 'user' | 'assistant' | 'system'
   content        String       @db.Text
   metadata       Json?
   createdAt      DateTime     @default(now())
   status         SystemStatus @default(ACTIVE)
 
   // Relations
-  conversation   StudentAssistantConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversation StudentAssistantConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@index([conversationId])
   @@index([createdAt])
@@ -1114,18 +1114,18 @@ model StudentAssistantMessage {
 }
 
 model StudentAssistantInteraction {
-  id          String       @id @default(cuid())
-  studentId   String
-  message     String       @db.Text
-  response    String       @db.Text
-  classId     String?
-  subjectId   String?
-  topicId     String?
-  mode        String?      // learning mode
-  context     Json?        // full context at time of interaction
-  metadata    Json?
-  timestamp   DateTime     @default(now())
-  status      SystemStatus @default(ACTIVE)
+  id        String       @id @default(cuid())
+  studentId String
+  message   String       @db.Text
+  response  String       @db.Text
+  classId   String?
+  subjectId String?
+  topicId   String?
+  mode      String? // learning mode
+  context   Json? // full context at time of interaction
+  metadata  Json?
+  timestamp DateTime     @default(now())
+  status    SystemStatus @default(ACTIVE)
 
   @@index([studentId])
   @@index([classId])
@@ -1153,15 +1153,15 @@ model StudentAssistantSearch {
 }
 
 model StudentPreference {
-  id            String       @id @default(cuid())
-  studentId     String
-  category      String       // 'learning_style', 'companion_settings', 'notification_preferences'
-  key           String
-  value         Json
-  metadata      Json?
-  timestamp     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  status        SystemStatus @default(ACTIVE)
+  id        String       @id @default(cuid())
+  studentId String
+  category  String // 'learning_style', 'companion_settings', 'notification_preferences'
+  key       String
+  value     Json
+  metadata  Json?
+  timestamp DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  status    SystemStatus @default(ACTIVE)
 
   @@unique([studentId, category, key])
   @@index([studentId])
@@ -1671,20 +1671,20 @@ model File {
 }
 
 model Conversation {
-  id           String                    @id @default(cuid())
-  subject      String                    // Required subject line for better organization
-  title        String?                   // Optional additional title
-  type         ConversationType
-  priority     ConversationPriority      @default(NORMAL)
-  classId      String?                   // Optional class context
-  courseId     String?                   // Optional course context
-  tags         String[]                  @default([]) // Custom tags for organization
-  isPinned     Boolean                   @default(false) // Pin important conversations
-  isArchived   Boolean                   @default(false) // Archive old conversations
-  lastMessageAt DateTime?               // Timestamp of last message for sorting
-  createdAt    DateTime                  @default(now())
-  updatedAt    DateTime                  @updatedAt
-  status       SystemStatus              @default(ACTIVE)
+  id            String               @id @default(cuid())
+  subject       String // Required subject line for better organization
+  title         String? // Optional additional title
+  type          ConversationType
+  priority      ConversationPriority @default(NORMAL)
+  classId       String? // Optional class context
+  courseId      String? // Optional course context
+  tags          String[]             @default([]) // Custom tags for organization
+  isPinned      Boolean              @default(false) // Pin important conversations
+  isArchived    Boolean              @default(false) // Archive old conversations
+  lastMessageAt DateTime? // Timestamp of last message for sorting
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  status        SystemStatus         @default(ACTIVE)
 
   // Relations
   participants ConversationParticipant[]
@@ -1700,22 +1700,22 @@ model Conversation {
 }
 
 model ConversationParticipant {
-  id                String       @id @default(cuid())
+  id                String            @id @default(cuid())
   conversationId    String
   userId            String
-  isAdmin           Boolean      @default(false)
-  canEditSubject    Boolean      @default(false) // Allow subject editing
+  isAdmin           Boolean           @default(false)
+  canEditSubject    Boolean           @default(false) // Allow subject editing
   notificationLevel NotificationLevel @default(ALL) // Notification preferences
-  joinedAt          DateTime     @default(now())
+  joinedAt          DateTime          @default(now())
   leftAt            DateTime?
-  lastReadAt        DateTime?    // When user last read messages
-  lastReadMessageId String?      // Last message ID read by user
-  unreadCount       Int          @default(0) // Cached unread count
-  status            SystemStatus @default(ACTIVE)
+  lastReadAt        DateTime? // When user last read messages
+  lastReadMessageId String? // Last message ID read by user
+  unreadCount       Int               @default(0) // Cached unread count
+  status            SystemStatus      @default(ACTIVE)
 
   // Relations
-  conversation      Conversation @relation(fields: [conversationId], references: [id])
-  user              User         @relation(fields: [userId], references: [id])
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
 
   @@unique([conversationId, userId])
   @@index([conversationId])
@@ -1725,42 +1725,42 @@ model ConversationParticipant {
 }
 
 model Message {
-  id             String        @id @default(cuid())
+  id             String             @id @default(cuid())
   conversationId String
   senderId       String
-  content        String        @db.Text
+  content        String             @db.Text
   messageType    MessageContentType @default(TEXT)
 
   // Threading support
-  parentMessageId String?      // For reply threading
-  threadDepth    Int          @default(0) // 0 = root, 1+ = reply depth
-  replyCount     Int          @default(0) // Number of direct replies
+  parentMessageId String? // For reply threading
+  threadDepth     Int     @default(0) // 0 = root, 1+ = reply depth
+  replyCount      Int     @default(0) // Number of direct replies
 
   // Rich content support
-  attachments    Json?        // File attachments with metadata
-  mentions       String[]     @default([]) // User IDs mentioned in message
-  metadata       Json?        // Additional message metadata
+  attachments Json? // File attachments with metadata
+  mentions    String[] @default([]) // User IDs mentioned in message
+  metadata    Json? // Additional message metadata
 
   // Message state
-  isPinned       Boolean      @default(false) // Pin important messages
-  isEdited       Boolean      @default(false) // Track if message was edited
-  isDeleted      Boolean      @default(false) // Soft delete support
+  isPinned  Boolean @default(false) // Pin important messages
+  isEdited  Boolean @default(false) // Track if message was edited
+  isDeleted Boolean @default(false) // Soft delete support
 
   // Timestamps
-  sentAt         DateTime     @default(now())
-  editedAt       DateTime?
-  deletedAt      DateTime?
+  sentAt    DateTime  @default(now())
+  editedAt  DateTime?
+  deletedAt DateTime?
 
   // Status and delivery
-  status         MessageStatus @default(SENT)
+  status MessageStatus @default(SENT)
 
   // Relations
-  conversation   Conversation  @relation(fields: [conversationId], references: [id])
-  sender         User          @relation(fields: [senderId], references: [id])
-  parentMessage  Message?      @relation("MessageReplies", fields: [parentMessageId], references: [id])
-  replies        Message[]     @relation("MessageReplies")
-  reactions      MessageReaction[]
-  readStatus     MessageReadStatus[]
+  conversation  Conversation        @relation(fields: [conversationId], references: [id])
+  sender        User                @relation(fields: [senderId], references: [id])
+  parentMessage Message?            @relation("MessageReplies", fields: [parentMessageId], references: [id])
+  replies       Message[]           @relation("MessageReplies")
+  reactions     MessageReaction[]
+  readStatus    MessageReadStatus[]
 
   @@index([conversationId, sentAt])
   @@index([senderId])
@@ -1774,12 +1774,12 @@ model MessageReaction {
   id        String   @id @default(cuid())
   messageId String
   userId    String
-  emoji     String   // Emoji unicode or shortcode
+  emoji     String // Emoji unicode or shortcode
   createdAt DateTime @default(now())
 
   // Relations
-  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
-  user      User     @relation("MessageReactions", fields: [userId], references: [id])
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user    User    @relation("MessageReactions", fields: [userId], references: [id])
 
   @@unique([messageId, userId, emoji]) // One reaction per user per emoji per message
   @@index([messageId])
@@ -1794,8 +1794,8 @@ model MessageReadStatus {
   readAt    DateTime @default(now())
 
   // Relations
-  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
-  user      User     @relation("MessageReadStatus", fields: [userId], references: [id])
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user    User    @relation("MessageReadStatus", fields: [userId], references: [id])
 
   @@unique([messageId, userId]) // One read status per user per message
   @@index([messageId])
@@ -1812,9 +1812,9 @@ enum ConversationPriority {
 }
 
 enum NotificationLevel {
-  NONE     // No notifications
+  NONE // No notifications
   MENTIONS // Only when mentioned
-  ALL      // All messages
+  ALL // All messages
 }
 
 enum MessageContentType {
@@ -1823,7 +1823,7 @@ enum MessageContentType {
   FILE
   AUDIO
   VIDEO
-  SYSTEM   // System-generated messages
+  SYSTEM // System-generated messages
 }
 
 model FeeStructure {
@@ -2512,8 +2512,8 @@ model PersonalCalendarEvent {
   type          PersonalEventType
   color         String?           @default("#1F504B")
   userId        String
-  sourceEventId String?           // Reference to original event if synced
-  sourceType    String?           // Type of source event (academic, holiday, timetable)
+  sourceEventId String? // Reference to original event if synced
+  sourceType    String? // Type of source event (academic, holiday, timetable)
   isReadOnly    Boolean           @default(false) // True for synced events
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
@@ -2529,12 +2529,12 @@ model PersonalCalendarEvent {
 model WorkingDaysConfig {
   id            String    @id @default(cuid())
   campusId      String
-  pattern       String    // FIVE_DAYS, SIX_DAYS, CUSTOM
-  workingDays   Int[]     // Array of working days (0=Sunday, 1=Monday, etc.)
-  startTime     String    // Working hours start time (HH:MM format)
-  endTime       String    // Working hours end time (HH:MM format)
-  breakStart    String?   // Break start time (optional)
-  breakEnd      String?   // Break end time (optional)
+  pattern       String // FIVE_DAYS, SIX_DAYS, CUSTOM
+  workingDays   Int[] // Array of working days (0=Sunday, 1=Monday, etc.)
+  startTime     String // Working hours start time (HH:MM format)
+  endTime       String // Working hours end time (HH:MM format)
+  breakStart    String? // Break start time (optional)
+  breakEnd      String? // Break end time (optional)
   isActive      Boolean   @default(true)
   effectiveFrom DateTime  @default(now())
   effectiveTo   DateTime?
@@ -3087,6 +3087,11 @@ model Question {
   updatedBy          User?                     @relation("UpdatedQuestions", fields: [updatedById], references: [id])
   learningOutcomes   LearningOutcome[]         @relation("LearningOutcomeToQuestion")
 
+  // Relations for advanced features
+  spacedRepetitionCards SpacedRepetitionCard[]
+  catResponses          CATResponse[]
+  usageEvents           QuestionUsageEvent[]
+
   @@index([questionBankId, questionType, status])
   @@index([partitionKey])
   @@index([subjectId, status])
@@ -3097,12 +3102,6 @@ model Question {
   @@index([sourceId])
   @@index([bloomsLevel])
   @@index([questionBankId, status, createdAt])
-
-  // Relations for advanced features
-  spacedRepetitionCards SpacedRepetitionCard[]
-  catResponses          CATResponse[]
-  usageEvents           QuestionUsageEvent[]
-
   @@map("questions")
 }
 
@@ -3655,21 +3654,21 @@ model ActivityOutcome {
 }
 
 model AdvancedAssessmentSession {
-  id              String    @id
-  activityId      String
-  studentId       String
-  assessmentMode  String    @default("standard")
-  sessionData     Json
-  startedAt       DateTime
-  completedAt     DateTime?
-  lastAccessedAt  DateTime  @default(now())
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  isActive        Boolean   @default(true)
+  id             String    @id
+  activityId     String
+  studentId      String
+  assessmentMode String    @default("standard")
+  sessionData    Json
+  startedAt      DateTime
+  completedAt    DateTime?
+  lastAccessedAt DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  isActive       Boolean   @default(true)
 
   // Relations
-  activity        Activity       @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  student         StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  activity Activity       @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  student  StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([activityId, studentId])
   @@index([studentId, isActive])
@@ -5141,37 +5140,37 @@ enum PersonalEventType {
 // ===== ACTIVITIES V2 ADVANCED FEATURES =====
 // Spaced Repetition System
 model SpacedRepetitionCard {
-  id                    String              @id @default(cuid())
-  questionId            String
-  studentId             String
-  subjectId             String
+  id         String @id @default(cuid())
+  questionId String
+  studentId  String
+  subjectId  String
 
   // SM-2 Algorithm parameters
-  easeFactor            Float               @default(2.5)
-  interval              Int                 @default(1)
-  repetitions           Int                 @default(0)
+  easeFactor  Float @default(2.5)
+  interval    Int   @default(1)
+  repetitions Int   @default(0)
 
   // Scheduling
-  nextReviewDate        DateTime
-  lastReviewDate        DateTime?
+  nextReviewDate DateTime
+  lastReviewDate DateTime?
 
   // Performance tracking
-  totalReviews          Int                 @default(0)
-  correctReviews        Int                 @default(0)
-  averageResponseTime   Float               @default(0)
+  totalReviews        Int   @default(0)
+  correctReviews      Int   @default(0)
+  averageResponseTime Float @default(0)
 
   // Learning state
-  learningState         SpacedRepetitionState @default(NEW)
-  lapseCount            Int                 @default(0)
+  learningState SpacedRepetitionState @default(NEW)
+  lapseCount    Int                   @default(0)
 
   // Metadata
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
-  question              Question            @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  student               StudentProfile      @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  subject               Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  question Question       @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  student  StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject  Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, questionId])
   @@index([studentId, nextReviewDate])
@@ -5188,59 +5187,59 @@ enum SpacedRepetitionState {
 
 // CAT/IRT System
 model CATSession {
-  id                    String              @id @default(cuid())
-  activityId            String
-  studentId             String
+  id         String @id @default(cuid())
+  activityId String
+  studentId  String
 
   // Current ability estimate
-  currentTheta          Float               @default(0.0)
-  standardError         Float               @default(1.0)
-  confidence            Float               @default(0.5)
+  currentTheta  Float @default(0.0)
+  standardError Float @default(1.0)
+  confidence    Float @default(0.5)
 
   // Session state
-  questionsAsked        String[]            // Array of question IDs
-  isComplete            Boolean             @default(false)
-  terminationReason     String?
+  questionsAsked    String[] // Array of question IDs
+  isComplete        Boolean  @default(false)
+  terminationReason String?
 
   // Metadata
-  startedAt             DateTime            @default(now())
-  completedAt           DateTime?
-  updatedAt             DateTime            @updatedAt
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
 
   // Relations
-  activity              Activity            @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  student               StudentProfile      @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  responses             CATResponse[]
+  activity  Activity       @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  responses CATResponse[]
 
   @@unique([activityId, studentId])
   @@index([studentId, isComplete])
 }
 
 model CATResponse {
-  id                    String              @id @default(cuid())
-  sessionId             String
-  questionId            String
+  id         String @id @default(cuid())
+  sessionId  String
+  questionId String
 
   // Response data
-  isCorrect             Boolean
-  responseTime          Int                 // milliseconds
+  isCorrect    Boolean
+  responseTime Int // milliseconds
 
   // IRT parameters at time of response
-  discrimination        Float
-  difficulty            Float
-  guessing              Float?
+  discrimination Float
+  difficulty     Float
+  guessing       Float?
 
   // Ability estimates
-  abilityBefore         Float
-  abilityAfter          Float
-  informationGain       Float
+  abilityBefore   Float
+  abilityAfter    Float
+  informationGain Float
 
   // Metadata
-  createdAt             DateTime            @default(now())
+  createdAt DateTime @default(now())
 
   // Relations
-  session               CATSession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  question              Question            @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  session  CATSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@index([sessionId])
   @@index([questionId])
@@ -5248,88 +5247,88 @@ model CATResponse {
 
 // Paper-based Testing
 model PaperTest {
-  id                    String              @id @default(cuid())
-  activityId            String
-  version               Int                 @default(1)
+  id         String @id @default(cuid())
+  activityId String
+  version    Int    @default(1)
 
   // Configuration
-  configuration         Json                // PaperTestConfiguration
+  configuration Json // PaperTestConfiguration
 
   // Generated files
-  testPaperPdf          String?
-  answerSheetPdf        String?
-  answerKeyPdf          String?
+  testPaperPdf   String?
+  answerSheetPdf String?
+  answerKeyPdf   String?
 
   // Question order (for tracking shuffled versions)
-  questionOrder         String[]
+  questionOrder String[]
 
   // Metadata
-  generatedAt           DateTime            @default(now())
-  generatedById         String
+  generatedAt   DateTime @default(now())
+  generatedById String
 
   // Relations
-  activity              Activity            @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  generatedBy           User                @relation(fields: [generatedById], references: [id])
-  submissions           PaperTestSubmission[]
-  gradingSessions       ManualGradingSession[]
+  activity        Activity               @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  generatedBy     User                   @relation(fields: [generatedById], references: [id])
+  submissions     PaperTestSubmission[]
+  gradingSessions ManualGradingSession[]
 
   @@index([activityId, version])
 }
 
 model ManualGradingSession {
-  id                    String              @id @default(cuid())
-  activityId            String
-  paperTestId           String
-  teacherId             String
+  id          String @id @default(cuid())
+  activityId  String
+  paperTestId String
+  teacherId   String
 
   // Progress tracking
-  totalSubmissions      Int                 @default(0)
-  gradedSubmissions     Int                 @default(0)
+  totalSubmissions  Int @default(0)
+  gradedSubmissions Int @default(0)
 
   // Metadata
-  startedAt             DateTime            @default(now())
-  completedAt           DateTime?
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
 
   // Relations
-  activity              Activity            @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  paperTest             PaperTest           @relation(fields: [paperTestId], references: [id], onDelete: Cascade)
-  teacher               User                @relation(fields: [teacherId], references: [id])
-  submissions           PaperTestSubmission[]
+  activity    Activity              @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  paperTest   PaperTest             @relation(fields: [paperTestId], references: [id], onDelete: Cascade)
+  teacher     User                  @relation(fields: [teacherId], references: [id])
+  submissions PaperTestSubmission[]
 
   @@index([teacherId, completedAt])
 }
 
 model PaperTestSubmission {
-  id                    String              @id @default(cuid())
-  studentId             String
-  paperTestId           String
-  gradingSessionId      String?
+  id               String  @id @default(cuid())
+  studentId        String
+  paperTestId      String
+  gradingSessionId String?
 
   // Answers (stored as JSON)
-  answers               Json                // Array of PaperTestAnswer
+  answers Json // Array of PaperTestAnswer
 
   // Grading status
-  isGraded              Boolean             @default(false)
-  totalScore            Float?
-  maxScore              Float
-  percentage            Float?
+  isGraded   Boolean @default(false)
+  totalScore Float?
+  maxScore   Float
+  percentage Float?
 
   // Manual grading data
-  gradedById            String?
-  gradedAt              DateTime?
-  feedback              String?
+  gradedById String?
+  gradedAt   DateTime?
+  feedback   String?
 
   // Scan data (for OMR/OCR integration)
-  scanData              Json?
+  scanData Json?
 
   // Metadata
-  submittedAt           DateTime            @default(now())
+  submittedAt DateTime @default(now())
 
   // Relations
-  student               StudentProfile      @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  paperTest             PaperTest           @relation(fields: [paperTestId], references: [id], onDelete: Cascade)
-  gradingSession        ManualGradingSession? @relation(fields: [gradingSessionId], references: [id])
-  gradedBy              User?               @relation(fields: [gradedById], references: [id])
+  student        StudentProfile        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  paperTest      PaperTest             @relation(fields: [paperTestId], references: [id], onDelete: Cascade)
+  gradingSession ManualGradingSession? @relation(fields: [gradingSessionId], references: [id])
+  gradedBy       User?                 @relation(fields: [gradedById], references: [id])
 
   @@unique([studentId, paperTestId])
   @@index([paperTestId, isGraded])
@@ -5338,41 +5337,41 @@ model PaperTestSubmission {
 
 // Enhanced Question Usage Events for IRT calibration
 model QuestionUsageEvent {
-  id                    String              @id @default(cuid())
-  questionId            String
-  activityId            String
-  studentId             String
-  classId               String
-  subjectId             String
+  id         String @id @default(cuid())
+  questionId String
+  activityId String
+  studentId  String
+  classId    String
+  subjectId  String
 
   // Response data
-  isCorrect             Boolean
-  responseTime          Int                 // milliseconds
-  attemptNumber         Int                 @default(1)
+  isCorrect     Boolean
+  responseTime  Int // milliseconds
+  attemptNumber Int     @default(1)
 
   // Context
-  assessmentMode        String              // 'standard', 'cat', 'spaced_repetition'
-  questionOrder         Int
-  totalQuestions        Int
+  assessmentMode String // 'standard', 'cat', 'spaced_repetition'
+  questionOrder  Int
+  totalQuestions Int
 
   // Student perception (optional)
-  difficultyPerceived   Int?                // 1-5 scale
-  confidenceLevel       Int?                // 1-5 scale
+  difficultyPerceived Int? // 1-5 scale
+  confidenceLevel     Int? // 1-5 scale
 
   // Session data
-  startedAt             DateTime
-  completedAt           DateTime            @default(now())
-  deviceType            String?
-  browserInfo           String?
-  sessionDuration       Int?                // milliseconds
-  previousQuestions     String[]            // Array of question IDs
+  startedAt         DateTime
+  completedAt       DateTime @default(now())
+  deviceType        String?
+  browserInfo       String?
+  sessionDuration   Int? // milliseconds
+  previousQuestions String[] // Array of question IDs
 
   // Relations
-  question              Question            @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  activity              Activity            @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  student               StudentProfile      @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  class                 Class               @relation(fields: [classId], references: [id], onDelete: Cascade)
-  subject               Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  question Question       @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  activity Activity       @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  student  StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  class    Class          @relation(fields: [classId], references: [id], onDelete: Cascade)
+  subject  Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
   @@index([questionId, isCorrect])
   @@index([studentId, completedAt])
@@ -5382,48 +5381,48 @@ model QuestionUsageEvent {
 
 // Learning Analytics for Advanced Features
 model LearningAnalytics {
-  id                    String              @id @default(cuid())
-  studentId             String
-  subjectId             String
+  id        String @id @default(cuid())
+  studentId String
+  subjectId String
 
   // Spaced Repetition Analytics
-  srTotalCards          Int                 @default(0)
-  srActiveCards         Int                 @default(0)
-  srRetentionRate       Float               @default(0)
-  srAverageEaseFactor   Float               @default(2.5)
-  srStreakDays          Int                 @default(0)
+  srTotalCards        Int   @default(0)
+  srActiveCards       Int   @default(0)
+  srRetentionRate     Float @default(0)
+  srAverageEaseFactor Float @default(2.5)
+  srStreakDays        Int   @default(0)
 
   // CAT Analytics
-  catEstimatedAbility   Float               @default(0)
-  catStandardError      Float               @default(1.0)
-  catTotalSessions      Int                 @default(0)
-  catAverageQuestions   Float               @default(0)
+  catEstimatedAbility Float @default(0)
+  catStandardError    Float @default(1.0)
+  catTotalSessions    Int   @default(0)
+  catAverageQuestions Float @default(0)
 
   // Paper Test Analytics
-  paperTestsCompleted   Int                 @default(0)
-  paperTestAvgScore     Float               @default(0)
+  paperTestsCompleted Int   @default(0)
+  paperTestAvgScore   Float @default(0)
 
   // General Learning Metrics
-  totalStudyTime        Int                 @default(0) // minutes
-  questionsAnswered     Int                 @default(0)
-  correctAnswers        Int                 @default(0)
-  learningVelocity      Float               @default(0) // questions per hour
+  totalStudyTime    Int   @default(0) // minutes
+  questionsAnswered Int   @default(0)
+  correctAnswers    Int   @default(0)
+  learningVelocity  Float @default(0) // questions per hour
 
   // Bloom's Taxonomy Progress
-  rememberMastery       Float               @default(0) // 0-1 scale
-  understandMastery     Float               @default(0)
-  applyMastery          Float               @default(0)
-  analyzeMastery        Float               @default(0)
-  evaluateMastery       Float               @default(0)
-  createMastery         Float               @default(0)
+  rememberMastery   Float @default(0) // 0-1 scale
+  understandMastery Float @default(0)
+  applyMastery      Float @default(0)
+  analyzeMastery    Float @default(0)
+  evaluateMastery   Float @default(0)
+  createMastery     Float @default(0)
 
   // Metadata
-  lastUpdated           DateTime            @updatedAt
-  calculatedAt          DateTime            @default(now())
+  lastUpdated  DateTime @updatedAt
+  calculatedAt DateTime @default(now())
 
   // Relations
-  student               StudentProfile      @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  subject               Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, subjectId])
   @@index([subjectId, lastUpdated])
@@ -5432,55 +5431,55 @@ model LearningAnalytics {
 // ===== BREACH DETECTION & INCIDENT RESPONSE =====
 
 model SecurityIncident {
-  id                    String                @id @default(cuid())
-  incidentType          IncidentType
-  severity              IncidentSeverity      @default(MEDIUM)
-  status                IncidentStatus        @default(DETECTED)
-  title                 String
-  description           String?               @db.Text
-  
+  id           String           @id @default(cuid())
+  incidentType IncidentType
+  severity     IncidentSeverity @default(MEDIUM)
+  status       IncidentStatus   @default(DETECTED)
+  title        String
+  description  String?          @db.Text
+
   // Detection details
-  detectedAt            DateTime              @default(now())
-  detectionMethod       DetectionMethod       @default(AUTOMATED)
-  sourceIp              String?
-  userAgent             String?
-  affectedUserId        String?
-  affectedDataCategories String[]             @default([])
-  
+  detectedAt             DateTime        @default(now())
+  detectionMethod        DetectionMethod @default(AUTOMATED)
+  sourceIp               String?
+  userAgent              String?
+  affectedUserId         String?
+  affectedDataCategories String[]        @default([])
+
   // Impact assessment
-  usersAffected         Int                   @default(0)
-  recordsAffected       Int                   @default(0)
-  dataTypes             String[]              @default([])
-  
+  usersAffected   Int      @default(0)
+  recordsAffected Int      @default(0)
+  dataTypes       String[] @default([])
+
   // Response tracking
-  assignedTo            String?
-  investigatedBy        String?
-  resolvedBy            String?
-  resolvedAt            DateTime?
-  
+  assignedTo     String?
+  investigatedBy String?
+  resolvedBy     String?
+  resolvedAt     DateTime?
+
   // Notification tracking
-  regulatorsNotified    Boolean               @default(false)
-  regulatorsNotifiedAt  DateTime?
-  usersNotified         Boolean               @default(false)
-  usersNotifiedAt       DateTime?
-  
+  regulatorsNotified   Boolean   @default(false)
+  regulatorsNotifiedAt DateTime?
+  usersNotified        Boolean   @default(false)
+  usersNotifiedAt      DateTime?
+
   // Evidence and documentation
-  evidenceCollected     Json?
-  responseActions       Json?
-  
+  evidenceCollected Json?
+  responseActions   Json?
+
   // Metadata
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // Relations
-  affectedUser          User?                 @relation("AffectedUser", fields: [affectedUserId], references: [id])
-  assignedToUser        User?                 @relation("AssignedIncidents", fields: [assignedTo], references: [id])
-  investigatedByUser    User?                 @relation("InvestigatedIncidents", fields: [investigatedBy], references: [id])
-  resolvedByUser        User?                 @relation("ResolvedIncidents", fields: [resolvedBy], references: [id])
-  
-  notifications         IncidentNotification[]
-  anomalies             SecurityAnomaly[]
-  
+  affectedUser       User? @relation("AffectedUser", fields: [affectedUserId], references: [id])
+  assignedToUser     User? @relation("AssignedIncidents", fields: [assignedTo], references: [id])
+  investigatedByUser User? @relation("InvestigatedIncidents", fields: [investigatedBy], references: [id])
+  resolvedByUser     User? @relation("ResolvedIncidents", fields: [resolvedBy], references: [id])
+
+  notifications IncidentNotification[]
+  anomalies     SecurityAnomaly[]
+
   @@index([status, severity, detectedAt])
   @@index([affectedUserId, detectedAt])
   @@index([incidentType, status])
@@ -5488,38 +5487,38 @@ model SecurityIncident {
 }
 
 model SecurityAnomaly {
-  id                    String                @id @default(cuid())
-  anomalyType           AnomalyType
-  riskScore             Float                 @default(0.0) // 0.0 to 1.0
-  description           String
-  details               Json?
-  
+  id          String      @id @default(cuid())
+  anomalyType AnomalyType
+  riskScore   Float       @default(0.0) // 0.0 to 1.0
+  description String
+  details     Json?
+
   // Detection context
-  detectedAt            DateTime              @default(now())
-  userId                String?
-  ipAddress             String?
-  userAgent             String?
-  endpoint              String?
-  
+  detectedAt DateTime @default(now())
+  userId     String?
+  ipAddress  String?
+  userAgent  String?
+  endpoint   String?
+
   // Pattern analysis
-  pattern               String?
-  baseline              Json?
-  threshold             Float?
-  actualValue           Float?
-  
+  pattern     String?
+  baseline    Json?
+  threshold   Float?
+  actualValue Float?
+
   // Status
-  status                AnomalyStatus         @default(DETECTED)
-  reviewedBy            String?
-  reviewedAt            DateTime?
-  
+  status     AnomalyStatus @default(DETECTED)
+  reviewedBy String?
+  reviewedAt DateTime?
+
   // Incident association
-  incidentId            String?
-  
+  incidentId String?
+
   // Relations
-  user                  User?                 @relation("UserAnomalies", fields: [userId], references: [id])
-  reviewedByUser        User?                 @relation("ReviewedAnomalies", fields: [reviewedBy], references: [id])
-  incident              SecurityIncident?     @relation(fields: [incidentId], references: [id])
-  
+  user           User?             @relation("UserAnomalies", fields: [userId], references: [id])
+  reviewedByUser User?             @relation("ReviewedAnomalies", fields: [reviewedBy], references: [id])
+  incident       SecurityIncident? @relation(fields: [incidentId], references: [id])
+
   @@index([userId, detectedAt])
   @@index([anomalyType, riskScore])
   @@index([status, detectedAt])
@@ -5527,32 +5526,32 @@ model SecurityAnomaly {
 }
 
 model IncidentNotification {
-  id                    String                @id @default(cuid())
-  incidentId            String
-  recipientType         NotificationRecipient
-  recipientEmail        String
-  recipientName         String?
-  
+  id             String                @id @default(cuid())
+  incidentId     String
+  recipientType  NotificationRecipient
+  recipientEmail String
+  recipientName  String?
+
   // Notification details
-  subject               String
-  content               String                @db.Text
-  templateUsed          String?
-  
+  subject      String
+  content      String  @db.Text
+  templateUsed String?
+
   // Delivery tracking
-  sentAt                DateTime?
-  deliveredAt           DateTime?
-  status                NotificationStatus    @default(PENDING)
-  attempts              Int                   @default(0)
-  lastAttemptAt         DateTime?
-  errorMessage          String?
-  
+  sentAt        DateTime?
+  deliveredAt   DateTime?
+  status        NotificationStatus @default(PENDING)
+  attempts      Int                @default(0)
+  lastAttemptAt DateTime?
+  errorMessage  String?
+
   // Compliance tracking
-  isRegulatory          Boolean               @default(false)
-  jurisdiction          String?               @default("GLOBAL")
-  
+  isRegulatory Boolean @default(false)
+  jurisdiction String? @default("GLOBAL")
+
   // Relations
-  incident              SecurityIncident      @relation(fields: [incidentId], references: [id], onDelete: Cascade)
-  
+  incident SecurityIncident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+
   @@index([incidentId, recipientType])
   @@index([sentAt, status])
   @@map("incident_notifications")
@@ -5561,42 +5560,42 @@ model IncidentNotification {
 // ===== POLICY VERSIONING & ACCEPTANCE =====
 
 model PolicyVersion {
-  id                    String                @id @default(cuid())
-  policyType            PolicyType
-  version               String
-  title                 String
-  content               String                @db.Text
-  summary               String?               @db.Text
-  
+  id         String     @id @default(cuid())
+  policyType PolicyType
+  version    String
+  title      String
+  content    String     @db.Text
+  summary    String?    @db.Text
+
   // Version control
-  isActive              Boolean               @default(false)
-  effectiveDate         DateTime
-  expiryDate            DateTime?
-  
+  isActive      Boolean   @default(false)
+  effectiveDate DateTime
+  expiryDate    DateTime?
+
   // Change tracking
-  changesFromPrevious   String?               @db.Text
-  reasonForChange       String?               @db.Text
-  
+  changesFromPrevious String? @db.Text
+  reasonForChange     String? @db.Text
+
   // Approval workflow
-  createdById           String
-  approvedById          String?
-  approvedAt            DateTime?
-  
+  createdById  String
+  approvedById String?
+  approvedAt   DateTime?
+
   // Publication
-  publishedAt           DateTime?
-  requiresAcceptance    Boolean               @default(true)
-  acceptanceDeadline    DateTime?
-  
+  publishedAt        DateTime?
+  requiresAcceptance Boolean   @default(true)
+  acceptanceDeadline DateTime?
+
   // Metadata
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // Relations
-  createdBy             User                  @relation("CreatedPolicies", fields: [createdById], references: [id])
-  approvedBy            User?                 @relation("ApprovedPolicies", fields: [approvedById], references: [id])
-  
-  acceptances           PolicyAcceptance[]
-  
+  createdBy  User  @relation("CreatedPolicies", fields: [createdById], references: [id])
+  approvedBy User? @relation("ApprovedPolicies", fields: [approvedById], references: [id])
+
+  acceptances PolicyAcceptance[]
+
   @@unique([policyType, version])
   @@index([policyType, isActive])
   @@index([effectiveDate, expiryDate])
@@ -5604,30 +5603,30 @@ model PolicyVersion {
 }
 
 model PolicyAcceptance {
-  id                    String                @id @default(cuid())
-  policyVersionId       String
-  userId                String
-  
+  id              String @id @default(cuid())
+  policyVersionId String
+  userId          String
+
   // Acceptance details
-  acceptedAt            DateTime              @default(now())
-  acceptanceMethod      AcceptanceMethod      @default(CLICK_THROUGH)
-  ipAddress             String?
-  userAgent             String?
-  
+  acceptedAt       DateTime         @default(now())
+  acceptanceMethod AcceptanceMethod @default(CLICK_THROUGH)
+  ipAddress        String?
+  userAgent        String?
+
   // User context
-  userAge               Int?
-  requiresParentalConsent Boolean             @default(false)
-  parentalConsentGiven  Boolean               @default(false)
-  parentalConsentById   String?
-  
+  userAge                 Int?
+  requiresParentalConsent Boolean @default(false)
+  parentalConsentGiven    Boolean @default(false)
+  parentalConsentById     String?
+
   // Metadata
-  createdAt             DateTime              @default(now())
-  
+  createdAt DateTime @default(now())
+
   // Relations
-  policyVersion         PolicyVersion         @relation(fields: [policyVersionId], references: [id], onDelete: Cascade)
-  user                  User                  @relation("PolicyAcceptances", fields: [userId], references: [id])
-  parentalConsentBy     User?                 @relation("ParentalConsents", fields: [parentalConsentById], references: [id])
-  
+  policyVersion     PolicyVersion @relation(fields: [policyVersionId], references: [id], onDelete: Cascade)
+  user              User          @relation("PolicyAcceptances", fields: [userId], references: [id])
+  parentalConsentBy User?         @relation("ParentalConsents", fields: [parentalConsentById], references: [id])
+
   @@unique([policyVersionId, userId])
   @@index([userId, acceptedAt])
   @@index([policyVersionId, acceptedAt])
@@ -5706,7 +5705,6 @@ enum NotificationRecipient {
   EXTERNAL_COUNSEL
 }
 
-
 enum PolicyType {
   PRIVACY_POLICY
   TERMS_OF_SERVICE
@@ -5724,4 +5722,138 @@ enum AcceptanceMethod {
   PAPER_FORM
   VERBAL_CONSENT
   IMPLIED_CONSENT
+}
+
+// #############################################################################
+// # AGENTS V2 SCHEMA
+// #############################################################################
+
+// Agent Tasks (Factor 5 & 6: State Management)
+model AgentTask {
+  id              String           @id @default(cuid())
+  agentId         String
+  userId          String
+  userRole        String // teacher, student, admin
+  status          String           @default("running") // running, paused, completed, failed, cancelled
+  input           Json
+  state           Json             @default("{}")
+  result          Json?
+  error           String?
+  stepsCompleted  Int              @default(0)
+  maxSteps        Int
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  completedAt     DateTime?
+  messages        AgentMessage[]
+  toolExecutions  ToolExecution[]
+  approvalRequest ApprovalRequest?
+
+  @@index([userId])
+  @@index([status])
+  @@index([agentId])
+  @@index([createdAt(sort: Desc)])
+  @@map("agent_tasks")
+}
+
+// Agent Messages (Factor 3: Context Management)
+model AgentMessage {
+  id        String    @id @default(cuid())
+  taskId    String
+  task      AgentTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  role      String // system, user, assistant, tool
+  content   String
+  tokens    Int?
+  createdAt DateTime  @default(now())
+
+  @@index([taskId])
+  @@index([createdAt(sort: Desc)])
+  @@map("agent_messages")
+}
+
+// Tool Executions (Factor 4 & 9: Tool Calls & Error Tracking)
+model ToolExecution {
+  id         String    @id @default(cuid())
+  taskId     String
+  task       AgentTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  toolName   String
+  parameters Json
+  result     Json?
+  error      String?
+  durationMs Int?
+  tokensUsed Int?
+  costUsd    Decimal?  @db.Decimal(10, 6)
+  createdAt  DateTime  @default(now())
+
+  @@index([taskId])
+  @@index([toolName])
+  @@index([createdAt(sort: Desc)])
+  @@map("tool_executions")
+}
+
+// Human Approval Requests (Factor 7: Contact Humans)
+model ApprovalRequest {
+  id              String    @id @default(cuid())
+  taskId          String    @unique
+  task            AgentTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  approverId      String
+  decisionContext Json
+  status          String    @default("pending") // pending, approved, rejected, expired
+  approved        Boolean?
+  notes           String?
+  createdAt       DateTime  @default(now())
+  resolvedAt      DateTime?
+  expiresAt       DateTime?
+
+  @@index([approverId])
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+  @@map("approval_requests")
+}
+
+// Agent Metrics (Monitoring)
+model AgentMetric {
+  id         String   @id @default(cuid())
+  agentId    String
+  metricType String // execution_time, token_usage, success_rate, error_rate
+  value      Decimal  @db.Decimal(10, 4)
+  metadata   Json?
+  measuredAt DateTime @default(now())
+
+  @@index([agentId])
+  @@index([metricType])
+  @@index([measuredAt(sort: Desc)])
+  @@map("agent_metrics")
+}
+
+// Student Learning Progress (Student Agent Tracking)
+model StudentLearningProgress {
+  id                 String   @id @default(cuid())
+  studentId          String
+  taskId             String?
+  concept            String
+  subjectId          String?
+  understandingLevel String // confused, partial, good, mastered
+  engagementScore    Int
+  interactionContext Json?
+  createdAt          DateTime @default(now())
+
+  @@index([studentId])
+  @@index([concept])
+  @@index([createdAt(sort: Desc)])
+  @@map("student_learning_progress")
+}
+
+// Agent Cost Tracking (Optimization)
+model AgentCost {
+  id         String   @id @default(cuid())
+  taskId     String
+  model      String
+  tokensUsed Int
+  costUsd    Decimal  @db.Decimal(10, 6)
+  createdAt  DateTime @default(now())
+
+  @@index([taskId])
+  @@index([model])
+  @@index([createdAt(sort: Desc)])
+  @@map("agent_costs")
 }

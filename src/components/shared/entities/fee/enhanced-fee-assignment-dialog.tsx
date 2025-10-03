@@ -19,7 +19,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { api } from '@/trpc/react';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 const feeAssignmentSchema = z.object({
   feeStructureId: z.string().min(1, 'Fee structure is required'),
@@ -129,7 +129,6 @@ export function EnhancedFeeAssignmentDialog({
   existingFeeStructures = [],
   onSuccess,
 }: EnhancedFeeAssignmentDialogProps) {
-  const { toast } = useToast();
   const [selectedStructure, setSelectedStructure] = useState<FeeStructure | null>(null);
   const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
   const [pendingAssignment, setPendingAssignment] = useState<FeeAssignmentFormData | null>(null);
@@ -147,8 +146,7 @@ export function EnhancedFeeAssignmentDialog({
   // Create enrollment fee mutation
   const createEnrollmentFeeMutation = api.enrollmentFee.create.useMutation({
     onSuccess: () => {
-      toast({
-        title: 'Fee assigned successfully',
+      toast.success('Fee assigned successfully', {
         description: `Fee structure has been assigned to ${studentName}`,
       });
       onSuccess?.();
@@ -163,10 +161,8 @@ export function EnhancedFeeAssignmentDialog({
         setPendingAssignment(formData);
         setShowDuplicateDialog(true);
       } else {
-        toast({
-          title: 'Error assigning fee',
+        toast.error('Error assigning fee', {
           description: error.message,
-          variant: 'destructive',
         });
       }
     },
@@ -175,8 +171,7 @@ export function EnhancedFeeAssignmentDialog({
   // Assign additional fee mutation
   const assignAdditionalFeeMutation = api.enrollmentFee.assignAdditionalFee.useMutation({
     onSuccess: () => {
-      toast({
-        title: 'Additional fee assigned successfully',
+      toast.success('Additional fee assigned successfully', {
         description: `Additional fee has been assigned to ${studentName}`,
       });
       onSuccess?.();
@@ -185,10 +180,8 @@ export function EnhancedFeeAssignmentDialog({
       setSelectedStructure(null);
     },
     onError: (error) => {
-      toast({
-        title: 'Error assigning additional fee',
+      toast.error('Error assigning additional fee', {
         description: error.message,
-        variant: 'destructive',
       });
     },
   });
@@ -236,8 +229,7 @@ export function EnhancedFeeAssignmentDialog({
       });
     } else if (action === 'update') {
       // Navigate to update existing fee (you can implement this based on your needs)
-      toast({
-        title: 'Update Feature',
+      toast.info('Update Feature', {
         description: 'Please navigate to the fee details to update the existing assignment.',
       });
     }

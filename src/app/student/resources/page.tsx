@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { ResourceFolderView } from '@/components/student/resources/ResourceFolderView';
+import { ResourceGrid } from '@/components/student/resources/ResourceGrid';
 import { ResourceCreateDialog } from '@/components/resources/ResourceCreateDialog';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -11,6 +11,12 @@ import { api } from '@/trpc/react';
 export default function StudentResourcesPage() {
   const { data: session } = useSession();
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+
+  // Get resources for the student
+  const { data: resourcesData, isLoading: isLoadingResources } = api.resource.getStudentResources.useQuery(
+    { studentId: session!.user.id },
+    { enabled: !!session?.user?.id }
+  );
 
   // Get subjects for the resource creation dialog
   const { data: subjectsData } = api.subject.getAll.useQuery(
@@ -48,7 +54,12 @@ export default function StudentResourcesPage() {
         </div>
       </div>
 
-      <ResourceFolderView studentId={session.user.id} />
+      <ResourceGrid
+        resources={resourcesData?.resources || []}
+        isLoading={isLoadingResources}
+        emptyMessage="You don't have any resources yet."
+        emptyDescription="Click 'Add Resource' to upload your first file."
+      />
 
       {/* Resource Creation Dialog */}
       <ResourceCreateDialog
