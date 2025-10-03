@@ -1,0 +1,2893 @@
+---
+
+## Complete Implementation Examples
+
+### Curriculum Architect Agent Implementation
+
+```typescript
+class CurriculumArchitectAgent extends Agent {
+  id = "curriculum-architect";
+  name = "Curriculum Architect";
+  purpose = "Design learning outcomes, Bloom's taxonomy, rubrics, lesson plans";
+  maxSteps = 5;
+  
+  systemPrompt = CURRICULUM_ARCHITECT_PROMPT; // Defined earlier
+  
+  tools: ToolDefinition[] = [
+    {
+      name: "get_subject_topic_context",
+      description: "Fetch subject and topic details with educational standards",
+      parameters: z.object({
+        subjectId: z.string(),
+        topicId: z.string()
+      })
+    },
+    {
+      name: "generate_learning_outcomes",
+      description: "Generate SMART learning outcomes with Bloom's levels",
+      parameters: z.object({
+        context: z.object({
+          subject: z.string(),
+          topic: z.string(),
+          gradeLevel: z.string(),
+          duration: z.string()
+        }),
+        targetBloomLevels: z.array(z.enum([
+          "remember", "understand", "apply", 
+          "analyze", "evaluate", "create"
+        ])),
+        educationalFocus: z.array(z.enum([
+          "academic_mastery", "creative_thinking", "social_intelligence"
+        ]))
+      })
+    },
+    {
+      name: "create_rubric_criteria",
+      description: "Create assessment rubric from learning outcomes",
+      parameters: z.object({
+        learningOutcomes: z.array(z.object({
+          text: z.string(),
+          bloomLevel: z.string(),
+          actionVerb: z.string()
+        })),
+        performanceLevels: z.array(z.string()).default([
+          "Exemplary", "Proficient", "Developing", "Beginning"
+        ])
+      })
+    },
+    {
+      name: "generate_lesson_plan",
+      description: "Create structured lesson plan with activities",
+      parameters: z.object({
+        learningOutcomes: z.array(z.any()),
+        duration: z.number(), // in minutes
+        activities: z.array(z.object({
+          name: z.string(),
+          bloomLevel: z.string(),
+          duration: z.number(),
+          description: z.string()
+        }))
+      })
+    },
+    {
+      name: "validate_curriculum_design",
+      description: "Validate lesson plan, outcomes, and rubric",
+      parameters: z.object({
+        lessonPlan: z.any(),
+        learningOutcomes: z.array(z.any()),
+        rubric: z.any()
+      })
+    }
+  ];
+  
+  protected requiresComplexReasoning(): boolean {
+    return true; // Use GPT-4o for pedagogical design
+  }
+}
+```
+
+---
+
+### Learning Companion Agent Implementation
+
+```typescript
+class LearningCompanionAgent extends Agent {
+  id = "learning-companion";
+  name = "Learning Companion";
+  purpose = "Personalized academic tutoring with Socratic method";
+  maxSteps = 4;
+  
+  systemPrompt = LEARNING_COMPANION_PROMPT; // Defined earlier
+  
+  tools: ToolDefinition[] = [
+    {
+      name: "get_student_learning_context",
+      description: "Fetch student's current learning state",
+      parameters: z.object({
+        studentId: z.string(),
+        subjectId: z.string().optional()
+      })
+    },
+    {
+      name: "analyze_student_query",
+      description: "Understand student's question and learning needs",
+      parameters: z.object({
+        question: z.string(),
+        studentContext: z.any()
+      })
+    },
+    {
+      name: "generate_socratic_response",
+      description: "Create guiding response without giving answers",
+      parameters: z.object({
+        query: z.string(),
+        analysis: z.any(),
+        context: z.any()
+      })
+    },
+    {
+      name: "update_learning_progress",
+      description: "Track student's learning progress",
+      parameters: z.object({
+        studentId: z.string(),
+        concept: z.string(),
+        interaction: z.object({
+          understanding: z.enum(["confused", "partial", "good", "mastered"]),
+          engagement: z.number().min(1).max(5)
+        })
+      })
+    }
+  ];
+  
+  protected requiresComplexReasoning(): boolean {
+    return true; // GPT-4o for pedagogical reasoning
+  }
+}
+```
+
+---
+
+## API Layer (Factor 11: Trigger from Anywhere)
+
+### REST API Endpoints
+
+```typescript
+// Teacher Endpoints
+app.post("/api/v1/agents/teacher/curriculum", async (req, res) => {
+  const { subjectId, topicId, duration, bloomLevels } = req.body;
+  const userId = req.user.id;
+  
+  const { taskId } = await orchestrator.launchAgent(
+    "curriculum-architect",
+    userId,
+    { subjectId, topicId, duration, bloomLevels }
+  );
+  
+  res.json({ taskId });
+});
+
+app.post("/api/v1/agents/teacher/grade", async (req, res) => {
+  const { submissionId } = req.body;
+  const userId = req.user.id;
+  
+  const { taskId } = await orchestrator.launchAgent(
+    "assignment-grader",
+    userId,
+    { submissionId }
+  );
+  
+  res.json({ taskId });
+});
+
+app.post("/api/v1/agents/teacher/content", async (req, res) => {
+  const { topicId, contentType, count, difficulty } = req.body;
+  const userId = req.user.id;
+  
+  const { taskId } = await orchestrator.launchAgent(
+    "content-studio",
+    userId,
+    { topicId, contentType, count, difficulty }
+  );
+  
+  res.json({ taskId });
+});
+
+// Student Endpoints
+app.post("/api/v1/agents/student/ask", async (req, res) => {
+  const { question, subjectId } = req.body;
+  const userId = req.user.id;
+  
+  const { taskId } = await orchestrator.launchAgent(
+    "learning-companion",
+    userId,
+    { question, subjectId }
+  );
+  
+  res.json({ taskId });
+});
+
+app.post("/api/v1/agents/student/assignment-help", async (req, res) => {
+  const { assignmentId, question } = req.body;
+  const userId = req.user.id;
+  
+  const { taskId } = await orchestrator.launchAgent(
+    "assignment-guide",
+    userId,
+    { assignmentId, question }
+  );
+  
+  res.json({ taskId });
+});
+
+// Analytics Endpoints
+app.post("/api/v1/agents/analytics/insights", async (req, res) => {
+  const { scope, timeRange, analysisType } = req.body;
+  const userId = req.user.id;
+  
+  const { taskId } = await orchestrator.launchAgent(
+    "insight-engine",
+    userId,
+    { scope, timeRange, analysisType }
+  );
+  
+  res.json({ taskId });
+});
+
+// Universal Task Management
+app.get("/api/v1/agents/task/:taskId", async (req, res) => {
+  const { taskId } = req.params;
+  const task = await orchestrator.getTaskStatus(taskId);
+  res.json(task);
+});
+
+app.post("/api/v1/agents/task/:taskId/pause", async (req, res) => {
+  const { taskId } = req.params;
+  await orchestrator.pauseAgent(taskId);
+  res.json({ success: true });
+});
+
+app.post("/api/v1/agents/task/:taskId/resume", async (req, res) => {
+  const { taskId } = req.params;
+  await orchestrator.resumeAgent(taskId);
+  res.json({ success: true });
+});
+
+app.post("/api/v1/agents/task/:taskId/cancel", async (req, res) => {
+  const { taskId } = req.params;
+  await orchestrator.cancelAgent(taskId);
+  res.json({ success: true });
+});
+```
+
+### tRPC API (Type-Safe Alternative)
+
+```typescript
+export const agentsRouter = router({
+  // Teacher procedures
+  teacher: router({
+    createCurriculum: protectedProcedure
+      .input(z.object({
+        subjectId: z.string(),
+        topicId: z.string(),
+        duration: z.number(),
+        bloomLevels: z.array(z.string())
+      }))
+      .mutation(async ({ ctx, input }) => {
+        return await ctx.orchestrator.launchAgent(
+          "curriculum-architect",
+          ctx.session.user.id,
+          input
+        );
+      }),
+    
+    gradeAssignment: protectedProcedure
+      .input(z.object({ submissionId: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        return await ctx.orchestrator.launchAgent(
+          "assignment-grader",
+          ctx.session.user.id,
+          input
+        );
+      }),
+    
+    generateContent: protectedProcedure
+      .input(z.object({
+        topicId: z.string(),
+        contentType: z.enum(["questions", "worksheet", "assessment"]),
+        count: z.number(),
+        difficulty: z.enum(["easy", "medium", "hard"])
+      }))
+      .mutation(async ({ ctx, input }) => {
+        return await ctx.orchestrator.launchAgent(
+          "content-studio",
+          ctx.session.user.id,
+          input
+        );
+      })
+  }),
+  
+  // Student procedures
+  student: router({
+    askQuestion: protectedProcedure
+      .input(z.object({
+        question: z.string(),
+        subjectId: z.string().optional()
+      }))
+      .mutation(async ({ ctx, input }) => {
+        return await ctx.orchestrator.launchAgent(
+          "learning-companion",
+          ctx.session.user.id,
+          input
+        );
+      }),
+    
+    getAssignmentHelp: protectedProcedure
+      .input(z.object({
+        assignmentId: z.string(),
+        question: z.string()
+      }))
+      .mutation(async ({ ctx, input }) => {
+        return await ctx.orchestrator.launchAgent(
+          "assignment-guide",
+          ctx.session.user.id,
+          input
+        );
+      })
+  }),
+  
+  // Analytics procedures
+  analytics: router({
+    generateInsights: protectedProcedure
+      .input(z.object({
+        scope: z.enum(["student", "class", "campus", "institution"]),
+        entityId: z.string(),
+        timeRange: z.object({
+          start: z.date(),
+          end: z.date()
+        }),
+        analysisType: z.array(z.string())
+      }))
+      .mutation(async ({ ctx, input }) => {
+        return await ctx.orchestrator.launchAgent(
+          "insight-engine",
+          ctx.session.user.id,
+          input
+        );
+      })
+  }),
+  
+  // Task management
+  getTask: protectedProcedure
+    .input(z.object({ taskId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.orchestrator.getTaskStatus(input.taskId);
+    }),
+  
+  pauseTask: protectedProcedure
+    .input(z.object({ taskId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.orchestrator.pauseAgent(input.taskId);
+    }),
+  
+  resumeTask: protectedProcedure
+    .input(z.object({ taskId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.orchestrator.resumeAgent(input.taskId);
+    })
+});
+```
+
+---
+
+## Database Schema
+
+```sql
+-- Agent Tasks (Factor 5 & 6: State Management)
+CREATE TABLE agent_tasks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  agent_id VARCHAR(50) NOT NULL,
+  user_id UUID NOT NULL REFERENCES users(id),
+  user_role VARCHAR(20) NOT NULL, -- teacher, student, admin
+  
+  status VARCHAR(20) NOT NULL DEFAULT 'running',
+  -- Status: running, paused, completed, failed, cancelled
+  
+  input JSONB NOT NULL,
+  state JSONB NOT NULL DEFAULT '{}',
+  result JSONB,
+  error TEXT,
+  
+  steps_completed INT DEFAULT 0,
+  max_steps INT NOT NULL,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  completed_at TIMESTAMP,
+  
+  INDEX idx_user_id (user_id),
+  INDEX idx_status (status),
+  INDEX idx_agent_id (agent_id),
+  INDEX idx_created_at (created_at DESC)
+);
+
+-- Agent Messages (Factor 3: Context Management)
+CREATE TABLE agent_messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  task_id UUID NOT NULL REFERENCES agent_tasks(id) ON DELETE CASCADE,
+  
+  role VARCHAR(20) NOT NULL, -- system, user, assistant, tool
+  content TEXT NOT NULL,
+  tokens INT,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  
+  INDEX idx_task_id (task_id),
+  INDEX idx_created_at (created_at DESC)
+);
+
+-- Tool Executions (Factor 4 & 9: Tool Calls & Error Tracking)
+CREATE TABLE tool_executions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  task_id UUID NOT NULL REFERENCES agent_tasks(id) ON DELETE CASCADE,
+  
+  tool_name VARCHAR(100) NOT NULL,
+  parameters JSONB NOT NULL,
+  result JSONB,
+  error TEXT,
+  
+  duration_ms INT,
+  tokens_used INT,
+  cost_usd DECIMAL(10, 6),
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  
+  INDEX idx_task_id (task_id),
+  INDEX idx_tool_name (tool_name),
+  INDEX idx_created_at (created_at DESC)
+);
+
+-- Human Approval Requests (Factor 7: Contact Humans)
+CREATE TABLE approval_requests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  task_id UUID NOT NULL REFERENCES agent_tasks(id) ON DELETE CASCADE,
+  
+  approver_id UUID NOT NULL REFERENCES users(id),
+  decision_context JSONB NOT NULL,
+  
+  status VARCHAR(20) DEFAULT 'pending',
+  -- Status: pending, approved, rejected, expired
+  
+  approved BOOLEAN,
+  notes TEXT,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  resolved_at TIMESTAMP,
+  expires_at TIMESTAMP,
+  
+  INDEX idx_approver_id (approver_id),
+  INDEX idx_status (status),
+  INDEX idx_created_at (created_at DESC)
+);
+
+-- Agent Metrics (Monitoring)
+CREATE TABLE agent_metrics (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  agent_id VARCHAR(50) NOT NULL,
+  
+  metric_type VARCHAR(50) NOT NULL,
+  -- Types: execution_time, token_usage, success_rate, error_rate
+  
+  value DECIMAL(10, 4) NOT NULL,
+  metadata JSONB,
+  
+  measured_at TIMESTAMP DEFAULT NOW(),
+  
+  INDEX idx_agent_id (agent_id),
+  INDEX idx_metric_type (metric_type),
+  INDEX idx_measured_at (measured_at DESC)
+);
+
+-- Student Learning Progress (Student Agent Tracking)
+CREATE TABLE student_learning_progress (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  student_id UUID NOT NULL REFERENCES students(id),
+  task_id UUID REFERENCES agent_tasks(id),
+  
+  concept VARCHAR(200) NOT NULL,
+  subject_id UUID REFERENCES subjects(id),
+  
+  understanding_level VARCHAR(20) NOT NULL,
+  -- Levels: confused, partial, good, mastered
+  
+  engagement_score INT CHECK (engagement_score BETWEEN 1 AND 5),
+  
+  interaction_context JSONB,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  
+  INDEX idx_student_id (student_id),
+  INDEX idx_concept (concept),
+  INDEX idx_created_at (created_at DESC)
+);
+
+-- Agent Cost Tracking (Optimization)
+CREATE TABLE agent_costs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  task_id UUID NOT NULL REFERENCES agent_tasks(id),
+  
+  model VARCHAR(50) NOT NULL,
+  tokens_used INT NOT NULL,
+  cost_usd DECIMAL(10, 6) NOT NULL,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  
+  INDEX idx_task_id (task_id),
+  INDEX idx_model (model),
+  INDEX idx_created_at (created_at DESC)
+);
+```
+
+---
+
+## Security & Compliance Layer
+
+### 1. Authentication & Authorization
+
+```typescript
+class SecurityManager {
+  
+  // RBAC: Role-Based Access Control
+  async verifyAgentAccess(
+    userId: string,
+    agentId: string,
+    action: string
+  ): Promise<boolean> {
+    
+    const user = await this.db.users.findUnique({
+      where: { id: userId },
+      include: { roles: true }
+    });
+    
+    const permissions = {
+      teacher: [
+        "curriculum-architect",
+        "assignment-grader",
+        "content-studio",
+        "insight-engine"
+      ],
+      student: [
+        "learning-companion",
+        "assignment-guide"
+      ],
+      admin: ["*"] // All agents
+    };
+    
+    const userRole = user.roles[0]?.name;
+    const allowedAgents = permissions[userRole] || [];
+    
+    return allowedAgents.includes("*") || allowedAgents.includes(agentId);
+  }
+  
+  // Data Privacy: FERPA Compliance
+  async filterSensitiveData(
+    data: any,
+    userId: string,
+    context: string
+  ): Promise<any> {
+    
+    // Remove PII unless user has explicit permission
+    if (context === "student_data") {
+      const hasPermission = await this.hasStudentDataAccess(userId);
+      
+      if (!hasPermission) {
+        return this.redactPII(data);
+      }
+    }
+    
+    return data;
+  }
+  
+  private redactPII(data: any): any {
+    // Redact email, phone, address, etc.
+    const redacted = { ...data };
+    const piiFields = ["email", "phone", "address", "ssn"];
+    
+    for (const field of piiFields) {
+      if (redacted[field]) {
+        redacted[field] = "[REDACTED]";
+      }
+    }
+    
+    return redacted;
+  }
+  
+  // Audit Logging
+  async logAgentAction(
+    userId: string,
+    agentId: string,
+    action: string,
+    metadata: any
+  ): Promise<void> {
+    
+    await this.db.auditLog.create({
+      data: {
+        userId,
+        agentId,
+        action,
+        metadata,
+        ipAddress: metadata.ipAddress,
+        userAgent: metadata.userAgent,
+        timestamp: new Date()
+      }
+    });
+  }
+}
+```
+
+### 2. Input Validation & Sanitization
+
+```typescript
+class InputValidator {
+  
+  // Prevent prompt injection attacks
+  validateUserInput(input: string): ValidationResult {
+    
+    // Check for prompt injection patterns
+    const dangerousPatterns = [
+      /ignore (previous|all) instructions/i,
+      /you are now/i,
+      /system:\s*/i,
+      /<\|im_start\|>/i,
+      /\[INST\]/i
+    ];
+    
+    for (const pattern of dangerousPatterns) {
+      if (pattern.test(input)) {
+        return {
+          valid: false,
+          reason: "Potential prompt injection detected",
+          sanitized: null
+        };
+      }
+    }
+    
+    // Sanitize HTML/script tags
+    const sanitized = input
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+      .replace(/<[^>]+>/g, "")
+      .trim();
+    
+    return {
+      valid: true,
+      reason: null,
+      sanitized
+    };
+  }
+  
+  // Validate tool parameters
+  validateToolParameters(
+    toolName: string,
+    parameters: any,
+    schema: z.ZodSchema
+  ): any {
+    
+    try {
+      return schema.parse(parameters);
+    } catch (error) {
+      throw new Error(`Invalid parameters for tool ${toolName}: ${error.message}`);
+    }
+  }
+}
+```
+
+### 3. Rate Limiting & Quota Management
+
+```typescript
+class RateLimiter {
+  private redis: Redis;
+  
+  async checkRateLimit(
+    userId: string,
+    agentId: string
+  ): Promise<RateLimitResult> {
+    
+    const limits = {
+      "curriculum-architect": { requests: 20, window: 3600 }, // 20/hour
+      "assignment-grader": { requests: 100, window: 3600 },   // 100/hour
+      "content-studio": { requests: 50, window: 3600 },       // 50/hour
+      "learning-companion": { requests: 200, window: 3600 },  // 200/hour
+      "assignment-guide": { requests: 100, window: 3600 },    // 100/hour
+      "insight-engine": { requests: 30, window: 3600 }        // 30/hour
+    };
+    
+    const limit = limits[agentId];
+    const key = `ratelimit:${userId}:${agentId}`;
+    
+    const current = await this.redis.incr(key);
+    
+    if (current === 1) {
+      await this.redis.expire(key, limit.window);
+    }
+    
+    const remaining = limit.requests - current;
+    
+    return {
+      allowed: current <= limit.requests,
+      remaining: Math.max(0, remaining),
+      resetAt: await this.redis.ttl(key)
+    };
+  }
+  
+  // Token quota management
+  async checkTokenQuota(
+    userId: string,
+    estimatedTokens: number
+  ): Promise<boolean> {
+    
+    const monthlyQuota = await this.getUserMonthlyQuota(userId);
+    const usedTokens = await this.getMonthlyTokenUsage(userId);
+    
+    return (usedTokens + estimatedTokens) <= monthlyQuota;
+  }
+}
+```
+
+---
+
+## Monitoring & Analytics Layer
+
+### 1. Real-Time Metrics
+
+```typescript
+class MetricsCollector {
+  
+  async trackAgentExecution(
+    taskId: string,
+    agentId: string,
+    metrics: ExecutionMetrics
+  ): Promise<void> {
+    
+    await this.db.agentMetrics.createMany({
+      data: [
+        {
+          agentId,
+          metricType: "execution_time",
+          value: metrics.durationMs,
+          metadata: { taskId },
+          measuredAt: new Date()
+        },
+        {
+          agentId,
+          metricType: "token_usage",
+          value: metrics.tokensUsed,
+          metadata: { taskId, model: metrics.model },
+          measuredAt: new Date()
+        },
+        {
+          agentId,
+          metricType: "success_rate",
+          value: metrics.success ? 1 : 0,
+          metadata: { taskId },
+          measuredAt: new Date()
+        },
+        {
+          agentId,
+          metricType: "cost",
+          value: metrics.costUsd,
+          metadata: { taskId, model: metrics.model },
+          measuredAt: new Date()
+        }
+      ]
+    });
+  }
+  
+  async getAgentPerformance(
+    agentId: string,
+    timeRange: { start: Date; end: Date }
+  ): Promise<AgentPerformance> {
+    
+    const metrics = await this.db.agentMetrics.findMany({
+      where: {
+        agentId,
+        measuredAt: {
+          gte: timeRange.start,
+          lte: timeRange.end
+        }
+      }
+    });
+    
+    const grouped = _.groupBy(metrics, "metricType");
+    
+    return {
+      avgExecutionTime: _.meanBy(grouped["execution_time"], "value"),
+      avgTokenUsage: _.meanBy(grouped["token_usage"], "value"),
+      successRate: _.meanBy(grouped["success_rate"], "value"),
+      totalCost: _.sumBy(grouped["cost"], "value"),
+      totalExecutions: grouped["execution_time"]?.length || 0
+    };
+  }
+}
+```
+
+### 2. Error Tracking & Alerting
+
+```typescript
+class ErrorTracker {
+  
+  async trackError(
+    taskId: string,
+    agentId: string,
+    error: Error,
+    context: any
+  ): Promise<void> {
+    
+    const errorData = {
+      taskId,
+      agentId,
+      errorType: error.constructor.name,
+      message: error.message,
+      stack: error.stack,
+      context,
+      timestamp: new Date()
+    };
+    
+    // Log to database
+    await this.db.errorLogs.create({ data: errorData });
+    
+    // Send to monitoring service (e.g., Sentry)
+    await this.sentry.captureException(error, {
+      tags: { agentId, taskId },
+      extra: context
+    });
+    
+    // Alert if critical
+    if (this.isCritical(error)) {
+      await this.sendAlert(errorData);
+    }
+  }
+  
+  private isCritical(error: Error): boolean {
+    const criticalPatterns = [
+      "DatabaseError",
+      "AuthenticationError",
+      "PaymentError",
+      "DataLossError"
+    ];
+    
+    return criticalPatterns.some(pattern => 
+      error.constructor.name.includes(pattern)
+    );
+  }
+  
+  private async sendAlert(errorData: any): Promise<void> {
+    // Send to Slack, email, PagerDuty, etc.
+    await this.slack.sendMessage({
+      channel: "#alerts-aivy",
+      text: `🚨 Critical Error in Agent ${errorData.agentId}`,
+      attachments: [{
+        color: "danger",
+        fields: [
+          { title: "Task ID", value: errorData.taskId, short: true },
+          { title: "Error Type", value: errorData.errorType, short: true },
+          { title: "Message", value: errorData.message, short: false }
+        ]
+      }]
+    });
+  }
+}
+```
+
+### 3. Dashboard & Reporting
+
+```typescript
+class AgentDashboard {
+  
+  async getSystemHealth(): Promise<SystemHealth> {
+    const last24h = {
+      start: subHours(new Date(), 24),
+      end: new Date()
+    };
+    
+    const tasks = await this.db.agentTasks.count({
+      where: {
+        createdAt: { gte: last24h.start }
+      }
+    });
+    
+    const successful = await this.db.agentTasks.count({
+      where: {
+        createdAt: { gte: last24h.start },
+        status: "completed"
+      }
+    });
+    
+    const failed = await this.db.agentTasks.count({
+      where: {
+        createdAt: { gte: last24h.start },
+        status: "failed"
+      }
+    });
+    
+    return {
+      totalTasks: tasks,
+      successRate: (successful / tasks) * 100,
+      failureRate: (failed / tasks) * 100,
+      avgResponseTime: await this.getAvgResponseTime(last24h),
+      activeAgents: 6,
+      systemStatus: "healthy"
+    };
+  }
+  
+  async getAgentLeaderboard(): Promise<AgentMetric[]> {
+    const agents = [
+      "curriculum-architect",
+      "assignment-grader",
+      "content-studio",
+      "learning-companion",
+      "assignment-guide",
+      "insight-engine"
+    ];
+    
+    const metrics = await Promise.all(
+      agents.map(async (agentId) => {
+        const perf = await this.metricsCollector.getAgentPerformance(
+          agentId,
+          { start: subDays(new Date(), 7), end: new Date() }
+        );
+        
+        return {
+          agentId,
+          ...perf
+        };
+      })
+    );
+    
+    return _.orderBy(metrics, ["successRate", "avgExecutionTime"], ["desc", "asc"]);
+  }
+}
+```
+
+---
+
+## Testing Strategy
+
+### 1. Unit Tests (Per Agent)
+
+```typescript
+describe("CurriculumArchitectAgent", () => {
+  let agent: CurriculumArchitectAgent;
+  let mockToolRegistry: jest.Mocked<ToolRegistry>;
+  
+  beforeEach(() => {
+    mockToolRegistry = {
+      executeTool: jest.fn()
+    } as any;
+    
+    agent = new CurriculumArchitectAgent();
+    agent.toolRegistry = mockToolRegistry;
+  });
+  
+  test("generates learning outcomes with correct Bloom levels", async () => {
+    // Mock tool responses
+    mockToolRegistry.executeTool
+      .mockResolvedValueOnce({ /* context data */ })
+      .mockResolvedValueOnce({
+        learningOutcomes: [
+          { text: "Solve linear equations", bloomLevel: "apply", actionVerb: "solve" },
+          { text: "Analyze solution strategies", bloomLevel: "analyze", actionVerb: "analyze" },
+          { text: "Create word problems", bloomLevel: "create", actionVerb: "create" }
+        ]
+      });
+    
+    const result = await agent.execute({
+      taskId: "test-123",
+      input: {
+        subjectId: "math",
+        topicId: "algebra",
+        duration: 45,
+        bloomLevels: ["apply", "analyze", "create"]
+      },
+      messages: [],
+      steps: 0,
+      data: {}
+    });
+    
+    expect(result.status).toBe("completed");
+    expect(result.result.learningOutcomes).toHaveLength(3);
+    expect(result.result.learningOutcomes[0].bloomLevel).toBe("apply");
+    expect(result.steps).toBeLessThan(6);
+  });
+  
+  test("validates cognitive balance in outcomes", async () => {
+    mockToolRegistry.executeTool
+      .mockResolvedValueOnce({ /* context */ })
+      .mockResolvedValueOnce({
+        learningOutcomes: [
+          { bloomLevel: "remember" },
+          { bloomLevel: "remember" },
+          { bloomLevel: "remember" }
+        ]
+      });
+    
+    const result = await agent.execute({
+      taskId: "test-124",
+      input: { /* ... */ },
+      messages: [],
+      steps: 0,
+      data: {}
+    });
+    
+    // Should flag imbalanced distribution
+    expect(result.warnings).toContain("cognitive_imbalance");
+  });
+  
+  test("handles pause and resume correctly", async () => {
+    let stepCount = 0;
+    mockToolRegistry.executeTool.mockImplementation(async () => {
+      stepCount++;
+      if (stepCount === 2) {
+        // Simulate pause signal
+        await agent.pause();
+      }
+      return { data: "mock" };
+    });
+    
+    const result = await agent.execute({
+      taskId: "test-125",
+      input: { /* ... */ },
+      messages: [],
+      steps: 0,
+      data: {}
+    });
+    
+    expect(result.status).toBe("paused");
+    
+    // Resume from saved state
+    const serialized = agent.serialize(result.state);
+    const resumedAgent = new CurriculumArchitectAgent();
+    const resumedState = resumedAgent.deserialize(serialized);
+    
+    const finalResult = await resumedAgent.execute(resumedState);
+    expect(finalResult.status).toBe("completed");
+  });
+});
+```
+
+### 2. Integration Tests
+
+```typescript
+describe("AIVY Orchestration Integration", () => {
+  let orchestrator: AIVYOrchestrator;
+  let db: TestDatabase;
+  
+  beforeEach(async () => {
+    db = await setupTestDatabase();
+    orchestrator = new AIVYOrchestrator(db);
+  });
+  
+  afterEach(async () => {
+    await db.cleanup();
+  });
+  
+  test("routes teacher request to correct agent", async () => {
+    const user = await db.users.create({
+      data: { role: "teacher", email: "teacher@test.com" }
+    });
+    
+    const { taskId } = await orchestrator.handleRequest({
+      userId: user.id,
+      message: "I need to create learning outcomes for algebra",
+      context: { subjectId: "math" }
+    });
+    
+    const task = await db.agentTasks.findUnique({ where: { id: taskId } });
+    expect(task.agentId).toBe("curriculum-architect");
+  });
+  
+  test("prevents unauthorized access to teacher agents", async () => {
+    const student = await db.users.create({
+      data: { role: "student", email: "student@test.com" }
+    });
+    
+    await expect(
+      orchestrator.launchAgent("curriculum-architect", student.id, {})
+    ).rejects.toThrow("Permission denied");
+  });
+  
+  test("enforces rate limits", async () => {
+    const user = await db.users.create({
+      data: { role: "teacher", email: "teacher@test.com" }
+    });
+    
+    // Make 20 requests (hits limit)
+    for (let i = 0; i < 20; i++) {
+      await orchestrator.launchAgent("curriculum-architect", user.id, {});
+    }
+    
+    // 21st request should fail
+    await expect(
+      orchestrator.launchAgent("curriculum-architect", user.id, {})
+    ).rejects.toThrow("Rate limit exceeded");
+  });
+  
+  test("tracks token usage and cost", async () => {
+    const user = await db.users.create({
+      data: { role: "teacher", email: "teacher@test.com" }
+    });
+    
+    const { taskId } = await orchestrator.launchAgent(
+      "curriculum-architect",
+      user.id,
+      { subjectId: "math", topicId: "algebra" }
+    );
+    
+    // Wait for completion
+    await waitForTaskCompletion(taskId);
+    
+    const costs = await db.agentCosts.findMany({
+      where: { taskId }
+    });
+    
+    expect(costs.length).toBeGreaterThan(0);
+    expect(costs[0].tokensUsed).toBeGreaterThan(0);
+    expect(costs[0].costUsd).toBeGreaterThan(0);
+  });
+});
+```
+
+### 3. End-to-End Tests
+
+```typescript
+describe("Student Learning Journey E2E", () => {
+  test("complete student tutoring session", async () => {
+    // 1. Student asks question
+    const { taskId } = await api.post("/agents/student/ask", {
+      question: "I don't understand how to solve 2x + 5 = 15",
+      subjectId: "math"
+    });
+    
+    // 2. Agent processes request
+    await waitForTaskCompletion(taskId);
+    
+    const task = await api.get(`/agents/task/${taskId}`);
+    expect(task.status).toBe("completed");
+    
+    // 3. Verify Socratic response (no direct answer)
+    expect(task.result.response).not.toContain("x = 5");
+    expect(task.result.response).toContain("?"); // Should ask questions
+    
+    // 4. Verify learning progress tracked
+    const progress = await db.studentLearningProgress.findFirst({
+      where: { taskId }
+    });
+    expect(progress).toBeDefined();
+    expect(progress.concept).toContain("linear equations");
+  });
+});
+```
+
+---
+
+## Performance Optimization
+
+### 1. Caching Strategy
+
+```typescript
+class CacheManager {
+  private redis: Redis;
+  
+  // Cache common tool results
+  async getCachedToolResult(
+    toolName: string,
+    parameters: any
+  ): Promise<any | null> {
+    
+    const cacheKey = this.generateCacheKey(toolName, parameters);
+    const cached = await this.redis.get(cacheKey);
+    
+    if (cached) {
+      return JSON.parse(cached);
+    }
+    
+    return null;
+  }
+  
+  async cacheToolResult(
+    toolName: string,
+    parameters: any,
+    result: any,
+    ttl: number = 3600 // 1 hour default
+  ): Promise<void> {
+    
+    const cacheKey = this.generateCacheKey(toolName, parameters);
+    await this.redis.setex(
+      cacheKey,
+      ttl,
+      JSON.stringify(result)
+    );
+  }
+  
+  private generateCacheKey(toolName: string, parameters: any): string {
+    // Deterministic cache key
+    const sortedParams = JSON.stringify(parameters, Object.keys(parameters).sort());
+    return `tool:${toolName}:${createHash('sha256').update(sortedParams).digest('hex')}`;
+  }
+  
+  // Cache invalidation patterns
+  async invalidatePattern(pattern: string): Promise<void> {
+    const keys = await this.redis.keys(pattern);
+    if (keys.length > 0) {
+      await this.redis.del(...keys);
+    }
+  }
+  
+  // Example: Invalidate curriculum cache when subject updated
+  async invalidateCurriculumCache(subjectId: string): Promise<void> {
+    await this.invalidatePattern(`tool:get_subject_topic_context:*${subjectId}*`);
+    await this.invalidatePattern(`tool:generate_learning_outcomes:*${subjectId}*`);
+  }
+}
+```
+
+### 2. Batch Processing
+
+```typescript
+class BatchProcessor {
+  
+  // Batch grade multiple assignments
+  async batchGradeAssignments(
+    submissionIds: string[]
+  ): Promise<BatchResult[]> {
+    
+    // Process in parallel batches of 10
+    const batches = _.chunk(submissionIds, 10);
+    const results = [];
+    
+    for (const batch of batches) {
+      const batchResults = await Promise.all(
+        batch.map(id => this.gradeSubmission(id))
+      );
+      results.push(...batchResults);
+    }
+    
+    return results;
+  }
+  
+  // Batch content generation
+  async batchGenerateQuestions(
+    topics: string[],
+    countPerTopic: number
+  ): Promise<BatchResult[]> {
+    
+    // Single API call with multiple topics
+    const prompt = `
+Generate ${countPerTopic} questions for each of the following topics:
+${topics.map((t, i) => `${i + 1}. ${t}`).join('\n')}
+    `;
+    
+    const response = await this.llm.generate({
+      prompt,
+      maxTokens: 4000
+    });
+    
+    return this.parseMultiTopicResponse(response, topics);
+  }
+}
+```
+
+### 3. Model Selection Strategy
+
+```typescript
+class ModelSelector {
+  
+  selectOptimalModel(
+    agentId: string,
+    task: AgentTask
+  ): ModelConfig {
+    
+    // Task complexity analysis
+    const complexity = this.analyzeComplexity(task);
+    
+    if (complexity === "simple") {
+      return {
+        model: "gpt-3.5-turbo",
+        cost: 0.0005, // per 1K tokens
+        speed: "fast"
+      };
+    }
+    
+    if (complexity === "moderate") {
+      return {
+        model: "gpt-4o-mini",
+        cost: 0.00015,
+        speed: "fast"
+      };
+    }
+    
+    // Complex reasoning required
+    return {
+      model: "gpt-4o",
+      cost: 0.0025,
+      speed: "moderate"
+    };
+  }
+  
+  private analyzeComplexity(task: AgentTask): "simple" | "moderate" | "complex" {
+    // Simple: Classification, intent routing, simple Q&A
+    // Moderate: Content generation, basic grading
+    // Complex: Curriculum design, pedagogical reasoning, complex grading
+    
+    const simpleAgents = ["assignment-guide"];
+    const moderateAgents = ["content-studio"];
+    const complexAgents = ["curriculum-architect", "assignment-grader", "learning-companion"];
+    
+    if (simpleAgents.includes(task.agentId)) return "simple";
+    if (moderateAgents.includes(task.agentId)) return "moderate";
+    return "complex";
+  }
+}
+```
+
+---
+
+## Deployment Architecture
+
+### 1. Production Infrastructure
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # Next.js Application
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - postgres
+      - redis
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+  
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+  
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+  
+  # Agent Workers (Background Processing)
+  agent-worker:
+    build: .
+    command: npm run worker:agents
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - postgres
+      - redis
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+
+volumes:
+  postgres_data:
+  redis_data:
+```
+
+### 2. Kubernetes Deployment
+
+```yaml
+# k8s/aivy-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aivy-orchestrator
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aivy-orchestrator
+  template:
+    metadata:
+      labels:
+        app: aivy-orchestrator
+    spec:
+      containers:
+      - name: aivy
+        image: fabriiq/aivy:v2.0
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: aivy-secrets
+              key: database-url
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aivy-secrets
+              key: openai-api-key
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aivy-orchestrator
+spec:
+  selector:
+    app: aivy-orchestrator
+  ports:
+  - port: 80
+    targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: aivy-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: aivy-orchestrator
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+```
+
+---
+
+## Migration Plan
+
+### Phase 1: Foundation (Weeks 1-2)
+
+**Goals:**
+- Implement core Agent base class
+- Set up AIVYOrchestrator with routing
+- Create database schema
+- Implement StateManager (pause/resume)
+
+**Deliverables:**
+```typescript
+✓ Agent base class with 12-factor compliance
+✓ IntentRouter with LLM-based classification
+✓ ContextBuilder with priority-based packing
+✓ StateManager with pause/resume capability
+✓ Database tables and migrations
+✓ Unit tests for core components
+```
+
+**Migration Steps:**
+1. Deploy new database schema alongside existing
+2. Create feature flag for AIVY v2
+3. Test with internal users only
+
+---
+
+### Phase 2: Teacher Agents (Weeks 3-5)
+
+**Goals:**
+- Implement 3 teacher agents
+- Migrate existing teacher features
+- A/B test with pilot teachers
+
+**Deliverables:**
+```typescript
+✓ CurriculumArchitectAgent (replaces LessonPlanAgent)
+✓ AssignmentGraderAgent (replaces FeedbackAgent)
+✓ ContentStudioAgent (replaces WorksheetAgent)
+✓ API endpoints for teacher agents
+✓ Integration tests
+✓ Teacher UI updates
+```
+
+**Migration Strategy:**
+```typescript
+// Feature flag for gradual rollout
+if (featureFlags.enableAIVYv2) {
+  // Use new agent system
+  return await orchestrator.launchAgent("curriculum-architect", ...);
+} else {
+  // Fallback to old system
+  return await legacyLessonPlanAgent.execute(...);
+}
+```
+
+---
+
+### Phase 3: Student Agents (Weeks 6-8)
+
+**Goals:**
+- Implement 2 student agents
+- Integrate educational framework
+- Beta test with student cohort
+
+**Deliverables:**
+```typescript
+✓ LearningCompanionAgent (replaces StudentAssistantAgent)
+✓ AssignmentGuideAgent (replaces NavigationAssistant)
+✓ Student learning progress tracking
+✓ Educational framework alignment
+  - Academic Mastery
+  - Creative Thinking
+  - Social Intelligence
+✓ API endpoints for student agents
+✓ Student UI updates
+```
+
+---
+
+### Phase 4: Analytics & Polish (Weeks 9-10)
+
+**Goals:**
+- Implement InsightEngineAgent
+- Add monitoring and alerting
+- Performance optimization
+- Documentation
+
+**Deliverables:**
+```typescript
+✓ InsightEngineAgent
+✓ Real-time metrics dashboard
+✓ Error tracking and alerting
+✓ Performance optimization
+✓ API documentation
+✓ Migration guide for developers
+✓ Training materials for users
+```
+
+---
+
+### Phase 5: Production Rollout (Weeks 11-12)
+
+**Goals:**
+- Full production deployment
+- Monitor and optimize
+- Deprecate old system
+
+**Steps:**
+1. **Week 11:**
+   - 25% traffic to AIVY v2 (monitor metrics)
+   - 50% traffic if metrics good
+   - 75% traffic if stable
+
+2. **Week 12:**
+   - 100% traffic to AIVY v2
+   - Deprecate old agent system
+   - Remove feature flags
+   - Archive old code
+
+---
+
+## Cost Projections
+
+### Token Usage Estimates
+
+```typescript
+// Average tokens per agent execution
+const tokenEstimates = {
+  "curriculum-architect": {
+    input: 2000,  // Context + prompts
+    output: 1500, // Generated outcomes + rubric + plan
+    total: 3500,
+    costGPT4o: 0.00875 // $2.50/1M input, $10/1M output
+  },
+  "assignment-grader": {
+    input: 3000,  // Submission + rubric
+    output: 800,  // Feedback + grade
+    total: 3800,
+    costGPT4o: 0.0095
+  },
+  "content-studio": {
+    input: 1500,
+    output: 2000,
+    total: 3500,
+    costGPT35: 0.00175 // $0.50/1M input, $1.50/1M output
+  },
+  "learning-companion": {
+    input: 2000,
+    output: 500,
+    total: 2500,
+    costGPT4o: 0.00625
+  },
+  "assignment-guide": {
+    input: 1500,
+    output: 400,
+    total: 1900,
+    costGPT35: 0.00095
+  },
+  "insight-engine": {
+    input: 4000,
+    output: 1000,
+    total: 5000,
+    costGPT4o: 0.0125
+  }
+};
+```
+
+### Monthly Cost Projection (Per School)
+
+```typescript
+// Assumptions:
+// - 500 students
+// - 50 teachers
+// - Average usage patterns
+
+const monthlyUsage = {
+  teacher: {
+    "curriculum-architect": 100,  // 100 lesson plans/month
+    "assignment-grader": 500,     // 500 assignments graded/month
+    "content-studio": 200         // 200 content generations/month
+  },
+  student: {
+    "learning-companion": 2000,   // 4 tutoring sessions per student
+    "assignment-guide": 1000      // 2 help requests per student
+  },
+  admin: {
+    "insight-engine": 50          // Weekly analytics runs
+  }
+};
+
+const monthlyCost = {
+  teacher: (
+    (100 * 0.00875) + // Curriculum Architect
+    (500 * 0.0095) +  // Assignment Grader
+    (200 * 0.00175)   // Content Studio
+  ),
+  student: (
+    (2000 * 0.00625) + // Learning Companion
+    (1000 * 0.00095)   // Assignment Guide
+  ),
+  admin: (
+    50 * 0.0125        // Insight Engine
+  )
+};
+
+// Total: ~$18-20 per school per month
+```
+
+### Optimization Strategies
+
+```typescript
+// 1. Use GPT-3.5 where possible (70% cost reduction)
+// 2. Implement aggressive caching (30% reduction)
+// 3. Batch requests (20% reduction)
+// 4. Compress context (15% token reduction)
+
+// Optimized cost: ~$10-12 per school per month
+```
+
+---
+
+## Success Metrics
+
+### Technical KPIs
+
+```typescript
+interface TechnicalKPIs {
+  // Performance
+  avgResponseTime: number;        // Target: <2 seconds
+  p95ResponseTime: number;        // Target: <5 seconds
+  successRate: number;            // Target: >95%
+  
+  // Reliability
+  uptime: number;                 // Target: 99.9%
+  errorRate: number;              // Target: <1%
+  
+  // Efficiency
+  avgTokensPerTask: number;       // Track for optimization
+  avgCostPerTask: number;         // Target: <$0.02
+  cacheHitRate: number;           // Target: >40%
+  
+  // Scalability
+  concurrentTasks: number;        // Monitor for capacity
+  queueDepth: number;             // Alert if >100
+}
+```
+
+### Educational KPIs
+
+```typescript
+interface EducationalKPIs {
+  // Teacher Adoption
+  teacherActiveUsers: number;     // Target: 80%+ adoption
+  avgTasksPerTeacher: number;     // Track engagement
+  teacherSatisfaction: number;    // Target: >4.5/5
+  timeSecondsVsPrevious: number;     // Target: 40% reduction
+  
+  // Student Engagement
+  studentActiveUsers: number;     // Target: 60%+ adoption
+  avgSessionsPerStudent: number;  // Track engagement
+  studentSatisfaction: number;    // Target: >4.0/5
+  learningOutcomes: number;       // Track mastery improvements
+  
+  // Quality
+  humanOverrideRate: number;      // Target: <15%
+  feedbackQuality: number;        // Teacher ratings
+  pedagogicalAccuracy: number;    // Expert review scores
+}
+```
+
+---
+
+## Documentation
+
+### API Documentation
+
+```typescript
+/**
+ * @swagger
+ * /api/v1/agents/teacher/curriculum:
+ *   post:
+ *     summary: Create curriculum design (learning outcomes, rubric, lesson plan)
+ *     tags: [Teacher Agents]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - subjectId
+ *               - topicId
+ *             properties:
+ *               subjectId:
+ *                 type: string
+ *               topicId:
+ *                 type: string
+ *               duration:
+ *                 type: number
+ *                 description: Lesson duration in minutes
+ *               bloomLevels:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum: [remember, understand, apply, analyze, evaluate, create]
+ *     responses:
+ *       200:
+ *         description: Task created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 taskId:
+ *                   type: string
+ *                   format: uuid
+ *       401:
+ *         description: Unauthorized
+ *       429:
+ *         description: Rate limit exceeded
+ */
+```
+
+---
+
+## Conclusion
+
+This AIVY 2.0 architecture provides:
+
+✅ **12-Factor Compliance**: Own prompts, context, control flow
+✅ **Minimal Complexity**: 6 focused agents (not 10+)
+✅ **Educational Alignment**: Academic Mastery + Creative Thinking + Social Intelligence
+✅ **Production-Ready**: Security, monitoring, scalability
+✅ **Cost-Effective**: ~$10-12 per school per month
+✅ **Maintainable**: Clear separation, testable, documented
+
+**Next Steps:**
+1. Review and approve architecture
+2. Set up development environment
+3. Begin Phase 1 implementation
+4. Schedule weekly progress reviews
+
+---
+
+**Document Version:** 2.0  
+**Last Updated:** [Current Date]  
+**Status:** Ready for Implementation  
+**Approved By:** [Pending]# AIVY 2.0: Production-Ready 12-Factor Agent Architecture
+## Simplified, Efficient Multi-Agent System for FabriiQ
+
+---
+
+## Design Philosophy
+
+**Core Principles:**
+- **Minimal Agent Count** (6 focused agents, not 10+)
+- **12-Factor Compliant** (Own prompts, context, control flow)
+- **Educational Standards Aligned** (Academic Mastery + Creative Thinking + Social Intelligence)
+- **Production-Ready** (Security, monitoring, scalability built-in)
+- **3-7 Steps Max** per agent (no endless loops)
+
+---
+
+## System Architecture
+
+```typescript
+┌─────────────────────────────────────────────────────────┐
+│                  FabriiQ Platform Layer                 │
+│              (Next.js + tRPC + PostgreSQL)              │
+└─────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│              AIVY Orchestration Engine                   │
+│  • Intent Router (LLM-based classification)              │
+│  • State Manager (Pause/Resume/Cancel)                   │
+│  • Tool Registry (Shared tools across agents)            │
+│  • Context Builder (Smart context window management)     │
+└─────────────────────────────────────────────────────────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│   TEACHER    │    │   STUDENT    │    │  ANALYTICS   │
+│   AGENTS     │    │   AGENTS     │    │    AGENT     │
+│   (3)        │    │   (2)        │    │    (1)       │
+└──────────────┘    └──────────────┘    └──────────────┘
+```
+
+---
+
+## Agent Catalog (6 Core Agents)
+
+### **Teacher Agents**
+
+#### 1. **Curriculum Architect Agent** 
+*Replaces: LessonPlanAgent, ContentRefinementAgent*
+
+**Purpose:** Design learning outcomes, Bloom's taxonomy, rubrics, and lesson plans
+
+**Max Steps:** 5 steps
+**Context Size:** 3K tokens
+
+**Tools:**
+```typescript
+interface CurriculumArchitectTools {
+  // Step 1: Fetch context
+  get_subject_topic_context(subjectId, topicId): SubjectContext;
+  
+  // Step 2: Generate learning outcomes
+  generate_learning_outcomes(context, bloomLevels[]): LearningOutcome[];
+  
+  // Step 3: Create rubric criteria
+  create_rubric_criteria(outcomes, performanceLevels): RubricCriteria[];
+  
+  // Step 4: Generate lesson plan
+  generate_lesson_plan(outcomes, duration, activities): LessonPlan;
+  
+  // Step 5: Validate & finalize
+  validate_curriculum_design(plan, outcomes, rubric): ValidationResult;
+}
+```
+
+**Educational Standards:**
+- Bloom's Taxonomy (Remember → Create)
+- Academic Mastery (Literacy, Math, Sciences)
+- SMART learning outcomes
+
+**System Prompt:**
+```typescript
+const CURRICULUM_ARCHITECT_PROMPT = `
+You are an expert curriculum designer specializing in pedagogically-sound educational design.
+
+Your role:
+1. Analyze subject-topic context
+2. Generate 3-5 SMART learning outcomes with Bloom's taxonomy levels
+3. Create performance rubrics with 4 levels (Exemplary/Proficient/Developing/Beginning)
+4. Design lesson plans with cognitive balance (not all Remember/Understand)
+
+Educational Framework:
+- Academic Mastery: Focus on Languages, Literacy, Math, Arts, Sciences
+- Creative Thinking: Include activities for Imagination, Self-Expression, Inventiveness
+- Social Intelligence: Incorporate Collaboration, Empathy, Community
+
+Bloom's Action Verbs:
+- Remember: define, list, identify, recall
+- Understand: explain, summarize, classify, compare
+- Apply: demonstrate, solve, use, compute
+- Analyze: differentiate, organize, relate, distinguish
+- Evaluate: judge, critique, assess, defend
+- Create: design, compose, develop, formulate
+
+Output Format:
+{
+  learningOutcomes: [
+    { text: "...", bloomLevel: "apply", actionVerb: "solve" }
+  ],
+  rubric: { criteria: [...], levels: [...] },
+  lessonPlan: { duration: "...", activities: [...] }
+}
+`;
+```
+
+---
+
+#### 2. **Assignment Grader Agent**
+*Replaces: AssessmentAgent, FeedbackAgent*
+
+**Purpose:** Grade submissions, provide feedback, detect plagiarism
+
+**Max Steps:** 4 steps
+**Context Size:** 4K tokens
+
+**Tools:**
+```typescript
+interface AssignmentGraderTools {
+  // Step 1: Get submission + rubric
+  get_submission_with_rubric(submissionId): {submission, rubric, outcomes};
+  
+  // Step 2: Grade against rubric
+  grade_submission(submission, rubric): {
+    scores: Record<criterion, score>,
+    confidenceScore: number // 0-1
+  };
+  
+  // Step 3: Generate feedback
+  generate_feedback(grade, strengths, improvements): {
+    summary: string,
+    strengths: string[],
+    improvements: string[],
+    bloomAnalysis: BloomLevelPerformance
+  };
+  
+  // Step 4: Human review flag (if confidence < 0.7)
+  flag_for_review?(reason, confidence): ReviewRequest;
+}
+```
+
+**Educational Standards:**
+- Rubric-based assessment
+- Bloom's level performance analysis
+- Constructive feedback (growth mindset)
+
+**System Prompt:**
+```typescript
+const ASSIGNMENT_GRADER_PROMPT = `
+You are an expert educational assessor specializing in rubric-based grading.
+
+Grading Principles:
+1. Assess against provided rubric criteria objectively
+2. Identify specific strengths (what student did well)
+3. Provide actionable improvements (growth mindset language)
+4. Analyze performance by Bloom's taxonomy level
+5. Flag low-confidence grades for human review
+
+Confidence Scoring:
+- 0.9-1.0: Clear alignment with rubric, objective answers
+- 0.7-0.89: Good alignment, minor subjective elements
+- 0.5-0.69: Moderate subjectivity, needs human review
+- <0.5: High subjectivity, must have human review
+
+Feedback Language:
+- Use growth mindset: "You demonstrated X skill. To improve Y, try..."
+- Praise effort and strategy, not just results
+- Reference specific examples from submission
+- Suggest concrete next steps
+
+Educational Framework:
+- Academic Mastery: Assess content knowledge and skill application
+- Creative Thinking: Evaluate originality, problem-solving approaches
+- Social Intelligence: In group work, assess collaboration quality
+`;
+```
+
+---
+
+#### 3. **Content Studio Agent**
+*Replaces: WorksheetAgent, parts of ResourceAgent*
+
+**Purpose:** Generate questions, worksheets, assessments, educational resources
+
+**Max Steps:** 3 steps
+**Context Size:** 2K tokens
+
+**Tools:**
+```typescript
+interface ContentStudioTools {
+  // Step 1: Get curriculum context
+  get_curriculum_context(topicId, targetBloomLevels[]): Context;
+  
+  // Step 2: Generate content
+  generate_content(type, context, count, difficulty): {
+    questions: Question[], // or worksheet, or assessment
+    bloomDistribution: Record<BloomLevel, number>,
+    difficultyLevel: number
+  };
+  
+  // Step 3: Quality check & finalize
+  validate_content(content, pedagogicalRules): ValidationResult;
+}
+```
+
+**Educational Standards:**
+- Bloom's taxonomy alignment
+- Difficulty progression
+- Multiple representation (text, visual, kinesthetic)
+
+**System Prompt:**
+```typescript
+const CONTENT_STUDIO_PROMPT = `
+You are an expert content creator specializing in educational materials.
+
+Content Creation Principles:
+1. Align all content with learning outcomes and Bloom's levels
+2. Ensure cognitive balance (variety of Bloom's levels)
+3. Progress difficulty appropriately (scaffolding)
+4. Include diverse question types (MCQ, short answer, essay, problem-solving)
+5. Incorporate Academic Mastery, Creative Thinking, Social Intelligence
+
+Question Types by Educational Focus:
+- Academic Mastery: Knowledge recall, problem-solving, application
+- Creative Thinking: Open-ended, scenario-based, design challenges
+- Social Intelligence: Collaboration prompts, ethical dilemmas, perspective-taking
+
+Quality Criteria:
+- Clear, unambiguous language
+- Age-appropriate vocabulary
+- Culturally sensitive
+- No bias or stereotypes
+- Pedagogically sound
+`;
+```
+
+---
+
+### **Student Agents**
+
+#### 4. **Learning Companion Agent**
+*Replaces: StudentAssistantAgent, MainAssistantAgent, SubjectSpecificAgent*
+
+**Purpose:** Personalized academic tutoring across all subjects
+
+**Max Steps:** 4 steps (per conversation turn)
+**Context Size:** 3K tokens
+
+**Tools:**
+```typescript
+interface LearningCompanionTools {
+  // Step 1: Get student context
+  get_student_learning_context(studentId, subjectId): {
+    currentTopic: Topic,
+    masteryLevel: number,
+    recentPerformance: Performance[],
+    learningGoals: Goal[],
+    confusionAreas: string[]
+  };
+  
+  // Step 2: Understand student question
+  analyze_student_query(question, context): {
+    conceptsInvolved: string[],
+    bloomLevel: BloomLevel,
+    difficultyLevel: number,
+    studentIntent: "clarification" | "practice" | "challenge"
+  };
+  
+  // Step 3: Generate Socratic response
+  generate_socratic_response(query, analysis, context): {
+    guidingQuestions: string[],
+    hints?: string[],
+    examples?: string[],
+    encouragement: string
+  };
+  
+  // Step 4: Track learning progress
+  update_learning_progress(studentId, concept, interaction): void;
+}
+```
+
+**Educational Standards:**
+- **Academic Mastery:** Tutor all subjects (Languages, Math, Sciences, Arts)
+- **Creative Thinking:** Encourage exploration, multiple solution paths
+- **Social Intelligence:** Build grit, growth mindset, self-reflection
+
+**System Prompt:**
+```typescript
+const LEARNING_COMPANION_PROMPT = `
+You are a personal learning companion for a student, specializing in Socratic teaching.
+
+Teaching Philosophy:
+1. NEVER give direct answers - guide students to discover
+2. Use scaffolding (hints → questions → examples)
+3. Praise effort and strategy, not just correctness
+4. Build growth mindset ("You haven't mastered this YET")
+5. Encourage metacognition ("How did you approach this?")
+
+Educational Framework Integration:
+
+Academic Mastery:
+- Languages: Focus on expression, comprehension, creativity with words
+- Literacy: Reading strategies, writing process, critical analysis
+- Math: Problem-solving approaches, multiple strategies, conceptual understanding
+- Sciences: Scientific method, inquiry-based learning, real-world application
+- Arts: Creative expression, interpretation, technical skill development
+
+Creative Thinking:
+- Encourage openness to multiple solutions
+- Foster imagination through "what if" questions
+- Promote self-expression and unique perspectives
+- Support improvisation and experimentation
+
+Social Intelligence:
+- Build empathy through perspective-taking
+- Develop grit through challenge framing
+- Foster individuality while respecting community
+- Encourage collaboration and peer learning
+
+Socratic Questioning Techniques:
+1. Clarifying: "What do you mean by...?"
+2. Probing assumptions: "What are we assuming here?"
+3. Probing reasons/evidence: "How do you know this?"
+4. Questioning viewpoints: "What might someone else think?"
+5. Probing implications: "What would happen if...?"
+6. Meta-questions: "Why do you think I asked that?"
+
+Conversation Style:
+- Warm, encouraging, age-appropriate
+- Celebrate small wins
+- Normalize struggle as part of learning
+- Reference student's own progress and goals
+`;
+```
+
+---
+
+#### 5. **Assignment Guide Agent**
+*Replaces: NavigationAssistantAgent*
+
+**Purpose:** Help students understand and complete assignments (without giving answers)
+
+**Max Steps:** 3 steps
+**Context Size:** 2K tokens
+
+**Tools:**
+```typescript
+interface AssignmentGuideTools {
+  // Step 1: Get assignment details
+  get_assignment_context(assignmentId, studentId): {
+    assignment: Assignment,
+    learningOutcomes: LearningOutcome[],
+    studentProgress: Progress,
+    rubric: Rubric
+  };
+  
+  // Step 2: Analyze student's question
+  analyze_help_request(question, assignmentContext): {
+    questionType: "clarification" | "strategy" | "stuck" | "review",
+    conceptsNeeded: string[],
+    appropriateGuidanceLevel: "hint" | "question" | "example"
+  };
+  
+  // Step 3: Provide guidance (not answers)
+  provide_assignment_guidance(analysis, context): {
+    guidance: string,
+    suggestedSteps?: string[],
+    relevantResources?: Resource[],
+    checkUnderstanding: string // Follow-up question
+  };
+}
+```
+
+**Educational Standards:**
+- **Academic Mastery:** Help with all subjects
+- **Creative Thinking:** Encourage unique approaches
+- **Social Intelligence:** Build persistence, self-efficacy
+
+**System Prompt:**
+```typescript
+const ASSIGNMENT_GUIDE_PROMPT = `
+You are an assignment completion guide for students.
+
+Core Principle: GUIDE, DON'T SOLVE
+
+Your Role:
+1. Help students understand what is being asked
+2. Break complex assignments into manageable steps
+3. Suggest strategies and approaches (not solutions)
+4. Point to relevant resources and examples
+5. Check student understanding through questions
+
+Educational Framework:
+
+Academic Mastery:
+- Break down complex tasks into sub-skills
+- Connect assignment to learning outcomes
+- Suggest practice strategies
+
+Creative Thinking:
+- Encourage multiple approaches ("What are 3 ways you could...?")
+- Promote originality ("How could you make this unique?")
+- Foster resourcefulness ("What tools/resources could help?")
+
+Social Intelligence:
+- Build grit ("This is challenging, but you can persist")
+- Develop courage to try even if uncertain
+- Celebrate effort and iteration
+
+Guidance Levels (Least → Most Support):
+1. Reflection prompt: "What have you tried so far?"
+2. Clarifying question: "What specific part is confusing?"
+3. General hint: "Think about how X relates to Y"
+4. Specific hint: "Remember that formula from lesson..."
+5. Example: "Here's how someone might approach a similar problem..."
+
+NEVER:
+- Give direct answers
+- Complete work for student
+- Write essays, solve problems, or create content for them
+
+ALWAYS:
+- Verify student understands before moving on
+- Encourage independent thinking
+- Praise problem-solving process
+`;
+```
+
+---
+
+### **Analytics Agent**
+
+#### 6. **Insight Engine Agent**
+*Replaces: AnalyticsAgent*
+
+**Purpose:** Generate actionable insights from educational data
+
+**Max Steps:** 5 steps
+**Context Size:** 5K tokens
+
+**Tools:**
+```typescript
+interface InsightEngineTools {
+  // Step 1: Fetch data
+  get_analytics_data(scope, timeRange): {
+    performanceData: Performance[],
+    engagementData: Engagement[],
+    masteryData: TopicMastery[],
+    attendanceData: Attendance[]
+  };
+  
+  // Step 2: Analyze patterns
+  analyze_patterns(data, analysisType): {
+    trends: Trend[],
+    anomalies: Anomaly[],
+    correlations: Correlation[]
+  };
+  
+  // Step 3: Identify at-risk students
+  identify_at_risk_students(performanceData, threshold): RiskAssessment[];
+  
+  // Step 4: Generate recommendations
+  generate_recommendations(analysis, context): Recommendation[];
+  
+  // Step 5: Create visualizations
+  create_insight_visualizations(insights): VisualizationData;
+}
+```
+
+**Educational Standards:**
+- Academic Mastery tracking
+- Bloom's level progression
+- Holistic student development (Academic + Creative + Social)
+
+**System Prompt:**
+```typescript
+const INSIGHT_ENGINE_PROMPT = `
+You are an educational data analyst specializing in actionable insights.
+
+Analysis Framework:
+
+1. Academic Mastery Analysis:
+   - Subject-level performance trends
+   - Bloom's taxonomy progression
+   - Skill mastery patterns
+   - Learning outcome achievement
+
+2. Creative Thinking Analysis:
+   - Originality in problem-solving
+   - Engagement with open-ended tasks
+   - Risk-taking in learning
+
+3. Social Intelligence Analysis:
+   - Collaboration patterns
+   - Peer interaction quality
+   - Growth mindset indicators
+   - Persistence metrics
+
+Risk Identification Criteria:
+- Declining performance (>20% drop)
+- Attendance issues (>80% threshold)
+- Low engagement (<50% activity completion)
+- Mastery stagnation (no progress in 2+ weeks)
+- Social disengagement (minimal peer interaction)
+
+Recommendations Guidelines:
+1. Specific: Clear action items
+2. Actionable: Teachers can implement immediately
+3. Evidence-based: Tied to data patterns
+4. Holistic: Address academic + emotional + social needs
+5. Tiered: Prevention → Early intervention → Intensive support
+
+Output Format:
+{
+  insights: [{ type, description, dataPoints, severity }],
+  atRiskStudents: [{ studentId, riskFactors, confidenceScore }],
+  recommendations: [{ priority, action, rationale, expectedImpact }]
+}
+`;
+```
+
+---
+
+## AIVY Orchestration Engine
+
+### 1. Intent Router
+
+```typescript
+class IntentRouter {
+  private llm: LLM;
+  
+  async classifyIntent(
+    userMessage: string, 
+    userRole: "teacher" | "student",
+    context: UserContext
+  ): Promise<AgentIntent> {
+    
+    // Use fast, cheap model for classification (GPT-3.5-turbo)
+    const classification = await this.llm.classify({
+      model: "gpt-3.5-turbo",
+      temperature: 0.1, // Deterministic
+      messages: [
+        {
+          role: "system",
+          content: this.getClassificationPrompt(userRole)
+        },
+        {
+          role: "user",
+          content: JSON.stringify({ message: userMessage, context })
+        }
+      ],
+      tools: [
+        {
+          name: "classify_intent",
+          description: "Classify user intent to route to appropriate agent",
+          parameters: {
+            intent: z.enum([
+              // Teacher intents
+              "create_curriculum", // → Curriculum Architect
+              "grade_assignment",  // → Assignment Grader
+              "generate_content",  // → Content Studio
+              
+              // Student intents
+              "get_tutoring",      // → Learning Companion
+              "help_assignment",   // → Assignment Guide
+              
+              // Analytics intents
+              "generate_insights", // → Insight Engine
+              
+              // General
+              "clarification",     // → Same agent (follow-up)
+              "unknown"            // → Default handler
+            ]),
+            confidence: z.number().min(0).max(1),
+            reasoning: z.string()
+          }
+        }
+      ]
+    });
+    
+    return classification;
+  }
+  
+  private getClassificationPrompt(role: "teacher" | "student"): string {
+    if (role === "teacher") {
+      return `
+You are an intent classifier for a teacher using an AI assistant.
+
+Teacher intents:
+- create_curriculum: Creating learning outcomes, rubrics, lesson plans
+- grade_assignment: Grading student work, providing feedback
+- generate_content: Creating questions, worksheets, assessments
+- generate_insights: Analytics, student performance, risk identification
+
+Classify the intent with high confidence (>0.8) or return "clarification".
+      `;
+    } else {
+      return `
+You are an intent classifier for a student using an AI learning companion.
+
+Student intents:
+- get_tutoring: Subject help, concept explanation, problem-solving guidance
+- help_assignment: Understanding assignment requirements, guidance (not answers)
+
+Classify with confidence. If unclear, return "clarification".
+      `;
+    }
+  }
+}
+```
+
+---
+
+### 2. Context Builder
+
+```typescript
+class ContextBuilder {
+  
+  // Factor 3: Own Your Context Window
+  async buildAgentContext(
+    agent: Agent,
+    userRequest: any,
+    conversationHistory: Message[],
+    maxTokens: number = 4000
+  ): Promise<AgentContext> {
+    
+    const priorities: ContextChunk[] = [];
+    
+    // Priority 1: System prompt (always included, ~500 tokens)
+    priorities.push({
+      priority: 1,
+      tokens: 500,
+      content: agent.systemPrompt,
+      type: "system"
+    });
+    
+    // Priority 2: Current request (always included, ~200 tokens)
+    priorities.push({
+      priority: 2,
+      tokens: this.estimateTokens(userRequest),
+      content: JSON.stringify(userRequest),
+      type: "user_request"
+    });
+    
+    // Priority 3: Relevant business data (from database)
+    const relevantData = await this.fetchRelevantData(
+      agent.id,
+      userRequest
+    );
+    priorities.push({
+      priority: 3,
+      tokens: this.estimateTokens(relevantData),
+      content: JSON.stringify(relevantData),
+      type: "business_data"
+    });
+    
+    // Priority 4: Recent conversation (last 5 messages)
+    const recentMessages = conversationHistory.slice(-5);
+    priorities.push({
+      priority: 4,
+      tokens: this.estimateTokens(recentMessages),
+      content: this.formatMessages(recentMessages),
+      type: "conversation"
+    });
+    
+    // Priority 5: Older conversation (summarized, if space allows)
+    if (conversationHistory.length > 5) {
+      const summary = await this.summarizeOlderMessages(
+        conversationHistory.slice(0, -5)
+      );
+      priorities.push({
+        priority: 5,
+        tokens: this.estimateTokens(summary),
+        content: summary,
+        type: "conversation_summary"
+      });
+    }
+    
+    // Pack chunks by priority until maxTokens
+    return this.packContext(priorities, maxTokens);
+  }
+  
+  private async fetchRelevantData(
+    agentId: string,
+    request: any
+  ): Promise<any> {
+    // Agent-specific data fetching
+    switch (agentId) {
+      case "curriculum-architect":
+        return await this.getCurriculumData(request);
+      case "assignment-grader":
+        return await this.getSubmissionData(request);
+      case "learning-companion":
+        return await this.getStudentLearningData(request);
+      // ...
+    }
+  }
+}
+```
+
+---
+
+### 3. State Manager
+
+```typescript
+class StateManager {
+  private db: Database;
+  
+  // Factor 6: Launch/Pause/Resume
+  async launchAgent(
+    agentId: string,
+    userId: string,
+    input: any
+  ): Promise<{ taskId: string }> {
+    
+    const taskId = generateUUID();
+    
+    // Create task record
+    await this.db.agentTasks.create({
+      id: taskId,
+      agentId,
+      userId,
+      status: "running",
+      input,
+      state: {
+        messages: [],
+        steps: 0,
+        data: {}
+      },
+      createdAt: new Date()
+    });
+    
+    // Execute agent asynchronously
+    this.executeAgentAsync(taskId, agentId, input);
+    
+    return { taskId };
+  }
+  
+  async pauseAgent(taskId: string): Promise<string> {
+    const task = await this.db.agentTasks.findUnique({
+      where: { id: taskId }
+    });
+    
+    if (!task) throw new Error("Task not found");
+    
+    // Update status
+    await this.db.agentTasks.update({
+      where: { id: taskId },
+      data: {
+        status: "paused",
+        updatedAt: new Date()
+      }
+    });
+    
+    return taskId;
+  }
+  
+  async resumeAgent(taskId: string): Promise<void> {
+    const task = await this.db.agentTasks.findUnique({
+      where: { id: taskId }
+    });
+    
+    if (!task) throw new Error("Task not found");
+    if (task.status !== "paused") {
+      throw new Error(`Cannot resume task with status: ${task.status}`);
+    }
+    
+    // Continue execution
+    await this.executeAgentAsync(
+      taskId,
+      task.agentId,
+      task.input,
+      task.state // Resume from saved state
+    );
+  }
+  
+  private async executeAgentAsync(
+    taskId: string,
+    agentId: string,
+    input: any,
+    resumeState?: AgentState
+  ): Promise<void> {
+    
+    try {
+      const agent = this.getAgent(agentId);
+      const initialState = resumeState || {
+        taskId,
+        input,
+        messages: [],
+        steps: 0,
+        data: {}
+      };
+      
+      const result = await agent.execute(initialState);
+      
+      // Save result
+      await this.db.agentTasks.update({
+        where: { id: taskId },
+        data: {
+          status: "completed",
+          result: result.data,
+          stepsCompleted: result.steps,
+          updatedAt: new Date()
+        }
+      });
+      
+    } catch (error) {
+      await this.db.agentTasks.update({
+        where: { id: taskId },
+        data: {
+          status: "failed",
+          error: error.message,
+          updatedAt: new Date()
+        }
+      });
+    }
+  }
+}
+```
+
+---
+
+### 4. Tool Registry
+
+```typescript
+class ToolRegistry {
+  private tools: Map<string, Tool> = new Map();
+  
+  registerTool(tool: Tool): void {
+    this.tools.set(tool.name, tool);
+  }
+  
+  async executeTool(
+    toolName: string,
+    parameters: any,
+    context: ExecutionContext
+  ): Promise<ToolResult> {
+    
+    const tool = this.tools.get(toolName);
+    if (!tool) {
+      throw new Error(`Tool not found: ${toolName}`);
+    }
+    
+    // Validate permissions
+    if (!this.hasPermission(context.userId, tool)) {
+      throw new Error(`Permission denied for tool: ${toolName}`);
+    }
+    
+    // Validate parameters
+    const validatedParams = tool.schema.parse(parameters);
+    
+    // Execute with error handling
+    try {
+      const startTime = Date.now();
+      const result = await tool.execute(validatedParams, context);
+      const duration = Date.now() - startTime;
+      
+      // Log execution
+      await this.logToolExecution({
+        toolName,
+        parameters: validatedParams,
+        result,
+        duration,
+        userId: context.userId,
+        taskId: context.taskId
+      });
+      
+      return result;
+      
+    } catch (error) {
+      // Factor 9: Compact errors into context
+      return {
+        error: true,
+        message: this.compactError(error),
+        type: error.constructor.name,
+        recoverable: this.isRecoverable(error)
+      };
+    }
+  }
+  
+  // Factor 9: Compact errors for context window
+  private compactError(error: Error): string {
+    // Remove stack trace, keep only essential info
+    return {
+      message: error.message,
+      code: (error as any).code,
+      suggestion: this.getSuggestion(error)
+    };
+  }
+}
+```
+
+---
+
+## Agent Base Class
+
+```typescript
+// Factor 8: Own Your Control Flow
+abstract class Agent {
+  abstract id: string;
+  abstract name: string;
+  abstract purpose: string;
+  abstract systemPrompt: string;
+  abstract tools: ToolDefinition[];
+  abstract maxSteps: number;
+  
+  private llm: LLM;
+  private toolRegistry: ToolRegistry;
+  private contextBuilder: ContextBuilder;
+  
+  // Factor 1: Natural Language → Tool Calls
+  async determineNextStep(
+    context: AgentContext
+  ): Promise<ToolCall | Done> {
+    
+    const response = await this.llm.chat({
+      model: this.getModel(),
+      temperature: 0.3,
+      messages: context.messages,
+      tools: this.tools,
+      tool_choice: "auto"
+    });
+    
+    if (response.tool_calls && response.tool_calls.length > 0) {
+      return {
+        type: "tool_call",
+        tool: response.tool_calls[0].name,
+        parameters: response.tool_calls[0].parameters
+      };
+    } else {
+      return {
+        type: "done",
+        result: response.content
+      };
+    }
+  }
+  
+  // Factor 8: Deterministic control flow
+  async execute(initialState: AgentState): Promise<AgentResult> {
+    let state = initialState;
+    let stepCount = 0;
+    
+    while (stepCount < this.maxSteps) {
+      // Check if paused
+      if (await this.isPaused(state.taskId)) {
+        return {
+          status: "paused",
+          state: this.serialize(state)
+        };
+      }
+      
+      // Build context (Factor 3)
+      const context = await this.contextBuilder.buildAgentContext(
+        this,
+        state.input,
+        state.messages
+      );
+      
+      // LLM determines next step (Factor 1)
+      const nextStep = await this.determineNextStep(context);
+      
+      // Check if done
+      if (nextStep.type === "done") {
+        return {
+          status: "completed",
+          result: nextStep.result,
+          steps: stepCount
+        };
+      }
+      
+      // Execute tool (deterministic code)
+      const toolResult = await this.toolRegistry.executeTool(
+        nextStep.tool,
+        nextStep.parameters,
+        { userId: state.userId, taskId: state.taskId }
+      );
+      
+      // Factor 5 & 12: Stateless reducer
+      state = this.reducer(state, {
+        step: nextStep,
+        result: toolResult
+      });
+      
+      stepCount++;
+    }
+    
+    // Max steps reached
+    return {
+      status: "incomplete",
+      result: state.data,
+      steps: stepCount,
+      reason: "max_steps_exceeded"
+    };
+  }
+  
+  // Factor 5 & 12: Pure reducer (no side effects)
+  reducer(state: AgentState, action: ToolResult): AgentState {
+    return {
+      ...state,
+      messages: [
+        ...state.messages,
+        { 
+          role: "assistant", 
+          content: JSON.stringify(action.step) 
+        },
+        { 
+          role: "tool", 
+          content: JSON.stringify(action.result) 
+        }
+      ],
+      steps: state.steps + 1,
+      data: {
+        ...state.data,
+        [action.step.tool]: action.result
+      }
+    };
+  }
+  
+  // Factor 6: Serialize for pause/resume
+  serialize(state: AgentState): string {
+    return JSON.stringify({
+      agentId: this.id,
+      state,
+      timestamp: Date.now()
+    });
+  }
+  
+  deserialize(data: string): AgentState {
+    const parsed = JSON.parse(data);
+    return parsed.state;
+  }
+  
+  // Agent-specific model selection
+  protected getModel(): string {
+    // Use GPT-4o for complex reasoning, GPT-3.5 for simple tasks
+    return this.requiresComplexReasoning()
