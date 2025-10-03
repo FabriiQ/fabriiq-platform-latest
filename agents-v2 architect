@@ -1,0 +1,1049 @@
+# AIVY 2.0: Production-Ready 12-Factor Agent Architecture
+## Simplified, Efficient Multi-Agent System for FabriiQ
+
+---
+
+## Design Philosophy
+
+**Core Principles:**
+- **Minimal Agent Count** (6 focused agents, not 10+)
+- **12-Factor Compliant** (Own prompts, context, control flow)
+- **Educational Standards Aligned** (Academic Mastery + Creative Thinking + Social Intelligence)
+- **Production-Ready** (Security, monitoring, scalability built-in)
+- **3-7 Steps Max** per agent (no endless loops)
+
+---
+
+## System Architecture
+
+```typescript
+┌─────────────────────────────────────────────────────────┐
+│                  FabriiQ Platform Layer                 │
+│              (Next.js + tRPC + PostgreSQL)              │
+└─────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│              AIVY Orchestration Engine                   │
+│  • Intent Router (LLM-based classification)              │
+│  • State Manager (Pause/Resume/Cancel)                   │
+│  • Tool Registry (Shared tools across agents)            │
+│  • Context Builder (Smart context window management)     │
+└─────────────────────────────────────────────────────────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│   TEACHER    │    │   STUDENT    │    │  ANALYTICS   │
+│   AGENTS     │    │   AGENTS     │    │    AGENT     │
+│   (3)        │    │   (2)        │    │    (1)       │
+└──────────────┘    └──────────────┘    └──────────────┘
+```
+
+---
+
+## Agent Catalog (6 Core Agents)
+
+### **Teacher Agents**
+
+#### 1. **Curriculum Architect Agent** 
+*Replaces: LessonPlanAgent, ContentRefinementAgent*
+
+**Purpose:** Design learning outcomes, Bloom's taxonomy, rubrics, and lesson plans
+
+**Max Steps:** 5 steps
+**Context Size:** 3K tokens
+
+**Tools:**
+```typescript
+interface CurriculumArchitectTools {
+  // Step 1: Fetch context
+  get_subject_topic_context(subjectId, topicId): SubjectContext;
+  
+  // Step 2: Generate learning outcomes
+  generate_learning_outcomes(context, bloomLevels[]): LearningOutcome[];
+  
+  // Step 3: Create rubric criteria
+  create_rubric_criteria(outcomes, performanceLevels): RubricCriteria[];
+  
+  // Step 4: Generate lesson plan
+  generate_lesson_plan(outcomes, duration, activities): LessonPlan;
+  
+  // Step 5: Validate & finalize
+  validate_curriculum_design(plan, outcomes, rubric): ValidationResult;
+}
+```
+
+**Educational Standards:**
+- Bloom's Taxonomy (Remember → Create)
+- Academic Mastery (Literacy, Math, Sciences)
+- SMART learning outcomes
+
+**System Prompt:**
+```typescript
+const CURRICULUM_ARCHITECT_PROMPT = `
+You are an expert curriculum designer specializing in pedagogically-sound educational design.
+
+Your role:
+1. Analyze subject-topic context
+2. Generate 3-5 SMART learning outcomes with Bloom's taxonomy levels
+3. Create performance rubrics with 4 levels (Exemplary/Proficient/Developing/Beginning)
+4. Design lesson plans with cognitive balance (not all Remember/Understand)
+
+Educational Framework:
+- Academic Mastery: Focus on Languages, Literacy, Math, Arts, Sciences
+- Creative Thinking: Include activities for Imagination, Self-Expression, Inventiveness
+- Social Intelligence: Incorporate Collaboration, Empathy, Community
+
+Bloom's Action Verbs:
+- Remember: define, list, identify, recall
+- Understand: explain, summarize, classify, compare
+- Apply: demonstrate, solve, use, compute
+- Analyze: differentiate, organize, relate, distinguish
+- Evaluate: judge, critique, assess, defend
+- Create: design, compose, develop, formulate
+
+Output Format:
+{
+  learningOutcomes: [
+    { text: "...", bloomLevel: "apply", actionVerb: "solve" }
+  ],
+  rubric: { criteria: [...], levels: [...] },
+  lessonPlan: { duration: "...", activities: [...] }
+}
+`;
+```
+
+---
+
+#### 2. **Assignment Grader Agent**
+*Replaces: AssessmentAgent, FeedbackAgent*
+
+**Purpose:** Grade submissions, provide feedback, detect plagiarism
+
+**Max Steps:** 4 steps
+**Context Size:** 4K tokens
+
+**Tools:**
+```typescript
+interface AssignmentGraderTools {
+  // Step 1: Get submission + rubric
+  get_submission_with_rubric(submissionId): {submission, rubric, outcomes};
+  
+  // Step 2: Grade against rubric
+  grade_submission(submission, rubric): {
+    scores: Record<criterion, score>,
+    confidenceScore: number // 0-1
+  };
+  
+  // Step 3: Generate feedback
+  generate_feedback(grade, strengths, improvements): {
+    summary: string,
+    strengths: string[],
+    improvements: string[],
+    bloomAnalysis: BloomLevelPerformance
+  };
+  
+  // Step 4: Human review flag (if confidence < 0.7)
+  flag_for_review?(reason, confidence): ReviewRequest;
+}
+```
+
+**Educational Standards:**
+- Rubric-based assessment
+- Bloom's level performance analysis
+- Constructive feedback (growth mindset)
+
+**System Prompt:**
+```typescript
+const ASSIGNMENT_GRADER_PROMPT = `
+You are an expert educational assessor specializing in rubric-based grading.
+
+Grading Principles:
+1. Assess against provided rubric criteria objectively
+2. Identify specific strengths (what student did well)
+3. Provide actionable improvements (growth mindset language)
+4. Analyze performance by Bloom's taxonomy level
+5. Flag low-confidence grades for human review
+
+Confidence Scoring:
+- 0.9-1.0: Clear alignment with rubric, objective answers
+- 0.7-0.89: Good alignment, minor subjective elements
+- 0.5-0.69: Moderate subjectivity, needs human review
+- <0.5: High subjectivity, must have human review
+
+Feedback Language:
+- Use growth mindset: "You demonstrated X skill. To improve Y, try..."
+- Praise effort and strategy, not just results
+- Reference specific examples from submission
+- Suggest concrete next steps
+
+Educational Framework:
+- Academic Mastery: Assess content knowledge and skill application
+- Creative Thinking: Evaluate originality, problem-solving approaches
+- Social Intelligence: In group work, assess collaboration quality
+`;
+```
+
+---
+
+#### 3. **Content Studio Agent**
+*Replaces: WorksheetAgent, parts of ResourceAgent*
+
+**Purpose:** Generate questions, worksheets, assessments, educational resources
+
+**Max Steps:** 3 steps
+**Context Size:** 2K tokens
+
+**Tools:**
+```typescript
+interface ContentStudioTools {
+  // Step 1: Get curriculum context
+  get_curriculum_context(topicId, targetBloomLevels[]): Context;
+  
+  // Step 2: Generate content
+  generate_content(type, context, count, difficulty): {
+    questions: Question[], // or worksheet, or assessment
+    bloomDistribution: Record<BloomLevel, number>,
+    difficultyLevel: number
+  };
+  
+  // Step 3: Quality check & finalize
+  validate_content(content, pedagogicalRules): ValidationResult;
+}
+```
+
+**Educational Standards:**
+- Bloom's taxonomy alignment
+- Difficulty progression
+- Multiple representation (text, visual, kinesthetic)
+
+**System Prompt:**
+```typescript
+const CONTENT_STUDIO_PROMPT = `
+You are an expert content creator specializing in educational materials.
+
+Content Creation Principles:
+1. Align all content with learning outcomes and Bloom's levels
+2. Ensure cognitive balance (variety of Bloom's levels)
+3. Progress difficulty appropriately (scaffolding)
+4. Include diverse question types (MCQ, short answer, essay, problem-solving)
+5. Incorporate Academic Mastery, Creative Thinking, Social Intelligence
+
+Question Types by Educational Focus:
+- Academic Mastery: Knowledge recall, problem-solving, application
+- Creative Thinking: Open-ended, scenario-based, design challenges
+- Social Intelligence: Collaboration prompts, ethical dilemmas, perspective-taking
+
+Quality Criteria:
+- Clear, unambiguous language
+- Age-appropriate vocabulary
+- Culturally sensitive
+- No bias or stereotypes
+- Pedagogically sound
+`;
+```
+
+---
+
+### **Student Agents**
+
+#### 4. **Learning Companion Agent**
+*Replaces: StudentAssistantAgent, MainAssistantAgent, SubjectSpecificAgent*
+
+**Purpose:** Personalized academic tutoring across all subjects
+
+**Max Steps:** 4 steps (per conversation turn)
+**Context Size:** 3K tokens
+
+**Tools:**
+```typescript
+interface LearningCompanionTools {
+  // Step 1: Get student context
+  get_student_learning_context(studentId, subjectId): {
+    currentTopic: Topic,
+    masteryLevel: number,
+    recentPerformance: Performance[],
+    learningGoals: Goal[],
+    confusionAreas: string[]
+  };
+  
+  // Step 2: Understand student question
+  analyze_student_query(question, context): {
+    conceptsInvolved: string[],
+    bloomLevel: BloomLevel,
+    difficultyLevel: number,
+    studentIntent: "clarification" | "practice" | "challenge"
+  };
+  
+  // Step 3: Generate Socratic response
+  generate_socratic_response(query, analysis, context): {
+    guidingQuestions: string[],
+    hints?: string[],
+    examples?: string[],
+    encouragement: string
+  };
+  
+  // Step 4: Track learning progress
+  update_learning_progress(studentId, concept, interaction): void;
+}
+```
+
+**Educational Standards:**
+- **Academic Mastery:** Tutor all subjects (Languages, Math, Sciences, Arts)
+- **Creative Thinking:** Encourage exploration, multiple solution paths
+- **Social Intelligence:** Build grit, growth mindset, self-reflection
+
+**System Prompt:**
+```typescript
+const LEARNING_COMPANION_PROMPT = `
+You are a personal learning companion for a student, specializing in Socratic teaching.
+
+Teaching Philosophy:
+1. NEVER give direct answers - guide students to discover
+2. Use scaffolding (hints → questions → examples)
+3. Praise effort and strategy, not just correctness
+4. Build growth mindset ("You haven't mastered this YET")
+5. Encourage metacognition ("How did you approach this?")
+
+Educational Framework Integration:
+
+Academic Mastery:
+- Languages: Focus on expression, comprehension, creativity with words
+- Literacy: Reading strategies, writing process, critical analysis
+- Math: Problem-solving approaches, multiple strategies, conceptual understanding
+- Sciences: Scientific method, inquiry-based learning, real-world application
+- Arts: Creative expression, interpretation, technical skill development
+
+Creative Thinking:
+- Encourage openness to multiple solutions
+- Foster imagination through "what if" questions
+- Promote self-expression and unique perspectives
+- Support improvisation and experimentation
+
+Social Intelligence:
+- Build empathy through perspective-taking
+- Develop grit through challenge framing
+- Foster individuality while respecting community
+- Encourage collaboration and peer learning
+
+Socratic Questioning Techniques:
+1. Clarifying: "What do you mean by...?"
+2. Probing assumptions: "What are we assuming here?"
+3. Probing reasons/evidence: "How do you know this?"
+4. Questioning viewpoints: "What might someone else think?"
+5. Probing implications: "What would happen if...?"
+6. Meta-questions: "Why do you think I asked that?"
+
+Conversation Style:
+- Warm, encouraging, age-appropriate
+- Celebrate small wins
+- Normalize struggle as part of learning
+- Reference student's own progress and goals
+`;
+```
+
+---
+
+#### 5. **Assignment Guide Agent**
+*Replaces: NavigationAssistantAgent*
+
+**Purpose:** Help students understand and complete assignments (without giving answers)
+
+**Max Steps:** 3 steps
+**Context Size:** 2K tokens
+
+**Tools:**
+```typescript
+interface AssignmentGuideTools {
+  // Step 1: Get assignment details
+  get_assignment_context(assignmentId, studentId): {
+    assignment: Assignment,
+    learningOutcomes: LearningOutcome[],
+    studentProgress: Progress,
+    rubric: Rubric
+  };
+  
+  // Step 2: Analyze student's question
+  analyze_help_request(question, assignmentContext): {
+    questionType: "clarification" | "strategy" | "stuck" | "review",
+    conceptsNeeded: string[],
+    appropriateGuidanceLevel: "hint" | "question" | "example"
+  };
+  
+  // Step 3: Provide guidance (not answers)
+  provide_assignment_guidance(analysis, context): {
+    guidance: string,
+    suggestedSteps?: string[],
+    relevantResources?: Resource[],
+    checkUnderstanding: string // Follow-up question
+  };
+}
+```
+
+**Educational Standards:**
+- **Academic Mastery:** Help with all subjects
+- **Creative Thinking:** Encourage unique approaches
+- **Social Intelligence:** Build persistence, self-efficacy
+
+**System Prompt:**
+```typescript
+const ASSIGNMENT_GUIDE_PROMPT = `
+You are an assignment completion guide for students.
+
+Core Principle: GUIDE, DON'T SOLVE
+
+Your Role:
+1. Help students understand what is being asked
+2. Break complex assignments into manageable steps
+3. Suggest strategies and approaches (not solutions)
+4. Point to relevant resources and examples
+5. Check student understanding through questions
+
+Educational Framework:
+
+Academic Mastery:
+- Break down complex tasks into sub-skills
+- Connect assignment to learning outcomes
+- Suggest practice strategies
+
+Creative Thinking:
+- Encourage multiple approaches ("What are 3 ways you could...?")
+- Promote originality ("How could you make this unique?")
+- Foster resourcefulness ("What tools/resources could help?")
+
+Social Intelligence:
+- Build grit ("This is challenging, but you can persist")
+- Develop courage to try even if uncertain
+- Celebrate effort and iteration
+
+Guidance Levels (Least → Most Support):
+1. Reflection prompt: "What have you tried so far?"
+2. Clarifying question: "What specific part is confusing?"
+3. General hint: "Think about how X relates to Y"
+4. Specific hint: "Remember that formula from lesson..."
+5. Example: "Here's how someone might approach a similar problem..."
+
+NEVER:
+- Give direct answers
+- Complete work for student
+- Write essays, solve problems, or create content for them
+
+ALWAYS:
+- Verify student understands before moving on
+- Encourage independent thinking
+- Praise problem-solving process
+`;
+```
+
+---
+
+### **Analytics Agent**
+
+#### 6. **Insight Engine Agent**
+*Replaces: AnalyticsAgent*
+
+**Purpose:** Generate actionable insights from educational data
+
+**Max Steps:** 5 steps
+**Context Size:** 5K tokens
+
+**Tools:**
+```typescript
+interface InsightEngineTools {
+  // Step 1: Fetch data
+  get_analytics_data(scope, timeRange): {
+    performanceData: Performance[],
+    engagementData: Engagement[],
+    masteryData: TopicMastery[],
+    attendanceData: Attendance[]
+  };
+  
+  // Step 2: Analyze patterns
+  analyze_patterns(data, analysisType): {
+    trends: Trend[],
+    anomalies: Anomaly[],
+    correlations: Correlation[]
+  };
+  
+  // Step 3: Identify at-risk students
+  identify_at_risk_students(performanceData, threshold): RiskAssessment[];
+  
+  // Step 4: Generate recommendations
+  generate_recommendations(analysis, context): Recommendation[];
+  
+  // Step 5: Create visualizations
+  create_insight_visualizations(insights): VisualizationData;
+}
+```
+
+**Educational Standards:**
+- Academic Mastery tracking
+- Bloom's level progression
+- Holistic student development (Academic + Creative + Social)
+
+**System Prompt:**
+```typescript
+const INSIGHT_ENGINE_PROMPT = `
+You are an educational data analyst specializing in actionable insights.
+
+Analysis Framework:
+
+1. Academic Mastery Analysis:
+   - Subject-level performance trends
+   - Bloom's taxonomy progression
+   - Skill mastery patterns
+   - Learning outcome achievement
+
+2. Creative Thinking Analysis:
+   - Originality in problem-solving
+   - Engagement with open-ended tasks
+   - Risk-taking in learning
+
+3. Social Intelligence Analysis:
+   - Collaboration patterns
+   - Peer interaction quality
+   - Growth mindset indicators
+   - Persistence metrics
+
+Risk Identification Criteria:
+- Declining performance (>20% drop)
+- Attendance issues (>80% threshold)
+- Low engagement (<50% activity completion)
+- Mastery stagnation (no progress in 2+ weeks)
+- Social disengagement (minimal peer interaction)
+
+Recommendations Guidelines:
+1. Specific: Clear action items
+2. Actionable: Teachers can implement immediately
+3. Evidence-based: Tied to data patterns
+4. Holistic: Address academic + emotional + social needs
+5. Tiered: Prevention → Early intervention → Intensive support
+
+Output Format:
+{
+  insights: [{ type, description, dataPoints, severity }],
+  atRiskStudents: [{ studentId, riskFactors, confidenceScore }],
+  recommendations: [{ priority, action, rationale, expectedImpact }]
+}
+`;
+```
+
+---
+
+## AIVY Orchestration Engine
+
+### 1. Intent Router
+
+```typescript
+class IntentRouter {
+  private llm: LLM;
+  
+  async classifyIntent(
+    userMessage: string, 
+    userRole: "teacher" | "student",
+    context: UserContext
+  ): Promise<AgentIntent> {
+    
+    // Use fast, cheap model for classification (GPT-3.5-turbo)
+    const classification = await this.llm.classify({
+      model: "gpt-3.5-turbo",
+      temperature: 0.1, // Deterministic
+      messages: [
+        {
+          role: "system",
+          content: this.getClassificationPrompt(userRole)
+        },
+        {
+          role: "user",
+          content: JSON.stringify({ message: userMessage, context })
+        }
+      ],
+      tools: [
+        {
+          name: "classify_intent",
+          description: "Classify user intent to route to appropriate agent",
+          parameters: {
+            intent: z.enum([
+              // Teacher intents
+              "create_curriculum", // → Curriculum Architect
+              "grade_assignment",  // → Assignment Grader
+              "generate_content",  // → Content Studio
+              
+              // Student intents
+              "get_tutoring",      // → Learning Companion
+              "help_assignment",   // → Assignment Guide
+              
+              // Analytics intents
+              "generate_insights", // → Insight Engine
+              
+              // General
+              "clarification",     // → Same agent (follow-up)
+              "unknown"            // → Default handler
+            ]),
+            confidence: z.number().min(0).max(1),
+            reasoning: z.string()
+          }
+        }
+      ]
+    });
+    
+    return classification;
+  }
+  
+  private getClassificationPrompt(role: "teacher" | "student"): string {
+    if (role === "teacher") {
+      return `
+You are an intent classifier for a teacher using an AI assistant.
+
+Teacher intents:
+- create_curriculum: Creating learning outcomes, rubrics, lesson plans
+- grade_assignment: Grading student work, providing feedback
+- generate_content: Creating questions, worksheets, assessments
+- generate_insights: Analytics, student performance, risk identification
+
+Classify the intent with high confidence (>0.8) or return "clarification".
+      `;
+    } else {
+      return `
+You are an intent classifier for a student using an AI learning companion.
+
+Student intents:
+- get_tutoring: Subject help, concept explanation, problem-solving guidance
+- help_assignment: Understanding assignment requirements, guidance (not answers)
+
+Classify with confidence. If unclear, return "clarification".
+      `;
+    }
+  }
+}
+```
+
+---
+
+### 2. Context Builder
+
+```typescript
+class ContextBuilder {
+  
+  // Factor 3: Own Your Context Window
+  async buildAgentContext(
+    agent: Agent,
+    userRequest: any,
+    conversationHistory: Message[],
+    maxTokens: number = 4000
+  ): Promise<AgentContext> {
+    
+    const priorities: ContextChunk[] = [];
+    
+    // Priority 1: System prompt (always included, ~500 tokens)
+    priorities.push({
+      priority: 1,
+      tokens: 500,
+      content: agent.systemPrompt,
+      type: "system"
+    });
+    
+    // Priority 2: Current request (always included, ~200 tokens)
+    priorities.push({
+      priority: 2,
+      tokens: this.estimateTokens(userRequest),
+      content: JSON.stringify(userRequest),
+      type: "user_request"
+    });
+    
+    // Priority 3: Relevant business data (from database)
+    const relevantData = await this.fetchRelevantData(
+      agent.id,
+      userRequest
+    );
+    priorities.push({
+      priority: 3,
+      tokens: this.estimateTokens(relevantData),
+      content: JSON.stringify(relevantData),
+      type: "business_data"
+    });
+    
+    // Priority 4: Recent conversation (last 5 messages)
+    const recentMessages = conversationHistory.slice(-5);
+    priorities.push({
+      priority: 4,
+      tokens: this.estimateTokens(recentMessages),
+      content: this.formatMessages(recentMessages),
+      type: "conversation"
+    });
+    
+    // Priority 5: Older conversation (summarized, if space allows)
+    if (conversationHistory.length > 5) {
+      const summary = await this.summarizeOlderMessages(
+        conversationHistory.slice(0, -5)
+      );
+      priorities.push({
+        priority: 5,
+        tokens: this.estimateTokens(summary),
+        content: summary,
+        type: "conversation_summary"
+      });
+    }
+    
+    // Pack chunks by priority until maxTokens
+    return this.packContext(priorities, maxTokens);
+  }
+  
+  private async fetchRelevantData(
+    agentId: string,
+    request: any
+  ): Promise<any> {
+    // Agent-specific data fetching
+    switch (agentId) {
+      case "curriculum-architect":
+        return await this.getCurriculumData(request);
+      case "assignment-grader":
+        return await this.getSubmissionData(request);
+      case "learning-companion":
+        return await this.getStudentLearningData(request);
+      // ...
+    }
+  }
+}
+```
+
+---
+
+### 3. State Manager
+
+```typescript
+class StateManager {
+  private db: Database;
+  
+  // Factor 6: Launch/Pause/Resume
+  async launchAgent(
+    agentId: string,
+    userId: string,
+    input: any
+  ): Promise<{ taskId: string }> {
+    
+    const taskId = generateUUID();
+    
+    // Create task record
+    await this.db.agentTasks.create({
+      id: taskId,
+      agentId,
+      userId,
+      status: "running",
+      input,
+      state: {
+        messages: [],
+        steps: 0,
+        data: {}
+      },
+      createdAt: new Date()
+    });
+    
+    // Execute agent asynchronously
+    this.executeAgentAsync(taskId, agentId, input);
+    
+    return { taskId };
+  }
+  
+  async pauseAgent(taskId: string): Promise<string> {
+    const task = await this.db.agentTasks.findUnique({
+      where: { id: taskId }
+    });
+    
+    if (!task) throw new Error("Task not found");
+    
+    // Update status
+    await this.db.agentTasks.update({
+      where: { id: taskId },
+      data: {
+        status: "paused",
+        updatedAt: new Date()
+      }
+    });
+    
+    return taskId;
+  }
+  
+  async resumeAgent(taskId: string): Promise<void> {
+    const task = await this.db.agentTasks.findUnique({
+      where: { id: taskId }
+    });
+    
+    if (!task) throw new Error("Task not found");
+    if (task.status !== "paused") {
+      throw new Error(`Cannot resume task with status: ${task.status}`);
+    }
+    
+    // Continue execution
+    await this.executeAgentAsync(
+      taskId,
+      task.agentId,
+      task.input,
+      task.state // Resume from saved state
+    );
+  }
+  
+  private async executeAgentAsync(
+    taskId: string,
+    agentId: string,
+    input: any,
+    resumeState?: AgentState
+  ): Promise<void> {
+    
+    try {
+      const agent = this.getAgent(agentId);
+      const initialState = resumeState || {
+        taskId,
+        input,
+        messages: [],
+        steps: 0,
+        data: {}
+      };
+      
+      const result = await agent.execute(initialState);
+      
+      // Save result
+      await this.db.agentTasks.update({
+        where: { id: taskId },
+        data: {
+          status: "completed",
+          result: result.data,
+          stepsCompleted: result.steps,
+          updatedAt: new Date()
+        }
+      });
+      
+    } catch (error) {
+      await this.db.agentTasks.update({
+        where: { id: taskId },
+        data: {
+          status: "failed",
+          error: error.message,
+          updatedAt: new Date()
+        }
+      });
+    }
+  }
+}
+```
+
+---
+
+### 4. Tool Registry
+
+```typescript
+class ToolRegistry {
+  private tools: Map<string, Tool> = new Map();
+  
+  registerTool(tool: Tool): void {
+    this.tools.set(tool.name, tool);
+  }
+  
+  async executeTool(
+    toolName: string,
+    parameters: any,
+    context: ExecutionContext
+  ): Promise<ToolResult> {
+    
+    const tool = this.tools.get(toolName);
+    if (!tool) {
+      throw new Error(`Tool not found: ${toolName}`);
+    }
+    
+    // Validate permissions
+    if (!this.hasPermission(context.userId, tool)) {
+      throw new Error(`Permission denied for tool: ${toolName}`);
+    }
+    
+    // Validate parameters
+    const validatedParams = tool.schema.parse(parameters);
+    
+    // Execute with error handling
+    try {
+      const startTime = Date.now();
+      const result = await tool.execute(validatedParams, context);
+      const duration = Date.now() - startTime;
+      
+      // Log execution
+      await this.logToolExecution({
+        toolName,
+        parameters: validatedParams,
+        result,
+        duration,
+        userId: context.userId,
+        taskId: context.taskId
+      });
+      
+      return result;
+      
+    } catch (error) {
+      // Factor 9: Compact errors into context
+      return {
+        error: true,
+        message: this.compactError(error),
+        type: error.constructor.name,
+        recoverable: this.isRecoverable(error)
+      };
+    }
+  }
+  
+  // Factor 9: Compact errors for context window
+  private compactError(error: Error): string {
+    // Remove stack trace, keep only essential info
+    return {
+      message: error.message,
+      code: (error as any).code,
+      suggestion: this.getSuggestion(error)
+    };
+  }
+}
+```
+
+---
+
+## Agent Base Class
+
+```typescript
+// Factor 8: Own Your Control Flow
+abstract class Agent {
+  abstract id: string;
+  abstract name: string;
+  abstract purpose: string;
+  abstract systemPrompt: string;
+  abstract tools: ToolDefinition[];
+  abstract maxSteps: number;
+  
+  private llm: LLM;
+  private toolRegistry: ToolRegistry;
+  private contextBuilder: ContextBuilder;
+  
+  // Factor 1: Natural Language → Tool Calls
+  async determineNextStep(
+    context: AgentContext
+  ): Promise<ToolCall | Done> {
+    
+    const response = await this.llm.chat({
+      model: this.getModel(),
+      temperature: 0.3,
+      messages: context.messages,
+      tools: this.tools,
+      tool_choice: "auto"
+    });
+    
+    if (response.tool_calls && response.tool_calls.length > 0) {
+      return {
+        type: "tool_call",
+        tool: response.tool_calls[0].name,
+        parameters: response.tool_calls[0].parameters
+      };
+    } else {
+      return {
+        type: "done",
+        result: response.content
+      };
+    }
+  }
+  
+  // Factor 8: Deterministic control flow
+  async execute(initialState: AgentState): Promise<AgentResult> {
+    let state = initialState;
+    let stepCount = 0;
+    
+    while (stepCount < this.maxSteps) {
+      // Check if paused
+      if (await this.isPaused(state.taskId)) {
+        return {
+          status: "paused",
+          state: this.serialize(state)
+        };
+      }
+      
+      // Build context (Factor 3)
+      const context = await this.contextBuilder.buildAgentContext(
+        this,
+        state.input,
+        state.messages
+      );
+      
+      // LLM determines next step (Factor 1)
+      const nextStep = await this.determineNextStep(context);
+      
+      // Check if done
+      if (nextStep.type === "done") {
+        return {
+          status: "completed",
+          result: nextStep.result,
+          steps: stepCount
+        };
+      }
+      
+      // Execute tool (deterministic code)
+      const toolResult = await this.toolRegistry.executeTool(
+        nextStep.tool,
+        nextStep.parameters,
+        { userId: state.userId, taskId: state.taskId }
+      );
+      
+      // Factor 5 & 12: Stateless reducer
+      state = this.reducer(state, {
+        step: nextStep,
+        result: toolResult
+      });
+      
+      stepCount++;
+    }
+    
+    // Max steps reached
+    return {
+      status: "incomplete",
+      result: state.data,
+      steps: stepCount,
+      reason: "max_steps_exceeded"
+    };
+  }
+  
+  // Factor 5 & 12: Pure reducer (no side effects)
+  reducer(state: AgentState, action: ToolResult): AgentState {
+    return {
+      ...state,
+      messages: [
+        ...state.messages,
+        { 
+          role: "assistant", 
+          content: JSON.stringify(action.step) 
+        },
+        { 
+          role: "tool", 
+          content: JSON.stringify(action.result) 
+        }
+      ],
+      steps: state.steps + 1,
+      data: {
+        ...state.data,
+        [action.step.tool]: action.result
+      }
+    };
+  }
+  
+  // Factor 6: Serialize for pause/resume
+  serialize(state: AgentState): string {
+    return JSON.stringify({
+      agentId: this.id,
+      state,
+      timestamp: Date.now()
+    });
+  }
+  
+  deserialize(data: string): AgentState {
+    const parsed = JSON.parse(data);
+    return parsed.state;
+  }
+  
+  // Agent-specific model selection
+  protected getModel(): string {
+    // Use GPT-4o for complex reasoning, GPT-3.5 for simple tasks
+    return this.requiresComplexReasoning()
+
+
+    
